@@ -1,0 +1,113 @@
+// Log v0.2 20221014
+//
+// Versions:
+//   v0.1 20220712 - Enhancements
+//   v0.2 20221014 - Enhancements
+//   v0.3 20241012 - Enhancements
+
+#include "Application.h"
+#include <time.h> 
+#include "log.h"
+
+char LOGBUF[20];
+
+char* gettime() {
+    //time_t now = time(nullptr);
+    //char *t = ctime(&now);
+    //t[strlen(t) -1] = '\0';
+    //return &t[4];
+    sprintf(&LOGBUF[0], "%d", millis());
+    return &LOGBUF[0];
+}
+  
+
+void LOG(const char *msg) {
+  Serial.printf("%s: %s\n", gettime(), msg);
+}
+
+void LOG(const __FlashStringHelper *ifsh) {
+  Serial.printf("%s: %s\n", gettime(), ifsh);
+}
+
+
+void LOGX(const char *msg) {
+  Serial.print(msg);
+}
+
+void LOG(const char *msg1, const char *msg2) {
+  Serial.print(msg1);
+  Serial.println(msg2);
+}
+
+void LOG(const char *msg, uint8_t ui) {
+  Serial.print(msg);
+  Serial.println(ui);
+}
+
+void LOG(const char *msg, int i) {
+  Serial.printf("%s: %s%i\n", gettime(), msg, i);
+}
+
+void LOG(const __FlashStringHelper *ifsh, int i) {
+  Serial.printf("%s: %s%i\n", gettime(), ifsh, i);
+}
+
+//void LOG(const char *msg1, int32_t ui) {
+//  Serial.print(msg1);
+//  Serial.println(ui);
+//}
+
+void LOG(const char *msg1, ulong ul) {
+  Serial.print(msg1);
+  Serial.println(ul);
+}
+
+void LOG(const char *msg1, long l) {
+  Serial.print(msg1);
+  Serial.println(l);
+}
+
+void LOG(const char *msg1, boolean b) {
+  Serial.print(msg1);
+  Serial.println(b);
+}
+
+void LOG(const char *msg1, String msg2) {
+  Serial.print(msg1);
+  Serial.println(msg2);
+}
+
+void LOG(const char *msg1, const char *msg2, const char *msg3) {
+  Serial.print(msg1);
+  Serial.print(msg2);
+  Serial.println(msg3);
+}
+
+void LOG_HEX(uint8_t dig) {
+  Serial.print(dig, HEX);
+}
+
+void LOG_ERROR(const char *msg) {
+  Serial.print(F("ERROR:"));
+  LOG(msg);
+}
+
+void LOG_ERROR(const char *msg1, String msg2) {
+  Serial.print(F("ERROR:"));
+  LOG(msg1, msg2);
+}
+
+void LOG_ERROR(const char *msg1, const char *msg2) {
+  Serial.print(F("ERROR:"));
+  LOG(msg1, msg2);
+}
+
+void LOG_ERROR(const char *msg1, const char *msg2, const char *msg3) {
+  Serial.print(F("ERROR:"));
+  LOG(msg1, msg2, msg3);
+}
+
+void LOG_DEBUG(const char *msg) {
+  Serial.print(F("DEBUG:"));
+  Serial.println(msg);
+}

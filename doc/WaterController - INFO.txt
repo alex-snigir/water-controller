@@ -1,0 +1,106 @@
+H/W devices:
+============
+
+  Valve electrical:
+  =================
+    CR01, 12V, DN20(3/4) Model: CWX-25S
+    CR01 - не потребляет ток ни в открытом не в закрытом положении. Управляется 2мя проводами сменой полярности.
+    Power supply: 12V
+	Power: <2W
+    Working current: <80mA
+  
+  Water Flow Sensor:
+  ==================
+    YF-B10 1" 2-50L DC3.5~24V 476 pulse/L
+    Power supply: n/a
+  
+  Pressure Sensor electrical:
+  ===========================
+    Model: SWP-300  0-5V G1-2, 0-10bar
+    Connection: 1/2" Father
+    Power supply: 12V-36VDC(default 24VDC)
+    Signal: 0-5V
+  
+  Pressure Sensor mechanical:
+  ===========================
+    Connection: 1/4" Father
+  
+Power Consumption:
+==================
+   8 mA   - DC-DC 12V->5V Idle mode (LED)
+  70 mA   - MC, Controller electronics
+  18 mA / 12V - Direction Relay, after DC-DC 12V->5V - 30mA/5V
+  25 mA / 12V - Power Relay, after DC-DC 12V->5V - 50mA/5V
+  80 mA   - Electrical Valve CR01
+  50 mA   - Pressure Sensor electrical
+          - Система полива, Netafim Valves
+
+MC:
+===
+  ESP32-WROOM-32U with external antena
+  Power: 5V (5V is used to reuse the same voltage as for Pressure Sensor)
+
+
+  GPIO:
+  =====
+  GPIO 21+ (SDA)  - LogicLevel LV2 -> HV2 -> SDA ADS1115
+  GPIO 22+ (SCL)  - LogicLevel LV1 -> HV1 -> SCL ADS1115
+  GPIO 32+        - LED: LED1 WiFi/MQTT Status (Blue) (pull-down)
+  GPIO 17+        - Water Flow sensor (interrupt attached)               <<- Should be used some pull-up/down resistor?
+  GPIO ??         - AC Power detected (in case of UPS used) (pool-up)    <<- What is it??
+  GPIO 19+        - Valve dirrection (pool-down)                         HIGH: Open      LOW: Close
+  GPIO 18+        - Valve power on (pool-down)                           HIGH: Power-ON  LOW: Power-OFF
+  GPIO ??         - Water Pipe temperature (DS1824)
+  GPIO ??         - Ambient temperature (DS1824)
+  GPIO ??         - Сенсор протечки
+  GPIO ??         - Button to open valve                                 <<- Check of the pure INPUT GPIO can be used
+  GPIO ??         - Button to close valve                                <<- Check of the pure INPUT GPIO can be used
+  GPIO ??         - Spare KEY1 Button                                    <<- Check of the pure INPUT GPIO can be used
+  GPIO 33+        - LED: LED2 Water Valve Status (Green) (pull-down)
+  GPIO 25+        - LED: LED3 Water Flow Rate (Yellow) (pull-down)
+  GPIO 26+        - LED: LED4 Error (Red)  (pull-down)
+
+  
+  
+Requirements:
+=============
+  Valve:
+  ======
+    > Open/Close Electrical Water Valve MQTT               (2 GPIO OUTPUT)
+	> Физическая кнопка открытия/закрытия крана
+	> Физический переключатель блокирования открытия крана
+    > Ability to open/close Electrical Water Valve without MC (phisical buttons)
+  Water Flow Sensor:
+  ==================
+    > Read Water Flow Sensor periodic                        (1 GPIO INPUT)
+  Water Presure Sensor:
+  =====================
+    > Read Water Presure Sensor periodic (1m/15 sec)
+    > Realtime Water Presure Sensor read
+  Temperatures:
+  =============
+    > Read Water Pipe temperature
+    > Read ambient temperature
+    > ESP chip internal Temperature
+  Notifications:
+  ==============
+    - MQTT connected
+	- Water Flow Rate
+	- Water Presure Rate
+	- Протечка
+	- Temperature
+  > Кнопка включения AP/конфигурации
+  
+  > LED: WiFi/MQTT Status   LED1 (Blue)    - WiFi/MQTT status OFF: WiFi is not connected, Blinking: WiFi connected but MQTT is not connected, ON: WiFi+MQTT connected 
+  > LED: Water Valve Status LED2 (Green)   - ON:valve open, OFF: valve closed, Blonking: valve opening/closing
+  > LED: Water Flow Rate    LED3 (Yellow)  - blinking according to flow rate
+  > LED: Error              LED4 (Red)     - Error / Malfunction detection
+  > LED: Power              LED5 (???)     - Power is ON. GPIO not used
+ 
+  Extension:
+  ----------
+  > Read включение/выключение полива (2 крана)
+  > Включение/выключение полива (2 крана)
+  > Read уровень влажности
+  > Read Mechanical Water Presure Sensor + temperature periodic (1m/15 sec)
+  > Подключение второго ESP (1 Serial 2 2 GPIO ???)

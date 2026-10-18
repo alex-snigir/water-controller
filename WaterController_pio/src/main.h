@@ -1,0 +1,60 @@
+#ifndef SN_MAIN_H
+#define SN_MAIN_H
+
+#include "Application.h"
+
+extern const char APP_NAME[];
+extern const char APP_VER[];
+extern volatile time_t boottime;
+extern volatile int timeset_cnt;
+
+#define TOPIC_KEEPALIVE           _AREA_ "/keepalive/" _HOST_NAME_
+#define TOPIC_ALIVE               _AREA_ "/alive"
+#define TOPIC_ALIVE_GET           _AREA_ "/alive/get"
+#define TOPIC_INFO                _AREA_ "/" _HOST_NAME_ "/info"
+#define TOPIC_INFO_GET            _AREA_ "/" _HOST_NAME_ "/info/get"
+#define TOPIC_CONNECTION_INFO     _AREA_ "/" _HOST_NAME_ "/connection/info"
+
+#define TOPIC_VALVE_ENABLED       _AREA_ "/" _HOST_NAME_ "/valve_enable"
+#define TOPIC_VALVE_ENABLED_GET   _AREA_ "/" _HOST_NAME_ "/valve_enable/get"
+
+// #define TOPIC_VALVE            _AREA_ "/" _HOST_NAME_ "/valve"
+#define TOPIC_VALVE_OPEN          _AREA_ "/" _HOST_NAME_ "/valve/open"
+#define TOPIC_VALVE_CLOSE         _AREA_ "/" _HOST_NAME_ "/valve/close"
+
+#define TOPIC_PRESURE              _AREA_ "/" _HOST_NAME_ "/presure"
+#define TOPIC_PRESURE_GET          _AREA_ "/" _HOST_NAME_ "/presure/get"
+
+#define TOPIC_FLOW_RATE            _AREA_ "/" _HOST_NAME_ "/flowrate"
+#define TOPIC_FLOW_RATE_GET        _AREA_ "/" _HOST_NAME_ "/flowrate/get"
+
+#define KEEP_ALIVE_MESSAGE_INTERVAL 60000L // 1 minute
+
+// Callbacks:
+void mqtt_callback(char* topic, byte* payload, unsigned int length);
+void test_change_event_callback(uint8_t event);
+void keepAlive_event_callback();
+
+
+void debug_init();
+
+void valve_init();
+void valve_handle();
+void valve_open();
+void valve_close();
+
+#define ADS_CHANNEL_PRESSURE_SENSOR 0
+
+void ads_init();
+void ads_handle();
+bool ads_voltage_chnnel_get(int channel, float *volts);
+
+void pressure_sensor_init(unsigned long interval);
+void pressure_sensor_handle();
+void pressure_get();
+
+void water_flow_sensor_init();
+void water_flow_handle();
+void water_flow_get();
+
+#endif
