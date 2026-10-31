@@ -36,11 +36,7 @@ static void ads_start() {
     Serial.println("Failed to initialize ADS1115.");
   }
   else {
-    switch(ads.getGain()) {
-    case GAIN_TWOTHIRDS:
-      Serial.println("ADC Range: +/- 6.144V (1 bit = 3mV:ADS1015, 0.1875mV:ADS1115)");
-      break;
-    }
+    Serial.printf("ADC full scale: %.3f V\n", ads.getFsRange());
   }
 }
 
