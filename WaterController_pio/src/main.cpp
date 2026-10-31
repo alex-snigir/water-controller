@@ -118,6 +118,7 @@ void setup() {
     clientId = hostname.c_str();    // Use the generated hostname as MQTT client ID
     otaHostname = hostname.c_str(); // Use the generated hostname for OTA as well
 
+    otaClient.setStartCallback(valve_ota_start);
     otaClient.begin(otaHostname, OTA_PASSWD);
 
     mqttClient.begin(mqtt_server, clientId, true);

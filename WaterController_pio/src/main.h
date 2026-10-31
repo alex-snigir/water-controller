@@ -46,6 +46,7 @@ void valve_handle();
 void valve_open();
 void valve_close();
 void valve_state_publish();
+void valve_ota_start();
 
 #define ADS_CHANNEL_PRESSURE_SENSOR 0
 

@@ -16,6 +16,7 @@ unsigned long valveOutputOffTimer = 0; // When the outputs were last switched of
 // It stays unknown after boot and after any partial travel, until a full move completes.
 enum ValveState { VALVE_UNKNOWN, VALVE_OPENING, VALVE_OPEN, VALVE_CLOSING, VALVE_CLOSED };
 static ValveState valveState = VALVE_UNKNOWN;
+static bool valveStatePublishPending = false;
 
 // SW1/SW2 drive IN1/IN2 directly, past the ESP32. VALVE_*_STATUS only shows the level on them,
 // which is also high while the firmware drives the same pin.
@@ -145,6 +146,12 @@ void valve_handle()
     _button_handle(openButton, closeButton, now);
     _button_handle(closeButton, openButton, now);
 
+    if (valveStatePublishPending)
+    {
+        valveStatePublishPending = false;
+        valve_state_publish();
+    }
+
     // Автоматическое отключение реле после завершения хода
     if (isValveMoving && (millis() - valveMovingTimer >= valve_move_time_mills))
     {
@@ -152,6 +159,20 @@ void valve_handle()
         valveState = (valveState == VALVE_OPENING) ? VALVE_OPEN : VALVE_CLOSED;
         Serial.println("Valve is stopped.");
         valve_state_publish();
+    }
+}
+
+// OTA blocks loop(), so valve_handle() could not stop the valve on time.
+// No publish here: it may dispatch a queued command, which would restart the valve.
+// After a successful update the state is sent on MQTT connect, after a failed one from valve_handle().
+void valve_ota_start()
+{
+    if (isValveMoving)
+    {
+        _stop_valve();
+        valveState = VALVE_UNKNOWN;
+        valveStatePublishPending = true;
+        Serial.println("Valve output is off: OTA started.");
     }
 }
 

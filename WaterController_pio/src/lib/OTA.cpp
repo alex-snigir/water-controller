@@ -10,6 +10,7 @@
 //   v0.7 20260607 - Minor fixes
 //   v0.8 20260610 - Minor fix
 //   v0.9 20260618 - Guard against total == 0 before dividing
+//   v0.10 20261031 - Added setStartCallback()
 
 #include <ArduinoOTA.h>
 #include "OTA.h"
@@ -26,6 +27,13 @@
 
 OTAClient otaClient; // Created OTAClient instance
 
+static void (*start_callback)() = nullptr;
+
+void OTAClient::setStartCallback(void (*callback)())
+{
+    start_callback = callback;
+}
+
 void OTAClient::begin(const char *host, const char *passwd)
 {
     ArduinoOTA.setHostname(host);
@@ -40,7 +48,11 @@ void OTAClient::begin(const char *host, const char *passwd)
         }
 
         // NOTE: if updating FS this would be the place to unmount FS using FS.end()
-        LOG("Start OTA updating ", type.c_str()); 
+        LOG("Start OTA updating ", type.c_str());
+
+        if (start_callback) {
+            start_callback();
+        }
     });
 
     ArduinoOTA.onEnd([]() { 
