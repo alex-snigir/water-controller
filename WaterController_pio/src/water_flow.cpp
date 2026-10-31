@@ -13,7 +13,13 @@ static uint64_t total_pulses = 0; // Since boot. Published as is, so a failed pu
 
 static portMUX_TYPE pulses_mux = portMUX_INITIALIZER_UNLOCKED;
 
-void IRAM_ATTR water_flow_pulse();
+// Interrupt Service Routine (ISR)
+// This function is called automatically when the interrupt condition is met.
+static void IRAM_ATTR water_flow_pulse() {
+    portENTER_CRITICAL_ISR(&pulses_mux);
+    pulses++;
+    portEXIT_CRITICAL_ISR(&pulses_mux);
+}
 
 void water_flow_sensor_init(unsigned long interval) {
     water_flow_calculation_interval = interval;
@@ -21,14 +27,6 @@ void water_flow_sensor_init(unsigned long interval) {
     pinMode(WATER_FLOW_GPIO, INPUT_PULLUP); // Keep the input from floating when the sensor is disconnected
     water_flow_calculation_lastActivity = millis(); // The first interval starts when counting does, not at boot
     attachInterrupt(digitalPinToInterrupt(WATER_FLOW_GPIO), water_flow_pulse, FALLING);
-}
-
-// Interrupt Service Routine (ISR)
-// This function is called automatically when the interrupt condition is met.
-void IRAM_ATTR water_flow_pulse() {
-    portENTER_CRITICAL_ISR(&pulses_mux);
-    pulses++;
-    portEXIT_CRITICAL_ISR(&pulses_mux);
 }
 
 void water_flow_handle() {
