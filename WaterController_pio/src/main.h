@@ -54,7 +54,8 @@ void valve_ota_start();
 
 void ads_init();
 void ads_handle();
-bool ads_voltage_chnnel_get(int channel, float *volts);
+enum AdsResult { ADS_OK, ADS_SKIPPED, ADS_UNAVAILABLE };
+AdsResult ads_voltage_chnnel_get(int channel, float *volts);
 
 void pressure_sensor_init(unsigned long interval);
 void pressure_sensor_handle();

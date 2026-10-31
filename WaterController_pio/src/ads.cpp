@@ -8,7 +8,9 @@ boolean ads_enabled;
 
 #define ADS_RETRY_INTERVAL 60000L // 1 minute
 #define ADS_CONVERSION_TIMEOUT 50L // Millis. Single conversion takes ~8 ms at the default 128 SPS
+#define ADS_MAX_FAILURES 3         // Failed samples in a row before the ADS1115 counts as lost
 unsigned long ads_init_lastAttempt = 0L;
+static int ads_failures = 0;       // Failed samples in a row
 
 /*
 ADS1115:
@@ -54,7 +56,20 @@ void ads_handle() {
 static void ads_lost(const char *reason) {
   Serial.printf("ADS1115: %s, marked as not available\n", reason);
   ads_enabled = false;
+  ads_failures = 0;
   ads_init_lastAttempt = millis();
+}
+
+
+// Valve motor noise can spoil a single transfer: only repeated failures mean the device is lost
+static AdsResult ads_failed(const char *reason) {
+  ads_failures++;
+  if (ads_failures >= ADS_MAX_FAILURES) {
+    ads_lost(reason);
+    return ADS_UNAVAILABLE;
+  }
+  Serial.printf("ADS1115: %s, sample skipped (%d/%d)\n", reason, ads_failures, ADS_MAX_FAILURES);
+  return ADS_SKIPPED;
 }
 
 
@@ -85,28 +100,20 @@ static bool ads_read_register(uint8_t reg, uint16_t *value) {
 }
 
 
-// Reads the channel voltage into *volts. Returns false if the ADS1115 is not available or not responding,
-// or if an I2C transfer failed: that sample is skipped, the next one retries.
+// Reads the channel voltage into *volts. Returns ADS_SKIPPED if this sample failed and the next one retries,
+// ADS_UNAVAILABLE if the ADS1115 is lost.
 // Replaces ads.readADC_SingleEnded(), which waits for the conversion forever if the device disappears.
-bool ads_voltage_chnnel_get(int channel, float *volts) {
+AdsResult ads_voltage_chnnel_get(int channel, float *volts) {
 
   if (!ads_enabled || channel < 0 || channel > 3) {
-    return false;
-  }
-
-  // Check that the device still acknowledges its address
-  Wire.beginTransmission(ADS1X15_ADDRESS);
-  if (Wire.endTransmission() != 0) {
-    ads_lost("no response on I2C");
-    return false;
+    return ADS_UNAVAILABLE;
   }
 
   // Single-shot, comparator off: the ALERT/RDY pin is not used
   uint16_t config = ADS1X15_REG_CONFIG_OS_SINGLE | ADS1X15_REG_CONFIG_MODE_SINGLE | ADS1X15_REG_CONFIG_CQUE_NONE |
                     ads.getGain() | ads.getDataRate() | MUX_BY_CHANNEL[channel];
   if (!ads_write_register(ADS1X15_REG_POINTER_CONFIG, config)) {
-    Serial.println("ADS1115: config write failed, sample skipped");
-    return false;
+    return ads_failed("config write failed");
   }
 
   unsigned long start = millis();
@@ -114,23 +121,20 @@ bool ads_voltage_chnnel_get(int channel, float *volts) {
     delay(1);
     uint16_t status;
     if (!ads_read_register(ADS1X15_REG_POINTER_CONFIG, &status)) {
-      Serial.println("ADS1115: status read failed, sample skipped");
-      return false;
+      return ads_failed("status read failed");
     }
     if (status & ADS1X15_REG_CONFIG_OS_NOTBUSY) {
       break;
     }
     // Checked after the status: a task switch here must not fail a conversion that has finished
     if (millis() - start >= ADS_CONVERSION_TIMEOUT) {
-      ads_lost("conversion timeout");
-      return false;
+      return ads_failed("conversion timeout");
     }
   }
 
   uint16_t raw;
   if (!ads_read_register(ADS1X15_REG_POINTER_CONVERT, &raw)) {
-    Serial.println("ADS1115: result read failed, sample skipped");
-    return false;
+    return ads_failed("result read failed");
   }
 
   int16_t adc = (int16_t)raw; // Readed counts
@@ -144,5 +148,6 @@ bool ads_voltage_chnnel_get(int channel, float *volts) {
   Serial.print(*volts);
   Serial.println("V ");
 
-  return true;
+  ads_failures = 0;
+  return ADS_OK;
 }

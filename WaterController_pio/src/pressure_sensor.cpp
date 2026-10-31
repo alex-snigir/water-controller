@@ -47,7 +47,11 @@ void pressure_get() {
 
 static void pressure_read() {
     float volts;
-    if (!ads_voltage_chnnel_get(ADS_CHANNEL_PRESSURE_SENSOR, &volts)) {
+    AdsResult result = ads_voltage_chnnel_get(ADS_CHANNEL_PRESSURE_SENSOR, &volts);
+    if (result == ADS_SKIPPED) {
+        return; // A one-off failure: the status and the last value stay
+    }
+    if (result == ADS_UNAVAILABLE) {
         Serial.println("Pressure: ADS1115 not available, skip publishing");
         pressure_status_set("no_adc");
         return;

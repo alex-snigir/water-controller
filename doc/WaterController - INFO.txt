@@ -151,7 +151,7 @@ MQTT Interface:
     "home/watercontroller1/flowrate"        // RETAIN=false  Payload: STRING - Sent each minute and on request. Liters per minute. Payload: "%f"
     "home/watercontroller1/pressure"        // RETAIN=false  Payload: STRING - Sent every 10 seconds and on request. Bar. Payload: "%.2f"
     "home/watercontroller1/flowtotal"       // RETAIN=false  Payload: STRING - Sent each minute. Liters since boot, drops to 0 after reboot. Payload: "%.3f"
-    "home/watercontroller1/pressure/status" // RETAIN=true   Payload: STRING - Sent on change, on MQTT connect and in response of "home/watercontroller1/pressure/get" if there is no valid reading. Payload: "unknown", "ok", "over_range" (at or above 10 bar, published value is 10), "no_adc", "out_of_range"
+    "home/watercontroller1/pressure/status" // RETAIN=true   Payload: STRING - Sent on change, on MQTT connect and in response of "home/watercontroller1/pressure/get" if there is no valid reading. Payload: "unknown", "ok", "over_range" (at or above 10 bar, published value is 10), "no_adc" (ADC lost, after 3 failed readings in a row), "out_of_range"
 
 
 MQTT Payload Examples:
