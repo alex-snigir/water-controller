@@ -4,14 +4,14 @@
 // H-bridge control for valve: DRV8871, IN1/IN2. The DPDT+SPDT relay build (power + direction pins) is not supported
 
 static const unsigned long valve_move_time_mills = 7000;
-unsigned long valveMovingTimer = 0; // Таймер хода крана
-bool isValveMoving = false;         // Флаг движения
+static unsigned long valveMovingTimer = 0; // Таймер хода крана
+static bool isValveMoving = false;         // Флаг движения
 
 #define VALVE_BUTTON_DEBOUNCE_MS 30 // Button level must be stable this long
 #define VALVE_OUTPUT_MASK_MS     20 // C10/C11 hold IN1/IN2 high for up to 9 ms after an output goes low
 #define VALVE_REVERSE_PAUSE_MS   20 // Let IN1/IN2 settle before driving the opposite output
 
-unsigned long valveOutputOffTimer = 0; // When the outputs were last switched off
+static unsigned long valveOutputOffTimer = 0; // When the outputs were last switched off
 
 // There is no position feedback: the state follows the last command or button hold.
 // It stays unknown after boot and after any partial travel, until a full move completes.
@@ -35,7 +35,7 @@ struct ValveButton
 static ValveButton openButton  = {VALVE_OPEN_STATUS,  VALVE_OPENING, VALVE_OPEN,   "open",  false, false, 0};
 static ValveButton closeButton = {VALVE_CLOSE_STATUS, VALVE_CLOSING, VALVE_CLOSED, "close", false, false, 0};
 
-unsigned long manualMoveTimer = 0;            // When the current button move started
+static unsigned long manualMoveTimer = 0;            // When the current button move started
 static ValveState manualStartState = VALVE_UNKNOWN; // State before the current button move
 
 static const char *valve_state_name()
@@ -68,7 +68,7 @@ void valve_init()
 }
 
 // Функция полной остановки (IN1 = IN2 = 0: coast)
-void _stop_valve()
+static void valve_stop()
 {
     digitalWrite(VALVE_OPEN_PIN, LOW);
     digitalWrite(VALVE_CLOSE_PIN, LOW);
@@ -78,7 +78,7 @@ void _stop_valve()
 }
 
 // Drives the outputs for valveState
-static void _valve_drive()
+static void valve_drive()
 {
     bool opening = (valveState == VALVE_OPENING);
     digitalWrite(opening ? VALVE_CLOSE_PIN : VALVE_OPEN_PIN, LOW);  // Убеждаемся, что второй выход выключен
@@ -89,24 +89,24 @@ static void _valve_drive()
 }
 
 // Starts the move now, or from valve_handle() if the outputs were switched off a moment ago
-static void _valve_start(ValveState moving)
+static void valve_start(ValveState moving)
 {
     if (isValveMoving)
-        _stop_valve();
+        valve_stop();
 
     valveState = moving;
     valveDrivePending = (millis() - valveOutputOffTimer < VALVE_REVERSE_PAUSE_MS);
     if (!valveDrivePending)
-        _valve_drive();
+        valve_drive();
 }
 
-static void _button_pressed(ValveButton &button, ValveButton &other, unsigned long now)
+static void button_pressed(ValveButton &button, ValveButton &other, unsigned long now)
 {
     Serial.printf("Valve button pressed: %s\n", button.name);
 
     // The button wins: against a firmware output it would only brake the valve
     if (isValveMoving || valveDrivePending)
-        _stop_valve();
+        valve_stop();
 
     if (other.pressed)
     {
@@ -122,7 +122,7 @@ static void _button_pressed(ValveButton &button, ValveButton &other, unsigned lo
     mqttClient.publish(TOPIC_VALVE_MANUAL, button.name);
 }
 
-static void _button_released(ValveButton &button, ValveButton &other, unsigned long now)
+static void button_released(ValveButton &button, ValveButton &other, unsigned long now)
 {
     Serial.printf("Valve button released: %s\n", button.name);
 
@@ -145,7 +145,7 @@ static void _button_released(ValveButton &button, ValveButton &other, unsigned l
     mqttClient.publish(TOPIC_VALVE_MANUAL, "released");
 }
 
-static void _button_handle(ValveButton &button, ValveButton &other, unsigned long now)
+static void button_handle(ValveButton &button, ValveButton &other, unsigned long now)
 {
     // The input cannot show a button while the firmware holds its own pin high, or just after
     bool masked = (isValveMoving && valveState == button.moving) || (now - valveOutputOffTimer < VALVE_OUTPUT_MASK_MS);
@@ -161,21 +161,21 @@ static void _button_handle(ValveButton &button, ValveButton &other, unsigned lon
 
     button.pressed = level;
     if (level)
-        _button_pressed(button, other, now);
+        button_pressed(button, other, now);
     else
-        _button_released(button, other, now);
+        button_released(button, other, now);
 }
 
 void valve_handle()
 {
     unsigned long now = millis();
-    _button_handle(openButton, closeButton, now);
-    _button_handle(closeButton, openButton, now);
+    button_handle(openButton, closeButton, now);
+    button_handle(closeButton, openButton, now);
 
     if (valveDrivePending && (now - valveOutputOffTimer >= VALVE_REVERSE_PAUSE_MS))
     {
         valveDrivePending = false;
-        _valve_drive();
+        valve_drive();
     }
 
     if (valveStatePublishPending)
@@ -187,7 +187,7 @@ void valve_handle()
     // Автоматическое отключение выхода после завершения хода
     if (isValveMoving && (millis() - valveMovingTimer >= valve_move_time_mills))
     {
-        _stop_valve();
+        valve_stop();
         valveState = (valveState == VALVE_OPENING) ? VALVE_OPEN : VALVE_CLOSED;
         Serial.println("Valve is stopped.");
         valve_state_publish();
@@ -201,7 +201,7 @@ void valve_ota_start()
 {
     if (isValveMoving || valveDrivePending)
     {
-        _stop_valve();
+        valve_stop();
         valveState = VALVE_UNKNOWN;
         valveStatePublishPending = true;
         Serial.println("Valve output is off: OTA started.");
@@ -211,7 +211,7 @@ void valve_ota_start()
 // A repeated command must not restart the move: the 7 s limit would never expire.
 // A held button overrides commands: the opposite command would only brake the valve.
 // The state is republished so the sender gets a reply either way.
-static bool _command_blocked(ValveState moving)
+static bool command_blocked(ValveState moving)
 {
     if ((isValveMoving || valveDrivePending) && valveState == moving)
         Serial.println("Valve command ignored: already moving this way");
@@ -223,22 +223,22 @@ static bool _command_blocked(ValveState moving)
     return true;
 }
 
-static void _valve_command(ValveState moving)
+static void valve_command(ValveState moving)
 {
-    if (_command_blocked(moving))
+    if (command_blocked(moving))
         return;
 
-    _valve_start(moving);
+    valve_start(moving);
     Serial.printf("Valve is %s...\n", valve_state_name());
     valve_state_publish();
 }
 
 void valve_open()
 {
-    _valve_command(VALVE_OPENING);
+    valve_command(VALVE_OPENING);
 }
 
 void valve_close()
 {
-    _valve_command(VALVE_CLOSING);
+    valve_command(VALVE_CLOSING);
 }

@@ -97,6 +97,7 @@ void settime_cb(struct timeval *tv) {
 // =======================================================
 
 void setup() {
+  valve_init(); // First: take control of the valve outputs before anything else starts
   Serial.begin(115200);
   delay(2000);
   Serial.printf_P(PSTR("\n%s %s..\n"), FPSTR(APP_NAME), FPSTR(APP_VER));
@@ -135,7 +136,6 @@ void setup() {
     ads_init();
     pressure_sensor_init(10000L); // Millis
     water_flow_sensor_init();
-    valve_init();
 
     profiler.begin(60000, 100, 1000, 10000, 300000);
 }
