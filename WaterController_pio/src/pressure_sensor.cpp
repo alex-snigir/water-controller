@@ -29,6 +29,7 @@ static void pressure_status_set(const char *status) {
 
 void pressure_sensor_init(unsigned long interval) {
     read_pressure_interval = interval;
+    read_pressure_lastActivity = millis(); // The first interval starts here, not at boot
     Serial.printf("pressure_sensor_init\n");
 }
 
