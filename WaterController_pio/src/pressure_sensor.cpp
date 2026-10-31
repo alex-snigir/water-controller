@@ -41,7 +41,7 @@ void pressure_get() {
         return;
     }
     char buf[32];
-    snprintf(buf, sizeof(buf), "%f", pressure_last);
+    snprintf(buf, sizeof(buf), "%.2f", pressure_last);
     mqttClient.publish(TOPIC_PRESSURE, buf);
 }
 

@@ -523,7 +523,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | `home/watercontroller1/valve/close` | → | закрыть кран (payload игнорируется) |
 | `home/watercontroller1/valve/state/get` → `.../valve/state` | → / ← | состояние крана, retained: `unknown`, `opening`, `open`, `closing`, `closed`; публикуется при каждом изменении и при подключении к MQTT |
 | `home/watercontroller1/valve/manual` | ← | ручное действие: `open`, `close` (нажатие SW1/SW2), `released` (отпускание) |
-| `home/watercontroller1/pressure` | ← | давление, бар (строка `%f`) |
+| `home/watercontroller1/pressure` | ← | давление, бар (строка `%.2f`) |
 | `home/watercontroller1/pressure/get` | → | запрос давления: последнее измерение, без нового чтения АЦП |
 | `home/watercontroller1/pressure/status` | ← | состояние датчика, retained: `unknown`, `ok`, `over_range` (10 бар и выше, публикуется 10), `no_adc` (нет данных от АЦП), `out_of_range`; при изменении, при подключении к MQTT и в ответ на `pressure/get`, если действующего значения нет |
 | `home/watercontroller1/flowrate` | ← | расход, л/мин (каждые 60 с) |
