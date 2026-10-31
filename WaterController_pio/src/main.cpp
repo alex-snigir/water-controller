@@ -33,6 +33,7 @@ const char APP_VER[]  PROGMEM = "1.00 build 20261031";
 
 volatile time_t boottime = 0L;
 volatile int timeset_cnt = 0;
+uint32_t sketch_size = 0; // Set once in setup(): ESP.getSketchSize() hashes the whole image, about 160 ms
 
 // WiFi
 const char* SSID = _WIFI_SSID_ ;
@@ -101,6 +102,7 @@ void setup() {
   Serial.begin(115200);
   delay(2000);
   Serial.printf_P(PSTR("\n%s %s..\n"), FPSTR(APP_NAME), FPSTR(APP_VER));
+  sketch_size = ESP.getSketchSize();
 
     // Time, SNTP
 #if defined(ESP8266)
@@ -206,7 +208,7 @@ static void add_runtime_info(DynamicJsonDocument &doc) {
     doc["coreVer"] = ESP.getCoreVersion();
 #endif
     doc["sdkVer"] = ESP.getSdkVersion();
-    doc["sketchSize"] = ESP.getSketchSize();
+    doc["sketchSize"] = sketch_size;
     doc["freeSketchSpace"] = ESP.getFreeSketchSpace();
     doc["flashChipSize"] = ESP.getFlashChipSize();
 }

@@ -7,6 +7,7 @@ extern const char APP_NAME[];
 extern const char APP_VER[];
 extern volatile time_t boottime;
 extern volatile int timeset_cnt;
+extern uint32_t sketch_size;
 
 #define TOPIC_KEEPALIVE           _AREA_ "/keepalive/" _HOST_NAME_
 #define TOPIC_ALIVE               _AREA_ "/alive"

@@ -18,7 +18,6 @@ void wifiConnect_debug_info() {
 }
 
 
-
 void connection_monitor_debug_info() {
     connectionMonitor.debug_info();
 }
@@ -98,7 +97,7 @@ void main_debug_info() {
     Serial.printf("CoreVersion: %s\n", ESP.getCoreVersion().c_str());
 #endif
     Serial.printf("SdkVersion: %s\n", ESP.getSdkVersion());
-    Serial.printf("SketchSize: %u\n", ESP.getSketchSize());
+    Serial.printf("SketchSize: %u\n", sketch_size);
     Serial.printf("FreeSketchSpace: %u\n", ESP.getFreeSketchSpace());
     Serial.printf("FlashChipSize: %u\n", ESP.getFlashChipSize());
 #if defined(ESP8266)
