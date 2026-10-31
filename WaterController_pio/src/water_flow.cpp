@@ -40,23 +40,23 @@ void water_flow_sensor_init(unsigned long interval) {
 }
 
 void water_flow_handle() {
-  unsigned long t = millis();
-  if (t - water_flow_calculation_lastActivity >= water_flow_calculation_interval) {
-    unsigned long elapsed = t - water_flow_calculation_lastActivity; // Can exceed the interval if loop() was delayed
-    water_flow_calculation_lastActivity = t;
-    portENTER_CRITICAL(&pulses_mux);
-    unsigned int pulses_read = pulses;
-    pulses = 0;
-    portEXIT_CRITICAL(&pulses_mux);
-    water_rate = pulses_read / (float)PULSES_PER_LITER * 60000.0f / elapsed; // Liters per minute
-    Serial.printf("Water Flow pulses: %u Rate: %f L/min\n", pulses_read, water_rate);
-    water_flow_get();
+    unsigned long t = millis();
+    if (t - water_flow_calculation_lastActivity >= water_flow_calculation_interval) {
+        unsigned long elapsed = t - water_flow_calculation_lastActivity; // Can exceed the interval if loop() was delayed
+        water_flow_calculation_lastActivity = t;
+        portENTER_CRITICAL(&pulses_mux);
+        unsigned int pulses_read = pulses;
+        pulses = 0;
+        portEXIT_CRITICAL(&pulses_mux);
+        water_rate = pulses_read / (float)PULSES_PER_LITER * 60000.0f / elapsed; // Liters per minute
+        Serial.printf("Water Flow pulses: %u Rate: %f L/min\n", pulses_read, water_rate);
+        water_flow_get();
 
-    total_pulses += pulses_read;
-    char buf[32];
-    snprintf(buf, sizeof(buf), "%.3f", total_pulses / (double)PULSES_PER_LITER);
-    mqttClient.publish(TOPIC_FLOW_TOTAL, buf);
-  }
+        total_pulses += pulses_read;
+        char buf[32];
+        snprintf(buf, sizeof(buf), "%.3f", total_pulses / (double)PULSES_PER_LITER);
+        mqttClient.publish(TOPIC_FLOW_TOTAL, buf);
+    }
 }
 
 // Publishes the last calculated rate: 0 until the first interval ends.

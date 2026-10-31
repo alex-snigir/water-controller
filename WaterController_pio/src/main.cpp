@@ -98,11 +98,11 @@ void settime_cb(struct timeval *tv) {
 // =======================================================
 
 void setup() {
-  valve_init(); // First: take control of the valve outputs before anything else starts
-  Serial.begin(115200);
-  delay(2000);
-  Serial.printf_P(PSTR("\n%s %s..\n"), FPSTR(APP_NAME), FPSTR(APP_VER));
-  sketch_size = ESP.getSketchSize();
+    valve_init(); // First: take control of the valve outputs before anything else starts
+    Serial.begin(115200);
+    delay(2000);
+    Serial.printf_P(PSTR("\n%s %s..\n"), FPSTR(APP_NAME), FPSTR(APP_VER));
+    sketch_size = ESP.getSketchSize();
 
     // Time, SNTP
 #if defined(ESP8266)
@@ -280,32 +280,32 @@ void send_info(const char* topic, InfoLevel level)
 
 
 void mqtt_callback(char* topic, byte* payload, unsigned int length) {
-  LOG("mqtt_callback called");
-  if(strcmp(topic, TOPIC_VALVE_OPEN) == 0) {
-    // if (payload[0] == '1') {
-    valve_open();
-  } else if(strcmp(topic, TOPIC_VALVE_CLOSE) == 0) {
-    valve_close();
-  } else if(strcmp(topic, TOPIC_VALVE_STATE_GET) == 0) {
-    valve_state_publish();
-  } else if(strcmp(topic, TOPIC_PRESSURE_GET) == 0) {
-    pressure_get();
-  } else if(strcmp(topic, TOPIC_FLOW_RATE_GET) == 0) {
-    water_flow_get();
-  } else if(strcmp(topic, TOPIC_ALIVE_GET) == 0) {
-    send_info(TOPIC_ALIVE, INFO_BASIC);
-  } else if(strcmp(topic, TOPIC_INFO_GET) == 0) {
-    send_info(TOPIC_INFO, INFO_WITH_CONNECTION);
-  }
+    LOG("mqtt_callback called");
+    if(strcmp(topic, TOPIC_VALVE_OPEN) == 0) {
+        // if (payload[0] == '1') {
+        valve_open();
+    } else if(strcmp(topic, TOPIC_VALVE_CLOSE) == 0) {
+        valve_close();
+    } else if(strcmp(topic, TOPIC_VALVE_STATE_GET) == 0) {
+        valve_state_publish();
+    } else if(strcmp(topic, TOPIC_PRESSURE_GET) == 0) {
+        pressure_get();
+    } else if(strcmp(topic, TOPIC_FLOW_RATE_GET) == 0) {
+        water_flow_get();
+    } else if(strcmp(topic, TOPIC_ALIVE_GET) == 0) {
+        send_info(TOPIC_ALIVE, INFO_BASIC);
+    } else if(strcmp(topic, TOPIC_INFO_GET) == 0) {
+        send_info(TOPIC_INFO, INFO_WITH_CONNECTION);
+    }
 }
 
 void test_change_event_callback(uint8_t event) {
-  if (event == EVENT_MQTT_RESTORED) {
-    send_info(TOPIC_CONNECTION_INFO, INFO_WITH_CONNECTION);
-    keepAlive_event_callback();
-    valve_state_publish(); // Changes made while MQTT was down were not delivered
-    pressure_status_publish();
-  }
+    if (event == EVENT_MQTT_RESTORED) {
+        send_info(TOPIC_CONNECTION_INFO, INFO_WITH_CONNECTION);
+        keepAlive_event_callback();
+        valve_state_publish(); // Changes made while MQTT was down were not delivered
+        pressure_status_publish();
+    }
 }
 
 
