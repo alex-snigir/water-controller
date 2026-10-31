@@ -1,4 +1,4 @@
-#include "lib\MqttClient.h"
+#include "lib/MqttClient.h"
 #include "main.h"
 
 // H-bridge control for valve: DRV8871, IN1/IN2. The DPDT+SPDT relay build (power + direction pins) is not supported
@@ -10,6 +10,12 @@ static bool isValveMoving = false;         // Флаг движения
 #define VALVE_BUTTON_DEBOUNCE_MS 30 // Button level must be stable this long
 #define VALVE_OUTPUT_MASK_MS     20 // C10/C11 hold IN1/IN2 high for up to 9 ms after an output goes low
 #define VALVE_REVERSE_PAUSE_MS   20 // Let IN1/IN2 settle before driving the opposite output
+
+#define VALVE_LED_ON             LOW  // LED cathode is on the pin
+#define VALVE_LED_OFF            HIGH
+#define VALVE_LED_MOVING_MS      250  // Half period of the blink while moving
+#define VALVE_LED_UNKNOWN_PERIOD 2000 // Unknown state: a short flash, so it does not read as closed
+#define VALVE_LED_UNKNOWN_FLASH  100
 
 static unsigned long valveOutputOffTimer = 0; // When the outputs were last switched off
 
@@ -78,6 +84,8 @@ void valve_init()
     pinMode(VALVE_CLOSE_PIN, OUTPUT);
     pinMode(VALVE_OPEN_STATUS, INPUT);  // No pull-ups: R4/R3 hold the level
     pinMode(VALVE_CLOSE_STATUS, INPUT);
+    digitalWrite(VALVE_LED, VALVE_LED_OFF);
+    pinMode(VALVE_LED, OUTPUT);
 }
 
 // Функция полной остановки (IN1 = IN2 = 0: coast)
@@ -179,9 +187,38 @@ static void button_handle(ValveButton &button, ValveButton &other, unsigned long
         button_released(button, other, now);
 }
 
+// Open: on. Closed: off. Moving: blinks. Unknown: short flashes.
+/*
+┌──────────────────┬───────────────────────────────────────┐
+│   valve/state    │              VALVE_LED                │
+├──────────────────┼───────────────────────────────────────┤
+│ open             │ горит                                 │
+├──────────────────┼───────────────────────────────────────┤
+│ closed           │ не горит                              │
+├──────────────────┼───────────────────────────────────────┤
+│ opening, closing │ мигает: 250 мс горит, 250 мс не горит │
+├──────────────────┼───────────────────────────────────────┤
+│ unknown          │ короткая вспышка 100 мс раз в 2 с     │
+└──────────────────┴───────────────────────────────────────┘
+
+*/
+static void valve_led_handle(unsigned long now)
+{
+    bool on;
+    switch (valveState)
+    {
+    case VALVE_OPEN:    on = true; break;
+    case VALVE_CLOSED:  on = false; break;
+    case VALVE_UNKNOWN: on = (now % VALVE_LED_UNKNOWN_PERIOD < VALVE_LED_UNKNOWN_FLASH); break;
+    default:            on = ((now / VALVE_LED_MOVING_MS) & 1); break;
+    }
+    digitalWrite(VALVE_LED, on ? VALVE_LED_ON : VALVE_LED_OFF);
+}
+
 void valve_handle()
 {
     unsigned long now = millis();
+    valve_led_handle(now);
     button_handle(openButton, closeButton, now);
     button_handle(closeButton, openButton, now);
 

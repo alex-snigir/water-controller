@@ -5,8 +5,10 @@ H/W devices:
   =================
     CR01, 12V, DN20(3/4) Model: CWX-25S
     CR01 - не потребляет ток ни в открытом не в закрытом положении. Управляется 2мя проводами сменой полярности.
+	CR01 имеет концевики
     Power supply: 12V
 	Power: <2W
+	Full opening/closing time: 5 sec
     Working current: <80mA
   
   Water Flow Sensor:
@@ -57,18 +59,18 @@ MC:
   GPIO ??         - AC Power detected (in case of UPS used) (pull-up)             <<- What is it??
 
   Valve control: DRV8871 H-Bridge:
-  GPIO 19+        - Valve open (pull-down)                                 Open: HIGH  Close: LOW   Stop: LOW  Brake: HIGH
-  GPIO 18+        - Valve close (pull-down)                                      LOW          HIGH        LOW         HIGH
+  GPIO 19+        - Valve open (pull-down)              Open: HIGH  Close: LOW   Stop: LOW  Brake: HIGH
+  GPIO 18+        - Valve close (pull-down)                   LOW          HIGH        LOW         HIGH
   
   DPDT+SPDT Relay version
-  GPIO 19+        - Valve direction (pull-down)                         HIGH: Open      LOW: Close
-  GPIO 18+        - Valve power on (pull-down)                           HIGH: Power-ON  LOW: Power-OFF
+  GPIO 19+        - Valve direction (pull-down)              HIGH: Open      LOW: Close
+  GPIO 18+        - Valve power on (pull-down)               HIGH: Power-ON  LOW: Power-OFF
 
   GPIO ??         - Water Pipe temperature (DS18B20)
   GPIO ??         - Ambient temperature (DS18B20)
   GPIO ??         - Сенсор протечки
-  GPIO 34         - Physical button/IN1 (open valve) status              <<- Pure INPUT GPIO can be used
-  GPIO 35         - Physical button/IN2 (close valve) status             <<- Pure INPUT GPIO can be used
+  GPIO 34+        - Physical button/IN1 (open valve) status              <<- Pure INPUT GPIO can be used
+  GPIO 35+        - Physical button/IN2 (close valve) status             <<- Pure INPUT GPIO can be used
   GPIO ??         - Spare KEY1 Button                                    <<- подойдут GPIO36/39 с внешней подтяжкой
   GPIO 33+        - LED: LED2 Water Valve Status (Green) (pull-up)
   GPIO 25+        - LED: LED3 Water Flow Rate (Yellow) (pull-up)
@@ -107,7 +109,7 @@ Requirements:
   > Кнопка включения AP/конфигурации
   
   > LED: WiFi/MQTT Status   LED1 (Blue)    - WiFi/MQTT status OFF: WiFi is not connected, Blinking: WiFi connected but MQTT is not connected, ON: WiFi+MQTT connected 
-  > LED: Water Valve Status LED2 (Green)   - ON:valve open, OFF: valve closed, Blinking: valve opening/closing
+  > LED: Water Valve Status LED2 (Green)   - ON:valve open, OFF: valve closed, Blinking: valve opening/closing, Short flash every 2 s: valve state unknown
   > LED: Water Flow Rate    LED3 (Yellow)  - blinking according to flow rate
   > LED: Error              LED4 (Red)     - Error / Malfunction detection
   > LED: Valve Opening      LED5 (Green)   - Valve Opening Status

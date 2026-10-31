@@ -425,7 +425,7 @@ OUT1 ──[R14 2.2k]──┬──►|── D9  LED5 (Open, зелёный)  
 | 16 | не подключён (резерв) | — | reserved for Serial2 RX (2nd ESP) |
 | 17 | не подключён (резерв) | — | reserved for Serial2 TX (2nd ESP) |
 | 32 | D5 LED1 (WIFI), активный LOW | `TEST_WIFI_LED` (`connectionMonitor`, `LED_PULLUP`) | LED1 Wi-Fi/MQTT (синий), pull-up |
-| 33 | D6 LED2 (Valve), активный LOW | `VALVE_LED` (не используется) | LED2 состояние крана (зелёный), pull-up |
+| 33 | D6 LED2 (Valve), активный LOW | `VALVE_LED` (`valve.cpp`) | LED2 состояние крана (зелёный), pull-up: горит — открыт, не горит — закрыт, мигает — движется, короткая вспышка раз в 2 с — положение неизвестно |
 | 25 | D7 LED3 (Flow), активный LOW | `FLOW_LED` (не используется) | LED3 расход (жёлтый), pull-up |
 | 26 | D8 LED4 (Error), активный LOW | `ERROR_LED` (не используется) | LED4 ошибка (красный), pull-up |
 | ? | — | `AC_POWER_DETECT_GPIO ?` | наличие сетевого питания (UPS) |
@@ -563,7 +563,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 
 ### 7.2 Прошивка
 
-1. ✅ `VALVE_LED` исправлен на 33 — совпадает со схемой (D6). `FLOW_LED`, `ERROR_LED`, `VALVE_LED` объявлены, но в коде пока не используются; используется только `TEST_WIFI_LED` в `connectionMonitor`.
+1. ✅ `VALVE_LED` исправлен на 33 — совпадает со схемой (D6). `VALVE_LED` используется в `valve.cpp`, `TEST_WIFI_LED` — в `connectionMonitor`; `FLOW_LED` и `ERROR_LED` объявлены, но в коде пока не используются.
 2. ✅ Подключение LED согласовано: на схеме анод через резистор к +3V3, катод на GPIO (активный LOW) — как `LED_PULLUP` в прошивке. Устарел только `INFO.txt` («pull-down»). При инициализации LED: сначала `HIGH`, потом `OUTPUT`.
 3. `AC_POWER_DETECT_GPIO ?` — заглушка, при первом использовании сломает сборку.
 4. Подписка на `valve_enable/get` есть, а в `mqtt_callback()` его нет. ✅ `flowrate/get` обрабатывается через `water_flow_get()`.

@@ -1,4 +1,4 @@
-#include "lib\MqttClient.h"
+#include "lib/MqttClient.h"
 #include "main.h"
 
 // SWP-300: 0-10 bar, signal 0-5V
