@@ -208,22 +208,6 @@ void valve_ota_start()
     }
 }
 
-static void _valve_open()
-{
-    LOG("valve_open: CALLED");
-    _valve_start(VALVE_OPENING);
-    Serial.println("Valve is opening...");
-    valve_state_publish();
-}
-
-static void _valve_close()
-{
-    LOG("valve_close: CALLED");
-    _valve_start(VALVE_CLOSING);
-    Serial.println("Valve is closing...");
-    valve_state_publish();
-}
-
 // A repeated command must not restart the move: the 7 s limit would never expire.
 // A held button overrides commands: the opposite command would only brake the valve.
 // The state is republished so the sender gets a reply either way.
@@ -239,14 +223,22 @@ static bool _command_blocked(ValveState moving)
     return true;
 }
 
+static void _valve_command(ValveState moving)
+{
+    if (_command_blocked(moving))
+        return;
+
+    _valve_start(moving);
+    Serial.printf("Valve is %s...\n", valve_state_name());
+    valve_state_publish();
+}
+
 void valve_open()
 {
-    if (!_command_blocked(VALVE_OPENING))
-        _valve_open();
+    _valve_command(VALVE_OPENING);
 }
 
 void valve_close()
 {
-    if (!_command_blocked(VALVE_CLOSING))
-        _valve_close();
+    _valve_command(VALVE_CLOSING);
 }
