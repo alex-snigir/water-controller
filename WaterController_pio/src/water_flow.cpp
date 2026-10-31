@@ -32,12 +32,13 @@ void IRAM_ATTR water_flow_pulse() {
 void water_flow_handle() {
   unsigned long t = millis();
   if (t - water_flow_calculation_lastActivity >= water_flow_calculation_interval) {
+    unsigned long elapsed = t - water_flow_calculation_lastActivity; // Can exceed the interval if loop() was delayed
     water_flow_calculation_lastActivity = t;
     portENTER_CRITICAL(&pulses_mux);
     unsigned int pulses_read = pulses;
     pulses = 0;
     portEXIT_CRITICAL(&pulses_mux);
-    water_rate = pulses_read / (float)PULSES_PER_LITER; // Liters per calculation interval (1 min)
+    water_rate = pulses_read / (float)PULSES_PER_LITER * 60000.0f / elapsed; // Liters per minute
     Serial.printf("Water Flow pulses: %u Rate: %f L/min\n", pulses_read, water_rate);
     water_flow_get();
 
