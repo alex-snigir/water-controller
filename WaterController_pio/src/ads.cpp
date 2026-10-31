@@ -7,7 +7,8 @@ Adafruit_ADS1115 ads;
 boolean ads_enabled;
 
 #define ADS_RETRY_INTERVAL 60000L // 1 minute
-#define ADS_CONVERSION_TIMEOUT 50L // Millis. Single conversion takes ~8 ms at the default 128 SPS
+#define ADS_I2C_ADDRESS ADS1X15_ADDRESS // 0x48: ADDR is tied to GND on the module
+#define ADS_CONVERSION_MARGIN 40L  // Millis on top of the conversion time, ~8 ms at the default 128 SPS
 #define ADS_MAX_FAILURES 3         // Failed samples in a row before the ADS1115 counts as lost
 #define ADS_BUS_RECOVER_HALF_CLOCK 10 // Micros: 50 kHz, slower than the 100 kHz bus
 unsigned long ads_init_lastAttempt = 0L;
@@ -28,9 +29,9 @@ Input range programmed control, 6 types input ranges:
    x8:   GND ~ +0.512V           |   ~ +/-0.512V         
   x16:   GND ~ +0.256V           |   ~ +/-0.256V
 */
-void ads_init() {
+static void ads_start() {
   ads_init_lastAttempt = millis();
-  ads_enabled = ads.begin();
+  ads_enabled = ads.begin(ADS_I2C_ADDRESS);
   if (!ads_enabled) {
     Serial.println("Failed to initialize ADS1115.");
   }
@@ -41,6 +42,12 @@ void ads_init() {
       break;
     }
   }
+}
+
+
+void ads_init() {
+  Wire.begin(ADC_SDA_GPIO, ADC_SCL_GPIO);
+  ads_start();
 }
 
 
@@ -87,7 +94,7 @@ void ads_handle() {
   if (!ads_enabled && (millis() - ads_init_lastAttempt >= ADS_RETRY_INTERVAL)) {
     Serial.println("ADS1115: retrying initialization...");
     ads_bus_recover();
-    ads_init();
+    ads_start();
   }
 }
 
@@ -116,7 +123,7 @@ static AdsResult ads_failed(const char *reason) {
 // The Adafruit library ignores I2C errors: a lost write leaves the previous conversion in place,
 // and a lost read returns leftovers of its buffer (about 0 V), which looks like a valid sample.
 static bool ads_write_register(uint8_t reg, uint16_t value) {
-  Wire.beginTransmission(ADS1X15_ADDRESS);
+  Wire.beginTransmission(ADS_I2C_ADDRESS);
   Wire.write(reg);
   Wire.write((uint8_t)(value >> 8));
   Wire.write((uint8_t)(value & 0xFF));
@@ -125,18 +132,25 @@ static bool ads_write_register(uint8_t reg, uint16_t value) {
 
 
 static bool ads_read_register(uint8_t reg, uint16_t *value) {
-  Wire.beginTransmission(ADS1X15_ADDRESS);
+  Wire.beginTransmission(ADS_I2C_ADDRESS);
   Wire.write(reg);
   if (Wire.endTransmission() != 0) {
     return false;
   }
-  if (Wire.requestFrom((uint8_t)ADS1X15_ADDRESS, (uint8_t)2) != 2) {
+  if (Wire.requestFrom((uint8_t)ADS_I2C_ADDRESS, (uint8_t)2) != 2) {
     return false;
   }
   uint8_t msb = Wire.read();
   uint8_t lsb = Wire.read();
   *value = (msb << 8) | lsb;
   return true;
+}
+
+
+// Follows the configured data rate: at 8 SPS a conversion alone takes 125 ms
+static unsigned long ads_conversion_timeout() {
+  static const uint16_t SAMPLES_PER_SECOND[] = {8, 16, 32, 64, 128, 250, 475, 860}; // Indexed by the RATE_ADS1115_* bits
+  return 1000 / SAMPLES_PER_SECOND[ads.getDataRate() >> 5] + ADS_CONVERSION_MARGIN;
 }
 
 
@@ -156,6 +170,7 @@ AdsResult ads_voltage_chnnel_get(int channel, float *volts) {
     return ads_failed("config write failed");
   }
 
+  unsigned long timeout = ads_conversion_timeout();
   unsigned long start = millis();
   while (true) {
     delay(1);
@@ -167,7 +182,7 @@ AdsResult ads_voltage_chnnel_get(int channel, float *volts) {
       break;
     }
     // Checked after the status: a task switch here must not fail a conversion that has finished
-    if (millis() - start >= ADS_CONVERSION_TIMEOUT) {
+    if (millis() - start >= timeout) {
       return ads_failed("conversion timeout");
     }
   }
