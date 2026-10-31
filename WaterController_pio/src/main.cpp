@@ -161,6 +161,14 @@ void loop() {
 }
 
 
+// The boot time, derived from the uptime if the clock is set but settime_cb() has not stored it yet.
+time_t boottime_get(time_t now) {
+    if (boottime == 0 && now > MIN_TIMESTAMP) {
+        return now - (millis() / 1000);
+    }
+    return boottime;
+}
+
 // Adds app/version/host/time/network identity fields to the JSON document.
 static void add_identity_info(DynamicJsonDocument &doc, time_t now) {
     doc["app"] = FPSTR(APP_NAME);
@@ -169,9 +177,8 @@ static void add_identity_info(DynamicJsonDocument &doc, time_t now) {
     doc["ts"] = (uint32_t)now;
     doc["now"] = formatTime(now);
 
-    time_t boottime_local = boottime;
-    if (boottime == 0 && now > MIN_TIMESTAMP) {
-        boottime_local = now - (millis() / 1000);
+    time_t boottime_local = boottime_get(now);
+    if (boottime_local != boottime) {
         doc["boottime_correction"] = true;
     }
 

@@ -76,8 +76,9 @@ void main_debug_info() {
     Serial.printf("Version: %s\n", FPSTR(APP_VER));
     Serial.printf("Now timestamp: %u\n", (uint32_t)now);
     Serial.printf("Now: %s\n", formatTime(now));
-    Serial.printf("Boot timestamp: %u\n", (uint32_t)boottime);
-    Serial.printf("Boot time: %s\n", formatTime(boottime));
+    time_t boottime_local = boottime_get(now);
+    Serial.printf("Boot timestamp: %u\n", (uint32_t)boottime_local);
+    Serial.printf("Boot time: %s\n", formatTime(boottime_local));
     Serial.printf("timeset_cnt: %d\n", timeset_cnt);
 
     // debug:
@@ -111,7 +112,7 @@ void debug_init() {
   serialDebug.addInfoCommandHandler(wifiConnect_debug_info);
   serialDebug.addInfoCommandHandler(otaClient_debug_info);
   serialDebug.addInfoCommandHandler(mqttClient_debug_info);
-    serialDebug.addInfoCommandHandler(connection_monitor_debug_info);
+  serialDebug.addInfoCommandHandler(connection_monitor_debug_info);
   serialDebug.addInfoCommandHandler(valve_debug_info);
   serialDebug.addInfoCommandHandler(sensors_debug_info);
   serialDebug.addCommandHandler("wifi_reconnect", wifi_reconnect);
