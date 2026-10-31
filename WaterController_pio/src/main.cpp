@@ -57,7 +57,7 @@ const char *topics[] = {
   TOPIC_VALVE_ENABLED_GET,
   TOPIC_VALVE_OPEN,
   TOPIC_VALVE_CLOSE,
-  TOPIC_PRESURE_GET,
+  TOPIC_PRESSURE_GET,
   TOPIC_FLOW_RATE_GET
 };
 
@@ -275,7 +275,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
     valve_open();
   } else if(strcmp(topic, TOPIC_VALVE_CLOSE) == 0) {
     valve_close();
-  } else if(strcmp(topic, TOPIC_PRESURE_GET) == 0) {
+  } else if(strcmp(topic, TOPIC_PRESSURE_GET) == 0) {
     pressure_get();
   } else if(strcmp(topic, TOPIC_ALIVE_GET) == 0) {
     send_info(TOPIC_ALIVE, INFO_BASIC);

@@ -1,0 +1,48 @@
+fp-lib-table
+
+# KiCad auto-generated backup files
+*.bak
+*.kicad_sch-bak
+*.kicad_pcb-bak
+*-bak.kicad_pcb
+*-bak.kicad_sch
+
+# KiCad autosave files
+_autosave-*
+*-save.kicad_sch
+*-save.kicad_pcb
+*-save.pro
+
+# KiCad history
+.history/
+
+# Lock files
+*.lck
+
+# Footprint/library cache
+*-cache.lib
+fp-info-cache
+
+# Plot/export output (Gerbers, drill files, etc.)
+*.gbr
+*.gbrjob
+*.drl
+*.pos
+gerbers/
+# plot/
+
+# Reports (ERC, DRC)
+*.rpt
+# *.net
+
+# Fabrication output archives
+*.zip
+
+# OS-specific junk files
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Editor/IDE files (optional, if you use VSCode etc.)
+.vscode/
+

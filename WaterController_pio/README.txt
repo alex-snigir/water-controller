@@ -15,8 +15,8 @@ home/watercontroller1/valve"
 home/watercontroller1/valve/open   - 
 home/watercontroller1/valve/close
 
-#define TOPIC_PRESURE              _AREA_ "/" _HOST_NAME_ "/presure"
-#define TOPIC_PRESURE_GET          _AREA_ "/" _HOST_NAME_ "/presure/get"
+#define TOPIC_PRESSURE              _AREA_ "/" _HOST_NAME_ "/pressure"
+#define TOPIC_PRESSURE_GET          _AREA_ "/" _HOST_NAME_ "/pressure/get"
 
 #define TOPIC_FLOW_RATE            _AREA_ "/" _HOST_NAME_ "/flowrate"
 #define TOPIC_FLOW_RATE_GET        _AREA_ "/" _HOST_NAME_ "/flowrate/get"

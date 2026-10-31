@@ -12,13 +12,13 @@ H/W devices:
   Water Flow Sensor:
   ==================
     YF-B10 1" 2-50L DC3.5~24V 476 pulse/L
-    Power supply: n/a
+    Power supply: 3.5V–24V; Note: 5V used for actual connection
   
   Pressure Sensor electrical:
   ===========================
     Model: SWP-300  0-5V G1-2, 0-10bar
     Connection: 1/2" Father
-    Power supply: 12V-36VDC(default 24VDC)
+    Power supply: 12V-36VDC (default 24VDC); Note: 12V used for actual connection
     Signal: 0-5V
   
   Pressure Sensor mechanical:
@@ -27,39 +27,54 @@ H/W devices:
   
 Power Consumption:
 ==================
-   8 mA   - DC-DC 12V->5V Idle mode (LED)
-  70 mA   - MC, Controller electronics
+    8 mA / 12V   - DC-DC 12V->5V Idle mode (LED)
+   70 mA /  5V   - MC, Controller electronics
+    3 mA / 12V   - Valve control: DRV8871 H-Bridge
+   80 mA / 12V   - Electrical Valve CR01
+   50 mA / 12V   - Pressure Sensor electrical
+   12 mA / 3V3   - 4 LEDs D5–D8
+  4.5 мА / 12V   - LED5/LED6 только во время команды на кран
+   15 mA /  5V   - YF-B10 Water Flow
+   ?? mA /  ?V   - Система полива, Netafim Valves
+		  
+  Valve control: Relay version: (not used)
   18 mA / 12V - Direction Relay, after DC-DC 12V->5V - 30mA/5V
   25 mA / 12V - Power Relay, after DC-DC 12V->5V - 50mA/5V
-  80 mA   - Electrical Valve CR01
-  50 mA   - Pressure Sensor electrical
-          - Система полива, Netafim Valves
+
 
 MC:
 ===
-  ESP32-WROOM-32U with external antena
-  Power: 5V (5V is used to reuse the same voltage as for Pressure Sensor)
+  ESP32-WROOM-32U with external antenna
+  Power: 5V (5V is used to reuse the same voltage as for the ADS1115 and Level Shifter)
 
 
   GPIO:
   =====
-  GPIO 21+ (SDA)  - LogicLevel LV2 -> HV2 -> SDA ADS1115
-  GPIO 22+ (SCL)  - LogicLevel LV1 -> HV1 -> SCL ADS1115
-  GPIO 32+        - LED: LED1 WiFi/MQTT Status (Blue) (pull-down)
-  GPIO 17+        - Water Flow sensor (interrupt attached)               <<- Should be used some pull-up/down resistor?
-  GPIO ??         - AC Power detected (in case of UPS used) (pool-up)    <<- What is it??
-  GPIO 19+        - Valve dirrection (pool-down)                         HIGH: Open      LOW: Close
-  GPIO 18+        - Valve power on (pool-down)                           HIGH: Power-ON  LOW: Power-OFF
-  GPIO ??         - Water Pipe temperature (DS1824)
-  GPIO ??         - Ambient temperature (DS1824)
-  GPIO ??         - Сенсор протечки
-  GPIO ??         - Button to open valve                                 <<- Check of the pure INPUT GPIO can be used
-  GPIO ??         - Button to close valve                                <<- Check of the pure INPUT GPIO can be used
-  GPIO ??         - Spare KEY1 Button                                    <<- Check of the pure INPUT GPIO can be used
-  GPIO 33+        - LED: LED2 Water Valve Status (Green) (pull-down)
-  GPIO 25+        - LED: LED3 Water Flow Rate (Yellow) (pull-down)
-  GPIO 26+        - LED: LED4 Error (Red)  (pull-down)
+  GPIO 21+ (SDA)  - LogicLevel LV3 -> HV3 -> SDA ADS1115
+  GPIO 22+ (SCL)  - LogicLevel LV2 -> HV2 -> SCL ADS1115
+  GPIO 32+        - LED: LED1 WiFi/MQTT Status (Blue) (pull-up)
+  GPIO 23+        - Water Flow: LogicLevel LV1 -> HV1 -> J3 (interrupt attached)
+  GPIO ??         - AC Power detected (in case of UPS used) (pull-up)             <<- What is it??
 
+  Valve control: DRV8871 H-Bridge:
+  GPIO 19+        - Valve open (pull-down)                                 Open: HIGH  Close: LOW   Stop: LOW  Brake: HIGH
+  GPIO 18+        - Valve close (pull-down)                                      LOW          HIGH        LOW         HIGH
+  
+  DPDT+SPDT Relay version
+  GPIO 19+        - Valve direction (pull-down)                         HIGH: Open      LOW: Close
+  GPIO 18+        - Valve power on (pull-down)                           HIGH: Power-ON  LOW: Power-OFF
+
+  GPIO ??         - Water Pipe temperature (DS18B20)
+  GPIO ??         - Ambient temperature (DS18B20)
+  GPIO ??         - Сенсор протечки
+  GPIO 34         - Physical button/IN1 (open valve) status              <<- Pure INPUT GPIO can be used
+  GPIO 35         - Physical button/IN2 (close valve) status             <<- Pure INPUT GPIO can be used
+  GPIO ??         - Spare KEY1 Button                                    <<- подойдут GPIO36/39 с внешней подтяжкой
+  GPIO 33+        - LED: LED2 Water Valve Status (Green) (pull-up)
+  GPIO 25+        - LED: LED3 Water Flow Rate (Yellow) (pull-up)
+  GPIO 26+        - LED: LED4 Error (Red)  (pull-up)
+  GPIO 16         - reserved for Serial2 RX to connect 2nd ESP
+  GPIO 17         - reserved for Serial2 TX to connect 2nd ESP
   
   
 Requirements:
@@ -69,14 +84,14 @@ Requirements:
     > Open/Close Electrical Water Valve MQTT               (2 GPIO OUTPUT)
 	> Физическая кнопка открытия/закрытия крана
 	> Физический переключатель блокирования открытия крана
-    > Ability to open/close Electrical Water Valve without MC (phisical buttons)
+    > Ability to open/close Electrical Water Valve without MC (Physical buttons)
   Water Flow Sensor:
   ==================
     > Read Water Flow Sensor periodic                        (1 GPIO INPUT)
-  Water Presure Sensor:
+  Water Pressure Sensor:
   =====================
-    > Read Water Presure Sensor periodic (1m/15 sec)
-    > Realtime Water Presure Sensor read
+    > Read Water Pressure Sensor periodic (1m/15 sec)
+    > Realtime Water Pressure Sensor read
   Temperatures:
   =============
     > Read Water Pipe temperature
@@ -86,21 +101,24 @@ Requirements:
   ==============
     - MQTT connected
 	- Water Flow Rate
-	- Water Presure Rate
+	- Water Pressure Rate
 	- Протечка
 	- Temperature
   > Кнопка включения AP/конфигурации
   
   > LED: WiFi/MQTT Status   LED1 (Blue)    - WiFi/MQTT status OFF: WiFi is not connected, Blinking: WiFi connected but MQTT is not connected, ON: WiFi+MQTT connected 
-  > LED: Water Valve Status LED2 (Green)   - ON:valve open, OFF: valve closed, Blonking: valve opening/closing
+  > LED: Water Valve Status LED2 (Green)   - ON:valve open, OFF: valve closed, Blinking: valve opening/closing
   > LED: Water Flow Rate    LED3 (Yellow)  - blinking according to flow rate
   > LED: Error              LED4 (Red)     - Error / Malfunction detection
-  > LED: Power              LED5 (???)     - Power is ON. GPIO not used
+  > LED: Valve Opening      LED5 (Green)   - Valve Opening Status
+  > LED: Valve Closing      LED6 (Red)     - Valve Closing Status
+  > LED: Power              LED7 (Green)   - Power is ON. GPIO not used. LED not yet implemented. Reserved
+ 
  
   Extension:
   ----------
   > Read включение/выключение полива (2 крана)
   > Включение/выключение полива (2 крана)
   > Read уровень влажности
-  > Read Mechanical Water Presure Sensor + temperature periodic (1m/15 sec)
-  > Подключение второго ESP (1 Serial 2 2 GPIO ???)
+  > Read Mechanical Water Pressure Sensor + temperature periodic (1m/15 sec)
+  > Подключение второго ESP (Serial2: GPIO16 RX / GPIO17 TX)
