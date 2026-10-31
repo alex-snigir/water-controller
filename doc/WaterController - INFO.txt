@@ -81,7 +81,7 @@ Requirements:
 =============
   Valve:
   ======
-    > Open/Close Electrical Water Valve MQTT               (2 GPIO OUTPUT)
+    > Open/Close Electrical Water Valve MQTT. 2 GPIO output. [Tested]
 	> Физическая кнопка открытия/закрытия крана
 	> Физический переключатель блокирования открытия крана
     > Ability to open/close Electrical Water Valve without MC (Physical buttons)
@@ -122,3 +122,69 @@ Requirements:
   > Read уровень влажности
   > Read Mechanical Water Pressure Sensor + temperature periodic (1m/15 sec)
   > Подключение второго ESP (Serial2: GPIO16 RX / GPIO17 TX)
+
+
+MQTT Interface:
+=============== 
+  Announcement: "home/announcement/watercontroller1"   // Payload: "connected"    - Sent by device when connected to broker, just before topics subscription
+  LastWill:     "home/announcement/watercontroller1"   // Payload: "disconnected" - Sent by broker when client disconnected from MQTT broker
+  
+  Subscribed:
+  ===========
+    "home/alive/get"                        // RETAIN=false  Payload: N/A    - Get device info: request the "home/alive" response
+    "home/watercontroller1/info/get"        // RETAIN=false  Payload: N/A    - Get device info: request the "home/watercontroller1/info" response 
+    "home/watercontroller1/valve/open"      // RETAIN=false  Payload: N/A    - Open water valve
+    "home/watercontroller1/valve/close"     // RETAIN=false  Payload: N/A    - Close water valve
+    "home/watercontroller1/valve/state/get" // RETAIN=false  Payload: N/A    - Get valve state: request the "home/watercontroller1/valve/state" response
+  
+  Published:
+  ==========
+    "home/alive"                            // RETAIN=false  Payload: JSON   - Sent in response of "home/alive/get"
+    "home/keepalive/watercontroller1"       // RETAIN=false  Payload: STRING - Sent each minute. Payload: "connected"
+    "home/watercontroller1/info"            // RETAIN=false  Payload: JSON   - Sent in response of "home/watercontroller1/info/get"
+    "home/watercontroller1/connection/info" // RETAIN=false  Payload: JSON   - Sent when MQTT connected or re-connected
+    "home/watercontroller1/valve/state"     // RETAIN=true   Payload: STRING - Sent on each state change, on MQTT connect and on request. Payload: "unknown", "opening", "open", "closing", "closed"
+
+
+MQTT Payload Examples:
+======================
+   
+"home/watercontroller1/connection/info"
+---------------------------------------
+{
+	"app": "Water Controller",
+	"ver": "1.00 build 20261031",
+	"host": "watercontroller1",
+	"ts": 3,
+	"now": "Jan  1 02:00:03 1970",
+	"boottime": 0,
+	"boot": "Jan  1 02:00:00 1970",
+	"MAC": "58:BF:25:32:E1:74",
+	"IP": "192.168.1.101",
+	"gateway": "192.168.1.1",
+	"hostname": "watercontroller1",
+	"mdns": "watercontroller1",
+	"RSSI": -61,
+	"phymode": "11B|11G|11N",
+	"chan": 1,
+	"BSSID": "9E:2A:6F:D2:0E:56",
+	"timeset": 0,
+	"mc": "ESP32",
+	"freeHeap": 252308,
+	"cpuFreqMHz": 240,
+	"sdkVer": "4.4.8.240628",
+	"sketchSize": 635712,
+	"freeSketchSpace": 1310720,
+	"flashChipSize": 4194304,
+	"wifi_lost": 0,
+	"mqtt_lost": 0,
+	"wifiLostCnt": 0,
+	"mqttLostCnt": 0,
+	"wifiLostStatus": 0,
+	"mqttLostState": 0,
+	"wifi_conn": 3,
+	"mqtt_conn": 3,
+	"wifiConn": "Jan  1 02:00:03 1970",
+	"mqttConn": "Jan  1 02:00:03 1970",
+	"badIp": 0
+}

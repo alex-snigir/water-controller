@@ -521,6 +521,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | `home/watercontroller1/connection/info` | ← | после восстановления MQTT |
 | `home/watercontroller1/valve/open` | → | открыть кран (payload игнорируется) |
 | `home/watercontroller1/valve/close` | → | закрыть кран (payload игнорируется) |
+| `home/watercontroller1/valve/state/get` → `.../valve/state` | → / ← | состояние крана, retained: `unknown`, `opening`, `open`, `closing`, `closed`; публикуется при каждом изменении и при подключении к MQTT |
 | `home/watercontroller1/presure` | ← | давление, бар (строка `%f`) |
 | `home/watercontroller1/presure/get` | → | запрос давления |
 | `home/watercontroller1/flowrate` | ← | расход, л/мин (каждые 60 с) |
@@ -566,7 +567,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 3. `AC_POWER_DETECT_GPIO ?` — заглушка, при первом использовании сломает сборку.
 4. Подписка на `flowrate/get` и `valve_enable/get` есть, а в `mqtt_callback()` их нет; `water_flow_get()` объявлена, но не реализована.
 5. `valve/open` и `valve/close` игнорируют payload. Если в брокере окажется retained-сообщение на `valve/open`, кран будет открываться при каждом переподключении. Рекомендуется проверять payload и игнорировать retained-сообщения для команд.
-6. Состояние крана не публикуется (нет топика `valve` / `valve/state`), после загрузки положение неизвестно.
+6. ✅ Состояние крана публикуется в `valve/state` (по последней команде прошивки, нажатия SW1/SW2 не учитываются). После загрузки — `unknown` до завершения первой команды.
 7. **Основная функция — обнаружение протечки и автоматическое закрытие — пока не реализована.** Возможные правила: непрерывный расход дольше N минут, расход выше порога, падение давления при закрытом кране, сигнал датчика протечки.
 8. Расход — только среднее за 60 с; нет накопительного счётчика объёма (литры итого) — он нужен для Home Assistant (Utility Meter / панель Energy → Water).
 9. `ads_voltage_chnnel_get()` ждёт окончания преобразования в цикле с `delay(1)` до 50 мс (обычно ~8 мс) — небольшое нарушение неблокирующего принципа.

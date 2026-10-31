@@ -29,7 +29,7 @@
 #include "main.h"
 
 const char APP_NAME[] PROGMEM = "Water Controller";
-const char APP_VER[]  PROGMEM = "1.00 build 20261018";
+const char APP_VER[]  PROGMEM = "1.00 build 20261031";
 
 volatile time_t boottime = 0L;
 volatile int timeset_cnt = 0;
@@ -50,13 +50,14 @@ const char *lastWillTopic     = _AREA_ "/announcement/" _HOST_NAME_;
 const char* mqtt_server = _MQTT_BROKER_;
 const char* clientId = _HOST_NAME_;
 
-#define TOPIC_COUNT 7
+#define TOPIC_COUNT 8
 const char *topics[] = {
   TOPIC_ALIVE_GET,
   TOPIC_INFO_GET,
   TOPIC_VALVE_ENABLED_GET,
   TOPIC_VALVE_OPEN,
   TOPIC_VALVE_CLOSE,
+  TOPIC_VALVE_STATE_GET,
   TOPIC_PRESSURE_GET,
   TOPIC_FLOW_RATE_GET
 };
@@ -275,6 +276,8 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
     valve_open();
   } else if(strcmp(topic, TOPIC_VALVE_CLOSE) == 0) {
     valve_close();
+  } else if(strcmp(topic, TOPIC_VALVE_STATE_GET) == 0) {
+    valve_state_publish();
   } else if(strcmp(topic, TOPIC_PRESSURE_GET) == 0) {
     pressure_get();
   } else if(strcmp(topic, TOPIC_ALIVE_GET) == 0) {
@@ -288,6 +291,7 @@ void test_change_event_callback(uint8_t event) {
   if (event == EVENT_MQTT_RESTORED) {
     send_info(TOPIC_CONNECTION_INFO, INFO_WITH_CONNECTION);
     keepAlive_event_callback();
+    valve_state_publish(); // Changes made while MQTT was down were not delivered
   }
 }
 

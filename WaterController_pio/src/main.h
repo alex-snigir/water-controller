@@ -21,6 +21,8 @@ extern volatile int timeset_cnt;
 // #define TOPIC_VALVE            _AREA_ "/" _HOST_NAME_ "/valve"
 #define TOPIC_VALVE_OPEN          _AREA_ "/" _HOST_NAME_ "/valve/open"
 #define TOPIC_VALVE_CLOSE         _AREA_ "/" _HOST_NAME_ "/valve/close"
+#define TOPIC_VALVE_STATE         _AREA_ "/" _HOST_NAME_ "/valve/state"
+#define TOPIC_VALVE_STATE_GET     _AREA_ "/" _HOST_NAME_ "/valve/state/get"
 
 #define TOPIC_PRESSURE              _AREA_ "/" _HOST_NAME_ "/pressure"
 #define TOPIC_PRESSURE_GET          _AREA_ "/" _HOST_NAME_ "/pressure/get"
@@ -42,6 +44,7 @@ void valve_init();
 void valve_handle();
 void valve_open();
 void valve_close();
+void valve_state_publish();
 
 #define ADS_CHANNEL_PRESSURE_SENSOR 0
 
