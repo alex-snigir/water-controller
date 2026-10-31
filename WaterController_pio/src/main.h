@@ -59,7 +59,7 @@ void pressure_sensor_init(unsigned long interval);
 void pressure_sensor_handle();
 void pressure_get();
 
-void water_flow_sensor_init();
+void water_flow_sensor_init(unsigned long interval);
 void water_flow_handle();
 void water_flow_get();
 

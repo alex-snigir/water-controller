@@ -135,7 +135,7 @@ void setup() {
 
     ads_init();
     pressure_sensor_init(10000L); // Millis
-    water_flow_sensor_init();
+    water_flow_sensor_init(60000L); // Millis
 
     profiler.begin(60000, 100, 1000, 10000, 300000);
 }
