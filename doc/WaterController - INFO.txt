@@ -145,6 +145,7 @@ MQTT Interface:
     "home/watercontroller1/connection/info" // RETAIN=false  Payload: JSON   - Sent when MQTT connected or re-connected
     "home/watercontroller1/valve/state"     // RETAIN=true   Payload: STRING - Sent on each state change, on MQTT connect and on request. Payload: "unknown", "opening", "open", "closing", "closed"
     "home/watercontroller1/valve/manual"    // RETAIN=false  Payload: STRING - Sent when a physical button is pressed or released. Payload: "open", "close", "released"
+    "home/watercontroller1/flowtotal"       // RETAIN=false  Payload: STRING - Sent each minute. Liters since boot, drops to 0 after reboot. Payload: "%.3f"
 
 
 MQTT Payload Examples:

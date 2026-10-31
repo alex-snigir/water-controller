@@ -9,6 +9,7 @@ unsigned long water_flow_calculation_interval = 60000;
 
 volatile unsigned int pulses;   // Updated from ISR
 float water_rate;
+static uint64_t total_pulses = 0; // Since boot. Published as is, so a failed publish loses nothing
 
 static portMUX_TYPE pulses_mux = portMUX_INITIALIZER_UNLOCKED;
 
@@ -41,5 +42,9 @@ void water_flow_handle() {
     char buf[32];
     snprintf(buf, sizeof(buf), "%f", water_rate);
     mqttClient.publish(TOPIC_FLOW_RATE, buf);
+
+    total_pulses += pulses_read;
+    snprintf(buf, sizeof(buf), "%.3f", total_pulses / (double)PULSES_PER_LITER);
+    mqttClient.publish(TOPIC_FLOW_TOTAL, buf);
   }
 }

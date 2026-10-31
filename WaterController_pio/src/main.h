@@ -30,6 +30,7 @@ extern volatile int timeset_cnt;
 
 #define TOPIC_FLOW_RATE            _AREA_ "/" _HOST_NAME_ "/flowrate"
 #define TOPIC_FLOW_RATE_GET        _AREA_ "/" _HOST_NAME_ "/flowrate/get"
+#define TOPIC_FLOW_TOTAL           _AREA_ "/" _HOST_NAME_ "/flowtotal"
 
 #define KEEP_ALIVE_MESSAGE_INTERVAL 60000L // 1 minute
 
