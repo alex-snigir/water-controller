@@ -8,8 +8,8 @@
 #define PRESSURE_SENSOR_MIN_VOLTS     -0.1f
 #define PRESSURE_SENSOR_MAX_VOLTS     5.1f
 
-unsigned long read_pressure_lastActivity = 0L;
-unsigned long read_pressure_interval = 15000;
+static unsigned long read_pressure_lastActivity = 0L;
+static unsigned long read_pressure_interval; // Set by pressure_sensor_init()
 
 static const char *pressure_status = "unknown"; // Until the first reading
 static float pressure_last;                     // Valid while pressure_status is "ok" or "over_range"
