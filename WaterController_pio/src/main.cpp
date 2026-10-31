@@ -295,6 +295,7 @@ void test_change_event_callback(uint8_t event) {
     send_info(TOPIC_CONNECTION_INFO, INFO_WITH_CONNECTION);
     keepAlive_event_callback();
     valve_state_publish(); // Changes made while MQTT was down were not delivered
+    pressure_status_publish();
   }
 }
 

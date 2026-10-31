@@ -27,6 +27,7 @@ extern volatile int timeset_cnt;
 
 #define TOPIC_PRESSURE              _AREA_ "/" _HOST_NAME_ "/pressure"
 #define TOPIC_PRESSURE_GET          _AREA_ "/" _HOST_NAME_ "/pressure/get"
+#define TOPIC_PRESSURE_STATUS       _AREA_ "/" _HOST_NAME_ "/pressure/status"
 
 #define TOPIC_FLOW_RATE            _AREA_ "/" _HOST_NAME_ "/flowrate"
 #define TOPIC_FLOW_RATE_GET        _AREA_ "/" _HOST_NAME_ "/flowrate/get"
@@ -58,6 +59,7 @@ bool ads_voltage_chnnel_get(int channel, float *volts);
 void pressure_sensor_init(unsigned long interval);
 void pressure_sensor_handle();
 void pressure_get();
+void pressure_status_publish();
 
 void water_flow_sensor_init(unsigned long interval);
 void water_flow_handle();

@@ -523,14 +523,13 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | `home/watercontroller1/valve/close` | → | закрыть кран (payload игнорируется) |
 | `home/watercontroller1/valve/state/get` → `.../valve/state` | → / ← | состояние крана, retained: `unknown`, `opening`, `open`, `closing`, `closed`; публикуется при каждом изменении и при подключении к MQTT |
 | `home/watercontroller1/valve/manual` | ← | ручное действие: `open`, `close` (нажатие SW1/SW2), `released` (отпускание) |
-| `home/watercontroller1/presure` | ← | давление, бар (строка `%f`) |
-| `home/watercontroller1/presure/get` | → | запрос давления |
+| `home/watercontroller1/pressure` | ← | давление, бар (строка `%f`) |
+| `home/watercontroller1/pressure/get` | → | запрос давления |
+| `home/watercontroller1/pressure/status` | ← | состояние датчика, retained: `unknown`, `ok`, `no_adc` (нет данных от АЦП), `out_of_range`; при изменении, при подключении к MQTT и при каждом неудачном чтении |
 | `home/watercontroller1/flowrate` | ← | расход, л/мин (каждые 60 с) |
 | `home/watercontroller1/flowrate/get` | → | запрос расхода: последнее рассчитанное значение, 0 до конца первых 60 с |
 | `home/watercontroller1/flowtotal` | ← | литры с момента загрузки (строка `%.3f`, каждые 60 с), после перезагрузки считает с 0 |
 | `home/watercontroller1/valve_enable/get` | → | подписка есть, **обработчика нет** |
-
-Опечатка `presure` — часть внешнего интерфейса, менять только вместе с Home Assistant.
 
 ---
 
@@ -604,7 +603,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | Переключатель блокировки открытия | ❌ | ❌ |
 | Периодическое чтение расхода | ✅ J3 → IO23 | ✅ (раз в 60 с) |
 | Периодическое чтение давления | ✅ | ✅ (10 с) |
-| Чтение давления по запросу | ✅ | ✅ (`presure/get`) |
+| Чтение давления по запросу | ✅ | ✅ (`pressure/get`) |
 | Температура трубы / окружающей среды | ❌ | ❌ |
 | Внутренняя температура ESP32 | — | ❌ |
 | Датчик протечки | ❌ | ❌ |
