@@ -1,10 +1,10 @@
 #include "lib\MqttClient.h"
 #include "main.h"
 
-// H-Bridge control for valve (2 relays or DRV8871 motor driver)
+// H-bridge control for valve: DRV8871, IN1/IN2. The DPDT+SPDT relay build (power + direction pins) is not supported
 
-int valve_move_time_mills = 7000;
-unsigned long valveMovingTimer = 0; // Таймер для отключения реле
+static const unsigned long valve_move_time_mills = 7000;
+unsigned long valveMovingTimer = 0; // Таймер хода крана
 bool isValveMoving = false;         // Флаг движения
 
 #define VALVE_BUTTON_DEBOUNCE_MS 30 // Button level must be stable this long
@@ -67,7 +67,7 @@ void valve_init()
     pinMode(VALVE_CLOSE_STATUS, INPUT);
 }
 
-// Функция полной остановки (снятие питания с катушек relay configuration)
+// Функция полной остановки (IN1 = IN2 = 0: coast)
 void _stop_valve()
 {
     digitalWrite(VALVE_OPEN_PIN, LOW);
@@ -81,8 +81,8 @@ void _stop_valve()
 static void _valve_drive()
 {
     bool opening = (valveState == VALVE_OPENING);
-    digitalWrite(opening ? VALVE_CLOSE_PIN : VALVE_OPEN_PIN, LOW);  // Убеждаемся, что второе реле выключено
-    digitalWrite(opening ? VALVE_OPEN_PIN : VALVE_CLOSE_PIN, HIGH); // Включаем реле (Open: +12V на Красный, Close: +12V на Синий)
+    digitalWrite(opening ? VALVE_CLOSE_PIN : VALVE_OPEN_PIN, LOW);  // Убеждаемся, что второй выход выключен
+    digitalWrite(opening ? VALVE_OPEN_PIN : VALVE_CLOSE_PIN, HIGH); // Включаем выход (Open: +12V на Красный, Close: +12V на Синий)
 
     valveMovingTimer = millis();
     isValveMoving = true;
@@ -133,7 +133,7 @@ static void _button_released(ValveButton &button, ValveButton &other, unsigned l
         manualStartState = VALVE_UNKNOWN;
         valveState = other.moving;
     }
-    else if (manualStartState == button.reached || now - manualMoveTimer >= (unsigned long)valve_move_time_mills)
+    else if (manualStartState == button.reached || now - manualMoveTimer >= valve_move_time_mills)
     {
         valveState = button.reached;
     }
@@ -184,7 +184,7 @@ void valve_handle()
         valve_state_publish();
     }
 
-    // Автоматическое отключение реле после завершения хода
+    // Автоматическое отключение выхода после завершения хода
     if (isValveMoving && (millis() - valveMovingTimer >= valve_move_time_mills))
     {
         _stop_valve();
