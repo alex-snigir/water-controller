@@ -58,7 +58,35 @@ static void ads_lost(const char *reason) {
 }
 
 
-// Reads the channel voltage into *volts. Returns false if the ADS1115 is not available or not responding.
+// The Adafruit library ignores I2C errors: a lost write leaves the previous conversion in place,
+// and a lost read returns leftovers of its buffer (about 0 V), which looks like a valid sample.
+static bool ads_write_register(uint8_t reg, uint16_t value) {
+  Wire.beginTransmission(ADS1X15_ADDRESS);
+  Wire.write(reg);
+  Wire.write((uint8_t)(value >> 8));
+  Wire.write((uint8_t)(value & 0xFF));
+  return Wire.endTransmission() == 0;
+}
+
+
+static bool ads_read_register(uint8_t reg, uint16_t *value) {
+  Wire.beginTransmission(ADS1X15_ADDRESS);
+  Wire.write(reg);
+  if (Wire.endTransmission() != 0) {
+    return false;
+  }
+  if (Wire.requestFrom((uint8_t)ADS1X15_ADDRESS, (uint8_t)2) != 2) {
+    return false;
+  }
+  uint8_t msb = Wire.read();
+  uint8_t lsb = Wire.read();
+  *value = (msb << 8) | lsb;
+  return true;
+}
+
+
+// Reads the channel voltage into *volts. Returns false if the ADS1115 is not available or not responding,
+// or if an I2C transfer failed: that sample is skipped, the next one retries.
 // Replaces ads.readADC_SingleEnded(), which waits for the conversion forever if the device disappears.
 bool ads_voltage_chnnel_get(int channel, float *volts) {
 
@@ -73,18 +101,35 @@ bool ads_voltage_chnnel_get(int channel, float *volts) {
     return false;
   }
 
-  ads.startADCReading(MUX_BY_CHANNEL[channel], /*continuous=*/false);
+  // Single-shot, comparator off: the ALERT/RDY pin is not used
+  uint16_t config = ADS1X15_REG_CONFIG_OS_SINGLE | ADS1X15_REG_CONFIG_MODE_SINGLE | ADS1X15_REG_CONFIG_CQUE_NONE |
+                    ads.getGain() | ads.getDataRate() | MUX_BY_CHANNEL[channel];
+  if (!ads_write_register(ADS1X15_REG_POINTER_CONFIG, config)) {
+    Serial.println("ADS1115: config write failed, sample skipped");
+    return false;
+  }
 
   unsigned long start = millis();
-  while (!ads.conversionComplete()) {
+  uint16_t status;
+  do {
     if (millis() - start >= ADS_CONVERSION_TIMEOUT) {
       ads_lost("conversion timeout");
       return false;
     }
     delay(1);
+    if (!ads_read_register(ADS1X15_REG_POINTER_CONFIG, &status)) {
+      Serial.println("ADS1115: status read failed, sample skipped");
+      return false;
+    }
+  } while (!(status & ADS1X15_REG_CONFIG_OS_NOTBUSY));
+
+  uint16_t raw;
+  if (!ads_read_register(ADS1X15_REG_POINTER_CONVERT, &raw)) {
+    Serial.println("ADS1115: result read failed, sample skipped");
+    return false;
   }
 
-  int16_t adc = ads.getLastConversionResults(); // Readed counts
+  int16_t adc = (int16_t)raw; // Readed counts
   *volts = ads.computeVolts(adc);
 
   Serial.print("ADS: AIN:"); 
