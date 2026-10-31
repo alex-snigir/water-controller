@@ -136,6 +136,9 @@ MQTT Interface:
     "home/watercontroller1/valve/open"      // RETAIN=false  Payload: N/A    - Open water valve
     "home/watercontroller1/valve/close"     // RETAIN=false  Payload: N/A    - Close water valve
     "home/watercontroller1/valve/state/get" // RETAIN=false  Payload: N/A    - Get valve state: request the "home/watercontroller1/valve/state" response
+    "home/watercontroller1/valve_enable/get" // RETAIN=false Payload: N/A    - Subscribed, not handled yet: no response
+    "home/watercontroller1/pressure/get"    // RETAIN=false  Payload: N/A    - Get pressure: request the "home/watercontroller1/pressure" response with the last reading
+    "home/watercontroller1/flowrate/get"    // RETAIN=false  Payload: N/A    - Get flow rate: request the "home/watercontroller1/flowrate" response with the last calculated value
   
   Published:
   ==========
@@ -145,6 +148,8 @@ MQTT Interface:
     "home/watercontroller1/connection/info" // RETAIN=false  Payload: JSON   - Sent when MQTT connected or re-connected
     "home/watercontroller1/valve/state"     // RETAIN=true   Payload: STRING - Sent on each state change, on MQTT connect and on request. Payload: "unknown", "opening", "open", "closing", "closed"
     "home/watercontroller1/valve/manual"    // RETAIN=false  Payload: STRING - Sent when a physical button is pressed or released. Payload: "open", "close", "released"
+    "home/watercontroller1/flowrate"        // RETAIN=false  Payload: STRING - Sent each minute and on request. Liters per minute. Payload: "%f"
+    "home/watercontroller1/pressure"        // RETAIN=false  Payload: STRING - Sent every 10 seconds and on request. Bar. Payload: "%.2f"
     "home/watercontroller1/flowtotal"       // RETAIN=false  Payload: STRING - Sent each minute. Liters since boot, drops to 0 after reboot. Payload: "%.3f"
     "home/watercontroller1/pressure/status" // RETAIN=true   Payload: STRING - Sent on change, on MQTT connect and in response of "home/watercontroller1/pressure/get" if there is no valid reading. Payload: "unknown", "ok", "over_range" (at or above 10 bar, published value is 10), "no_adc", "out_of_range"
 
