@@ -110,18 +110,22 @@ bool ads_voltage_chnnel_get(int channel, float *volts) {
   }
 
   unsigned long start = millis();
-  uint16_t status;
-  do {
-    if (millis() - start >= ADS_CONVERSION_TIMEOUT) {
-      ads_lost("conversion timeout");
-      return false;
-    }
+  while (true) {
     delay(1);
+    uint16_t status;
     if (!ads_read_register(ADS1X15_REG_POINTER_CONFIG, &status)) {
       Serial.println("ADS1115: status read failed, sample skipped");
       return false;
     }
-  } while (!(status & ADS1X15_REG_CONFIG_OS_NOTBUSY));
+    if (status & ADS1X15_REG_CONFIG_OS_NOTBUSY) {
+      break;
+    }
+    // Checked after the status: a task switch here must not fail a conversion that has finished
+    if (millis() - start >= ADS_CONVERSION_TIMEOUT) {
+      ads_lost("conversion timeout");
+      return false;
+    }
+  }
 
   uint16_t raw;
   if (!ads_read_register(ADS1X15_REG_POINTER_CONVERT, &raw)) {
