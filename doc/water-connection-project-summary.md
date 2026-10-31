@@ -524,8 +524,8 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | `home/watercontroller1/valve/state/get` → `.../valve/state` | → / ← | состояние крана, retained: `unknown`, `opening`, `open`, `closing`, `closed`; публикуется при каждом изменении и при подключении к MQTT |
 | `home/watercontroller1/valve/manual` | ← | ручное действие: `open`, `close` (нажатие SW1/SW2), `released` (отпускание) |
 | `home/watercontroller1/pressure` | ← | давление, бар (строка `%f`) |
-| `home/watercontroller1/pressure/get` | → | запрос давления |
-| `home/watercontroller1/pressure/status` | ← | состояние датчика, retained: `unknown`, `ok`, `no_adc` (нет данных от АЦП), `out_of_range`; при изменении, при подключении к MQTT и при каждом неудачном чтении |
+| `home/watercontroller1/pressure/get` | → | запрос давления: последнее измерение, без нового чтения АЦП |
+| `home/watercontroller1/pressure/status` | ← | состояние датчика, retained: `unknown`, `ok`, `no_adc` (нет данных от АЦП), `out_of_range`; при изменении, при подключении к MQTT и в ответ на `pressure/get`, если действующего значения нет |
 | `home/watercontroller1/flowrate` | ← | расход, л/мин (каждые 60 с) |
 | `home/watercontroller1/flowrate/get` | → | запрос расхода: последнее рассчитанное значение, 0 до конца первых 60 с |
 | `home/watercontroller1/flowtotal` | ← | литры с момента загрузки (строка `%.3f`, каждые 60 с), после перезагрузки считает с 0 |
