@@ -9,6 +9,7 @@ bool isValveMoving = false;         // Флаг движения
 
 #define VALVE_BUTTON_DEBOUNCE_MS 30 // Button level must be stable this long
 #define VALVE_OUTPUT_MASK_MS     20 // C10/C11 hold IN1/IN2 high for up to 9 ms after an output goes low
+#define VALVE_REVERSE_PAUSE_MS   20 // Let IN1/IN2 settle before driving the opposite output
 
 unsigned long valveOutputOffTimer = 0; // When the outputs were last switched off
 
@@ -17,6 +18,7 @@ unsigned long valveOutputOffTimer = 0; // When the outputs were last switched of
 enum ValveState { VALVE_UNKNOWN, VALVE_OPENING, VALVE_OPEN, VALVE_CLOSING, VALVE_CLOSED };
 static ValveState valveState = VALVE_UNKNOWN;
 static bool valveStatePublishPending = false;
+static bool valveDrivePending = false; // valveState is set, the outputs wait for the reverse pause
 
 // SW1/SW2 drive IN1/IN2 directly, past the ESP32. VALVE_*_STATUS only shows the level on them,
 // which is also high while the firmware drives the same pin.
@@ -71,7 +73,31 @@ void _stop_valve()
     digitalWrite(VALVE_OPEN_PIN, LOW);
     digitalWrite(VALVE_CLOSE_PIN, LOW);
     isValveMoving = false;
+    valveDrivePending = false;
     valveOutputOffTimer = millis();
+}
+
+// Drives the outputs for valveState
+static void _valve_drive()
+{
+    bool opening = (valveState == VALVE_OPENING);
+    digitalWrite(opening ? VALVE_CLOSE_PIN : VALVE_OPEN_PIN, LOW);  // Убеждаемся, что второе реле выключено
+    digitalWrite(opening ? VALVE_OPEN_PIN : VALVE_CLOSE_PIN, HIGH); // Включаем реле (Open: +12V на Красный, Close: +12V на Синий)
+
+    valveMovingTimer = millis();
+    isValveMoving = true;
+}
+
+// Starts the move now, or from valve_handle() if the outputs were switched off a moment ago
+static void _valve_start(ValveState moving)
+{
+    if (isValveMoving)
+        _stop_valve();
+
+    valveState = moving;
+    valveDrivePending = (millis() - valveOutputOffTimer < VALVE_REVERSE_PAUSE_MS);
+    if (!valveDrivePending)
+        _valve_drive();
 }
 
 static void _button_pressed(ValveButton &button, ValveButton &other, unsigned long now)
@@ -79,7 +105,7 @@ static void _button_pressed(ValveButton &button, ValveButton &other, unsigned lo
     Serial.printf("Valve button pressed: %s\n", button.name);
 
     // The button wins: against a firmware output it would only brake the valve
-    if (isValveMoving)
+    if (isValveMoving || valveDrivePending)
         _stop_valve();
 
     if (other.pressed)
@@ -146,6 +172,12 @@ void valve_handle()
     _button_handle(openButton, closeButton, now);
     _button_handle(closeButton, openButton, now);
 
+    if (valveDrivePending && (now - valveOutputOffTimer >= VALVE_REVERSE_PAUSE_MS))
+    {
+        valveDrivePending = false;
+        _valve_drive();
+    }
+
     if (valveStatePublishPending)
     {
         valveStatePublishPending = false;
@@ -167,7 +199,7 @@ void valve_handle()
 // After a successful update the state is sent on MQTT connect, after a failed one from valve_handle().
 void valve_ota_start()
 {
-    if (isValveMoving)
+    if (isValveMoving || valveDrivePending)
     {
         _stop_valve();
         valveState = VALVE_UNKNOWN;
@@ -179,15 +211,7 @@ void valve_ota_start()
 static void _valve_open()
 {
     LOG("valve_open: CALLED");
-    if (isValveMoving)
-        _stop_valve();
-
-    digitalWrite(VALVE_CLOSE_PIN, LOW); // Убеждаемся, что второе реле выключено
-    digitalWrite(VALVE_OPEN_PIN, HIGH); // Включаем первое реле (+12V на Красный)
-
-    valveMovingTimer = millis();
-    isValveMoving = true;
-    valveState = VALVE_OPENING;
+    _valve_start(VALVE_OPENING);
     Serial.println("Valve is opening...");
     valve_state_publish();
 }
@@ -195,15 +219,7 @@ static void _valve_open()
 static void _valve_close()
 {
     LOG("valve_close: CALLED");
-    if (isValveMoving)
-        _stop_valve();
-
-    digitalWrite(VALVE_OPEN_PIN, LOW);   // Убеждаемся, что первое реле выключено
-    digitalWrite(VALVE_CLOSE_PIN, HIGH); // Включаем второе реле (+12V на Синий)
-
-    valveMovingTimer = millis();
-    isValveMoving = true;
-    valveState = VALVE_CLOSING;
+    _valve_start(VALVE_CLOSING);
     Serial.println("Valve is closing...");
     valve_state_publish();
 }
@@ -213,7 +229,7 @@ static void _valve_close()
 // The state is republished so the sender gets a reply either way.
 static bool _command_blocked(ValveState moving)
 {
-    if (isValveMoving && valveState == moving)
+    if ((isValveMoving || valveDrivePending) && valveState == moving)
         Serial.println("Valve command ignored: already moving this way");
     else if (openButton.pressed || closeButton.pressed)
         Serial.println("Valve command ignored: button is pressed");
