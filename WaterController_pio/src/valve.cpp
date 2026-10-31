@@ -208,25 +208,29 @@ static void _valve_close()
     valve_state_publish();
 }
 
+// A repeated command must not restart the move: the 7 s limit would never expire.
 // A held button overrides commands: the opposite command would only brake the valve.
-// The state is republished so the sender sees the command was not taken.
-static bool _command_blocked()
+// The state is republished so the sender gets a reply either way.
+static bool _command_blocked(ValveState moving)
 {
-    if (!openButton.pressed && !closeButton.pressed)
+    if (isValveMoving && valveState == moving)
+        Serial.println("Valve command ignored: already moving this way");
+    else if (openButton.pressed || closeButton.pressed)
+        Serial.println("Valve command ignored: button is pressed");
+    else
         return false;
-    Serial.println("Valve command ignored: button is pressed");
     valve_state_publish();
     return true;
 }
 
 void valve_open()
 {
-    if (!_command_blocked())
+    if (!_command_blocked(VALVE_OPENING))
         _valve_open();
 }
 
 void valve_close()
 {
-    if (!_command_blocked())
+    if (!_command_blocked(VALVE_CLOSING))
         _valve_close();
 }
