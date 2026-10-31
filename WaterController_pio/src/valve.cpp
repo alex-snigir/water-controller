@@ -57,6 +57,19 @@ void valve_state_publish()
     mqttClient.publish(TOPIC_VALVE_STATE, valve_state_name(), true);
 }
 
+void valve_debug_info()
+{
+    Serial.println("\nvalve.cpp:\n==========");
+    Serial.printf("State: %s\n", valve_state_name());
+    Serial.printf("Moving: %d\n", isValveMoving);
+    Serial.printf("Drive pending: %d\n", valveDrivePending);
+    if (isValveMoving)
+        Serial.printf("Moving for: %lu of %lu ms\n", millis() - valveMovingTimer, valve_move_time_mills);
+    Serial.printf("Publish pending: %d\n", valveStatePublishPending);
+    Serial.printf("Open button: pressed %d, IN1 %d\n", openButton.pressed, digitalRead(openButton.statusPin));
+    Serial.printf("Close button: pressed %d, IN2 %d\n", closeButton.pressed, digitalRead(closeButton.statusPin));
+}
+
 void valve_init()
 {
     digitalWrite(VALVE_OPEN_PIN, LOW);

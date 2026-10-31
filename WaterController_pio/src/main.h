@@ -51,11 +51,13 @@ void valve_close();
 void valve_state_publish();
 void valve_ota_start();
 void valve_restart_prepare();
+void valve_debug_info();
 
 #define ADS_CHANNEL_PRESSURE_SENSOR 0
 
 void ads_init();
 void ads_handle();
+void ads_debug_info();
 enum AdsResult { ADS_OK, ADS_SKIPPED, ADS_UNAVAILABLE };
 AdsResult ads_voltage_chnnel_get(int channel, float *volts);
 
@@ -63,9 +65,11 @@ void pressure_sensor_init(unsigned long interval);
 void pressure_sensor_handle();
 void pressure_get();
 void pressure_status_publish();
+void pressure_debug_info();
 
 void water_flow_sensor_init(unsigned long interval);
 void water_flow_handle();
 void water_flow_get();
+void water_flow_debug_info();
 
 #endif

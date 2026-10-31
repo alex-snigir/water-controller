@@ -29,6 +29,16 @@ Input range programmed control, 6 types input ranges:
    x8:   GND ~ +0.512V           |   ~ +/-0.512V         
   x16:   GND ~ +0.256V           |   ~ +/-0.256V
 */
+void ads_debug_info() {
+  Serial.println("\nads.cpp:\n========");
+  Serial.printf("Available: %d\n", ads_enabled);
+  Serial.printf("Failures in a row: %d of %d\n", ads_failures, ADS_MAX_FAILURES);
+  if (!ads_enabled) {
+    Serial.printf("Last init attempt: %lu ms ago\n", millis() - ads_init_lastAttempt);
+  }
+}
+
+
 static void ads_start() {
   ads_init_lastAttempt = millis();
   ads_enabled = ads.begin(ADS_I2C_ADDRESS);

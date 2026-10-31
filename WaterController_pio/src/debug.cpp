@@ -56,6 +56,13 @@ void mqttClient_debug_info() {
 }
 
 
+void sensors_debug_info() {
+  ads_debug_info();
+  pressure_debug_info();
+  water_flow_debug_info();
+}
+
+
 void restart() {
   valve_restart_prepare();
   ESP.restart();
@@ -105,11 +112,15 @@ void debug_init() {
   serialDebug.addInfoCommandHandler(otaClient_debug_info);
   serialDebug.addInfoCommandHandler(mqttClient_debug_info);
     serialDebug.addInfoCommandHandler(connection_monitor_debug_info);
+  serialDebug.addInfoCommandHandler(valve_debug_info);
+  serialDebug.addInfoCommandHandler(sensors_debug_info);
   serialDebug.addCommandHandler("wifi_reconnect", wifi_reconnect);
   serialDebug.addCommandHandler("wifi_set_11b", wifi_set_11b);
   serialDebug.addCommandHandler("wifi_set_11g", wifi_set_11g);
   serialDebug.addCommandHandler("wifi_set_11n", wifi_set_11n);
   serialDebug.addCommandHandler("wifi_info", wifiConnect_debug_info);
   serialDebug.addCommandHandler("mqtt_info", mqttClient_debug_info);
+  serialDebug.addCommandHandler("valve_info", valve_debug_info);
+  serialDebug.addCommandHandler("sensors_info", sensors_debug_info);
   serialDebug.addCommandHandler("restart", restart);
 }

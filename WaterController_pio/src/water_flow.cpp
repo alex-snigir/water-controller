@@ -21,6 +21,16 @@ static void IRAM_ATTR water_flow_pulse() {
     portEXIT_CRITICAL_ISR(&pulses_mux);
 }
 
+void water_flow_debug_info() {
+    portENTER_CRITICAL(&pulses_mux);
+    unsigned int pulses_read = pulses;
+    portEXIT_CRITICAL(&pulses_mux);
+    Serial.println("\nwater_flow.cpp:\n===============");
+    Serial.printf("Pulses this interval: %u\n", pulses_read);
+    Serial.printf("Rate: %f L/min\n", water_rate);
+    Serial.printf("Total: %.3f L\n", (total_pulses + pulses_read) / (double)PULSES_PER_LITER);
+}
+
 void water_flow_sensor_init(unsigned long interval) {
     water_flow_calculation_interval = interval;
     Serial.printf("water_flow_sensor_init\n");
