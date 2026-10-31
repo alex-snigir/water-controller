@@ -9,6 +9,7 @@ boolean ads_enabled;
 #define ADS_RETRY_INTERVAL 60000L // 1 minute
 #define ADS_CONVERSION_TIMEOUT 50L // Millis. Single conversion takes ~8 ms at the default 128 SPS
 #define ADS_MAX_FAILURES 3         // Failed samples in a row before the ADS1115 counts as lost
+#define ADS_BUS_RECOVER_HALF_CLOCK 10 // Micros: 50 kHz, slower than the 100 kHz bus
 unsigned long ads_init_lastAttempt = 0L;
 static int ads_failures = 0;       // Failed samples in a row
 
@@ -43,10 +44,49 @@ void ads_init() {
 }
 
 
+// ads.begin() cannot recover the bus: Wire.begin() returns at once if the bus is already started.
+// A slave interrupted mid-byte holds SDA low until it gets the rest of the clocks, so that is done
+// by hand, open-drain as the level shifter requires. Takes a few hundred microseconds.
+static void ads_bus_recover() {
+  Wire.end();
+
+  digitalWrite(ADC_SDA_GPIO, HIGH);
+  digitalWrite(ADC_SCL_GPIO, HIGH);
+  pinMode(ADC_SDA_GPIO, OUTPUT_OPEN_DRAIN);
+  pinMode(ADC_SCL_GPIO, OUTPUT_OPEN_DRAIN);
+
+  for (int i = 0; i < 9; i++) {
+    digitalWrite(ADC_SCL_GPIO, LOW);
+    delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
+    digitalWrite(ADC_SCL_GPIO, HIGH);
+    delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
+  }
+
+  // STOP: SDA rises while SCL is high
+  digitalWrite(ADC_SCL_GPIO, LOW);
+  delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
+  digitalWrite(ADC_SDA_GPIO, LOW);
+  delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
+  digitalWrite(ADC_SCL_GPIO, HIGH);
+  delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
+  digitalWrite(ADC_SDA_GPIO, HIGH);
+  delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
+
+  Wire.begin(ADC_SDA_GPIO, ADC_SCL_GPIO);
+
+  // General call reset, for a chip that acknowledges but no longer converts.
+  // The config is written on every sample, so nothing has to be restored.
+  Wire.beginTransmission(0x00);
+  Wire.write(0x06);
+  Wire.endTransmission();
+}
+
+
 // Retry the ADS1115 initialization once a minute while it is not available
 void ads_handle() {
   if (!ads_enabled && (millis() - ads_init_lastAttempt >= ADS_RETRY_INTERVAL)) {
     Serial.println("ADS1115: retrying initialization...");
+    ads_bus_recover();
     ads_init();
   }
 }
