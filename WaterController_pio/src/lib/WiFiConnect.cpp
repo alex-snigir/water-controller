@@ -79,6 +79,7 @@
 //                    reconnect: set_phy_11n() in begin() reset it when the SDK booted in another PHY
 //                    mode, so setup() handed "ESP-XXXXXX" to OTA/mDNS and MQTT. Reconnect restore no
 //                    longer waits for the 10 s poll.
+//   v0.28 20261031 - Removed set_phy_lr(): LR alone cannot associate with a regular access point.
 
 #ifdef ESP8266
 #include <ESP8266WiFi.h>
@@ -705,8 +706,6 @@ const char *WiFiConnect::getPhyModeString(uint8_t mode)
     }
 #endif
 #ifdef ESP32
-    if ((mode&WIFI_PROTOCOL_LR) == WIFI_PROTOCOL_LR)
-        return "11LR";
     if ((mode&WIFI_PROTOCOL_11N) == WIFI_PROTOCOL_11N && (mode&WIFI_PROTOCOL_11G) == WIFI_PROTOCOL_11G && (mode&WIFI_PROTOCOL_11B) == WIFI_PROTOCOL_11B)
         return "11B|11G|11N";
     if ((mode&WIFI_PROTOCOL_11G) == WIFI_PROTOCOL_11G && (mode&WIFI_PROTOCOL_11B) == WIFI_PROTOCOL_11B)
@@ -919,22 +918,6 @@ void WiFiConnect::set_phy_11n() {
     #endif
     #ifdef ESP32
     esp_err_t error_code = esp_wifi_set_protocol((wifi_interface_t)ESP_IF_WIFI_STA, WIFI_PROTOCOL_11N|WIFI_PROTOCOL_11G|WIFI_PROTOCOL_11B);
-    if (error_code != 0) {
-        log_phy_error(error_code);
-        return;
-    }
-    #endif
-    // try_reconnect(); - do not call reconnect in this function
-}
-
-
-// Only set phy mode, do not call reconnect in this function
-void WiFiConnect::set_phy_lr() {
-    #ifdef ESP8266
-    Serial.print("LR not supported ESP8266");
-    #endif
-    #ifdef ESP32
-    esp_err_t error_code = esp_wifi_set_protocol((wifi_interface_t)ESP_IF_WIFI_STA, WIFI_PROTOCOL_LR);
     if (error_code != 0) {
         log_phy_error(error_code);
         return;

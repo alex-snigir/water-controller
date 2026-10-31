@@ -77,7 +77,6 @@ class WiFiConnect {
         void set_phy_11b();
         void set_phy_11g();
         void set_phy_11n();
-        void set_phy_lr();
 
         int getStatus();
         const char* getStatusString();

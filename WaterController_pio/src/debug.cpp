@@ -46,14 +46,6 @@ void wifi_set_11n() {
 }
 
 
-#ifdef ESP32
-void wifi_set_lr() {
-  wifiConnect.set_phy_lr();
-  wifiConnect.try_reconnect();
-}
-#endif
-
-
 void otaClient_debug_info() {
   otaClient.debug_info();
 }
@@ -117,9 +109,6 @@ void debug_init() {
   serialDebug.addCommandHandler("wifi_set_11b", wifi_set_11b);
   serialDebug.addCommandHandler("wifi_set_11g", wifi_set_11g);
   serialDebug.addCommandHandler("wifi_set_11n", wifi_set_11n);
-  #ifdef ESP32
-  serialDebug.addCommandHandler("wifi_set_lr", wifi_set_lr);
-  #endif
   serialDebug.addCommandHandler("wifi_info", wifiConnect_debug_info);
   serialDebug.addCommandHandler("mqtt_info", mqttClient_debug_info);
   serialDebug.addCommandHandler("restart", restart);
