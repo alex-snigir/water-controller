@@ -18,6 +18,7 @@ void IRAM_ATTR water_flow_pulse();
 void water_flow_sensor_init() {
     Serial.printf("water_flow_sensor_init\n");
     pinMode(WATER_FLOW_GPIO, INPUT_PULLUP); // Keep the input from floating when the sensor is disconnected
+    water_flow_calculation_lastActivity = millis(); // The first interval starts when counting does, not at boot
     attachInterrupt(digitalPinToInterrupt(WATER_FLOW_GPIO), water_flow_pulse, FALLING);
 }
 
