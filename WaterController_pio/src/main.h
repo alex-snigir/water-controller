@@ -23,6 +23,7 @@ extern volatile int timeset_cnt;
 #define TOPIC_VALVE_CLOSE         _AREA_ "/" _HOST_NAME_ "/valve/close"
 #define TOPIC_VALVE_STATE         _AREA_ "/" _HOST_NAME_ "/valve/state"
 #define TOPIC_VALVE_STATE_GET     _AREA_ "/" _HOST_NAME_ "/valve/state/get"
+#define TOPIC_VALVE_MANUAL        _AREA_ "/" _HOST_NAME_ "/valve/manual"
 
 #define TOPIC_PRESSURE              _AREA_ "/" _HOST_NAME_ "/pressure"
 #define TOPIC_PRESSURE_GET          _AREA_ "/" _HOST_NAME_ "/pressure/get"
