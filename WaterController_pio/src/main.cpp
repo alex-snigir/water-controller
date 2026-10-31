@@ -281,6 +281,8 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
     valve_state_publish();
   } else if(strcmp(topic, TOPIC_PRESSURE_GET) == 0) {
     pressure_get();
+  } else if(strcmp(topic, TOPIC_FLOW_RATE_GET) == 0) {
+    water_flow_get();
   } else if(strcmp(topic, TOPIC_ALIVE_GET) == 0) {
     send_info(TOPIC_ALIVE, INFO_BASIC);
   } else if(strcmp(topic, TOPIC_INFO_GET) == 0) {

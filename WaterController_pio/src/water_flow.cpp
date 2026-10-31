@@ -39,12 +39,19 @@ void water_flow_handle() {
     portEXIT_CRITICAL(&pulses_mux);
     water_rate = pulses_read / (float)PULSES_PER_LITER; // Liters per calculation interval (1 min)
     Serial.printf("Water Flow pulses: %u Rate: %f L/min\n", pulses_read, water_rate);
-    char buf[32];
-    snprintf(buf, sizeof(buf), "%f", water_rate);
-    mqttClient.publish(TOPIC_FLOW_RATE, buf);
+    water_flow_get();
 
     total_pulses += pulses_read;
+    char buf[32];
     snprintf(buf, sizeof(buf), "%.3f", total_pulses / (double)PULSES_PER_LITER);
     mqttClient.publish(TOPIC_FLOW_TOTAL, buf);
   }
+}
+
+// Publishes the last calculated rate: 0 until the first interval ends.
+// Must not read the pulse counter: that would cut the current interval short.
+void water_flow_get() {
+    char buf[32];
+    snprintf(buf, sizeof(buf), "%f", water_rate);
+    mqttClient.publish(TOPIC_FLOW_RATE, buf);
 }
