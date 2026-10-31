@@ -10,65 +10,63 @@
 #include "lib/TimeUtils.h"
 #include "main.h"
 
-void main_debug_info();
 
-
-void wifiConnect_debug_info() {
+static void wifiConnect_debug_info() {
   wifiConnect.debug_info();
 }
 
 
-void connection_monitor_debug_info() {
+static void connection_monitor_debug_info() {
     connectionMonitor.debug_info();
 }
 
 
-void wifi_reconnect() {
+static void wifi_reconnect() {
   wifiConnect.try_reconnect();
 }
 
 
-void wifi_set_11b() {
+static void wifi_set_11b() {
   wifiConnect.set_phy_11b();
   wifiConnect.try_reconnect();
 }
 
 
-void wifi_set_11g() {
+static void wifi_set_11g() {
   wifiConnect.set_phy_11g();
   wifiConnect.try_reconnect();
 }
 
 
-void wifi_set_11n() {
+static void wifi_set_11n() {
   wifiConnect.set_phy_11n();
   wifiConnect.try_reconnect();
 }
 
 
-void otaClient_debug_info() {
+static void otaClient_debug_info() {
   otaClient.debug_info();
 }
 
 
-void mqttClient_debug_info() {
+static void mqttClient_debug_info() {
   mqttClient.debug_info();
 }
 
 
-void sensors_debug_info() {
+static void sensors_debug_info() {
   ads_debug_info();
   pressure_debug_info();
   water_flow_debug_info();
 }
 
 
-void restart() {
+static void restart() {
   valve_restart_prepare();
   ESP.restart();
 }
 
-void main_debug_info() {
+static void main_debug_info() {
 
     time_t now = time(nullptr);
     Serial.println("\nmain.cpp:\n=========");
