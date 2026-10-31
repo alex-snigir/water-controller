@@ -194,17 +194,34 @@ void valve_handle()
     }
 }
 
+// Cuts a firmware move short: the position is unknown after that. Returns false if the valve was idle.
+static bool valve_abort(const char *reason)
+{
+    if (!isValveMoving && !valveDrivePending)
+        return false;
+    valve_stop();
+    valveState = VALVE_UNKNOWN;
+    valveStatePublishPending = true;
+    Serial.printf("Valve output is off: %s.\n", reason);
+    return true;
+}
+
 // OTA blocks loop(), so valve_handle() could not stop the valve on time.
 // No publish here: it may dispatch a queued command, which would restart the valve.
 // After a successful update the state is sent on MQTT connect, after a failed one from valve_handle().
 void valve_ota_start()
 {
-    if (isValveMoving || valveDrivePending)
+    valve_abort("OTA started");
+}
+
+// Unlike OTA, a queued command does no harm here: the reset right after cuts it off.
+// The delay lets the state leave before the reset drops the connection.
+void valve_restart_prepare()
+{
+    if (valve_abort("restart"))
     {
-        valve_stop();
-        valveState = VALVE_UNKNOWN;
-        valveStatePublishPending = true;
-        Serial.println("Valve output is off: OTA started.");
+        valve_state_publish();
+        delay(100);
     }
 }
 

@@ -65,6 +65,7 @@ void mqttClient_debug_info() {
 
 
 void restart() {
+  valve_restart_prepare();
   ESP.restart();
 }
 
