@@ -59,6 +59,7 @@ static void sensors_debug_info() {
     pressure_debug_info();
     water_flow_debug_info();
     temperature_debug_info();
+    box_debug_info();
 }
 
 

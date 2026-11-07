@@ -35,4 +35,13 @@
 #define AC_POWER_DETECT_GPIO   ?
 #endif
 
+// Box temperature/humidity sensor on J6 (I2C)
+#define BOX_SENSOR_SHT41       1
+#define BOX_SENSOR_SHTC3       2    // For tests: no heater
+#ifndef BOX_SENSOR
+#define BOX_SENSOR             BOX_SENSOR_SHT41
+#endif
+#define SHT41_I2C_ADDRESS      0x44 // SHT41-AD1B; 0x45 for SHT41-BD1B
+#define SHTC3_I2C_ADDRESS      0x70
+
 #endif

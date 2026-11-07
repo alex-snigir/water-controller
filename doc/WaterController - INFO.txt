@@ -150,6 +150,7 @@ MQTT Interface:
     "home/watercontroller1/pressure/get"    // RETAIN=false  Payload: N/A    - Get pressure: request the "home/watercontroller1/pressure" response with the last reading
     "home/watercontroller1/flowrate/get"    // RETAIN=false  Payload: N/A    - Get flow rate: request the "home/watercontroller1/flowrate" response with the last calculated value
     "home/watercontroller1/temperature/get" // RETAIN=false  Payload: N/A    - Get temperatures: request "home/watercontroller1/temperature/pipe" and ".../temperature/air" with the last readings, or their status if there is no valid reading
+    "home/watercontroller1/box/get"         // RETAIN=false  Payload: N/A    - Get box air: request "home/watercontroller1/box/temperature", ".../box/humidity" and ".../box/dewpoint" with the last reading, or "box/status" if there is no valid reading
   
   Published:
   ==========
@@ -167,6 +168,10 @@ MQTT Interface:
     "home/watercontroller1/temperature/air"         // RETAIN=false  Payload: STRING - DS18B20 on GPIO15 (J5). Sent each minute and on request. Celsius. Payload: "%.2f"
     "home/watercontroller1/temperature/pipe/status" // RETAIN=true   Payload: STRING - Sent on change, on MQTT connect and in response of "home/watercontroller1/temperature/get" if there is no valid reading. Payload: "unknown", "ok", "no_sensor" (no DS18B20 found on the bus), "error" (3 failed readings in a row: disconnected, CRC error or 85 C power-on value)
     "home/watercontroller1/temperature/air/status"  // RETAIN=true   Payload: STRING - Same as "temperature/pipe/status", for the air probe
+    "home/watercontroller1/box/temperature" // RETAIN=false  Payload: STRING - SHT41 in the controller box. Sent each minute and on request. Celsius. Payload: "%.2f"
+    "home/watercontroller1/box/humidity"    // RETAIN=false  Payload: STRING - Sent each minute and on request. %RH. Payload: "%.1f"
+    "home/watercontroller1/box/dewpoint"    // RETAIN=false  Payload: STRING - Sent each minute and on request. Celsius, Magnus formula. Payload: "%.2f"
+    "home/watercontroller1/box/status"      // RETAIN=true   Payload: STRING - Sent on change, on MQTT connect and in response of "home/watercontroller1/box/get" if there is no valid reading. Payload: "unknown", "ok", "no_sensor" (no answer at the I2C address, 3 times in a row), "error" (3 failed readings in a row: CRC or bus error)
 
 
 MQTT Payload Examples:

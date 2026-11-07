@@ -537,7 +537,7 @@ IO22 (SCL) ── J6.3   IO21 (SDA) ── J6.4   J6: +3V3 / GND / SCL / SDA →
 
 **Внутренний датчик ESP32.** У классического ESP32 он плохо откалиброван и показывает температуру кристалла, нагретого Wi-Fi; на многих экземплярах `temperatureRead()` возвращает постоянные ~53.3 °C. Публиковать только как справочное значение, если на вашем экземпляре оно меняется, и не использовать для автоматических действий.
 
-**Требования к прошивке** (DS18B20 реализованы в `temperature.cpp`, SHT41 пока нет; см. 7.2, п. 16):
+**Требования к прошивке** (реализованы: DS18B20 в `temperature.cpp`, SHT41/SHTC3 в `box_sensor.cpp` — без библиотеки Adafruit, см. 7.2, п. 16):
 - DS18B20: `OneWire` + `DallasTemperature` на каждый GPIO; `setWaitForConversion(false)`, запуск обоих одновременно, чтение через 750 мс по `millis()`; разрешение 12 бит; −127 и 85 °C считать ошибкой.
 - SHT41: библиотека Adafruit SHT4x (для SHTC3 — Adafruit SHTC3); запуск измерения и чтение через `millis()` (~10 мс); выбор датчика макросом в `Application.h`; при влажности > ~85–90 % — редкий короткий нагрев (~1 с), температуру после нагрева несколько секунд не читать.
 - Опрос раз в минуту. MQTT — в стиле существующих топиков, например: `temperature/pipe`, `temperature/air`, `temperature/chip`, `box/temperature`, `box/humidity`, `box/dewpoint`, `temperature/status` (retained, по каждому датчику).
@@ -590,7 +590,8 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | `ads.cpp` | ADS1115 (gain 2/3, ±6.144 В, 0.1875 мВ/бит), одиночное преобразование с таймаутом 50 мс; при пропаже устройства повторная инициализация раз в минуту |
 | `pressure_sensor.cpp` | канал A0, `бар = В × 2`, 0–10 бар; публикация каждые 10 с (`%.2f`); статус датчика `pressure/status`: `ok`, `over_range` (≥ 10 бар), `no_adc` (3 неудачных чтения подряд), `out_of_range`, `unknown`; `pressure/get` — последнее измерение без нового чтения АЦП |
 | `water_flow.cpp` | прерывание по спаду на GPIO23 (`WATER_FLOW_GPIO`), подсчёт импульсов под `portMUX`; раз в 60 с — расход в л/мин (= импульсы / 476) и накопленный объём `flowtotal`; ответ на `flowrate/get` |
-| `temperature.cpp` | DS18B20 Pipe (GPIO5) и Air (GPIO15), по датчику на шину; опрос раз в 60 с без блокировки: запуск преобразования, чтение через 800 мс по `millis()`; `temperature/pipe`, `temperature/air` (`%.2f`); статусы `temperature/pipe/status`, `temperature/air/status` (retained): `unknown`, `ok`, `no_sensor`, `error` (3 неудачных чтения подряд: −127 или 85 °C); `temperature/get`. SHT41 — **не реализовано** |
+| `temperature.cpp` | DS18B20 Pipe (GPIO5) и Air (GPIO15), по датчику на шину; опрос раз в 60 с без блокировки: запуск преобразования, чтение через 800 мс по `millis()`; `temperature/pipe`, `temperature/air` (`%.2f`); статусы `temperature/pipe/status`, `temperature/air/status` (retained): `unknown`, `ok`, `no_sensor`, `error` (3 неудачных чтения подряд: −127 или 85 °C); `temperature/get` |
+| `box_sensor.cpp` | SHT41 (0x44) на шине I2C с ADS1115, напрямую через `Wire` без библиотеки Adafruit (она ждёт измерение через `delay()`, нагреватель — 1.1 с); SHTC3 для испытаний — `BOX_SENSOR` в `Application.h`. Опрос раз в 60 с без блокировки: команда измерения, чтение через 10 мс по `millis()`, проверка CRC; `box/temperature` (`%.2f`), `box/humidity` (`%.1f`), `box/dewpoint` (формула Магнуса); статус `box/status` (retained): `unknown`, `ok`, `no_sensor`, `error` (3 неудачи подряд); `box/get`. Нагреватель SHT41: 110 мВт, 1 с, после измерения с влажностью ≥ 90 %, не чаще раза в 30 мин; измерение после нагрева отбрасывается, следующее — через минуту |
 | `debug.cpp` | команды серийной консоли: `wifi_reconnect`, `wifi_set_11b/g/n/lr`, `wifi_info`, `mqtt_info`, `restart` |
 
 - Время: SNTP `pool.ntp.org`, часовой пояс Израиля.
@@ -664,7 +665,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 13. ✅ Реверс крана с паузой 20 мс (`VALVE_REVERSE_PAUSE_MS`, см. 4.4.1): без блокировки `loop()`, через `valve_handle()`.
 14. ✅ Чтение кнопок через IO34/IO35 реализовано в `valve.cpp`: `INPUT` без подтяжек, нажатие распознаётся при своём выходе = 0, маскирование 20 мс после выключения выхода, антидребезг 30 мс, публикация в `valve/state` и `valve/manual`. Кнопка приоритетнее прошивки: нажатие отменяет ход по команде, а команды при нажатой кнопке игнорируются. Удержание короче 7 с даёт `unknown`, если кран не был уже в этом положении.
 15. ✅ Комментарий в `Application.h` исправлен на `// ESP32: ESP-32U-38PINs:`; для ESP8266 добавлен `#error ESP8266 Not supported`. `WATER_FLOW_GPIO` = 23 — совпадает со схемой.
-16. ✅ DS18B20 реализованы в `temperature.cpp`: макросы `TEMP_PIPE_GPIO 5`, `TEMP_AIR_GPIO 15` в `Application.h`, библиотеки `paulstoffregen/OneWire`, `milesburton/DallasTemperature` в `platformio.ini`. ✅ `ADC_SDA_GPIO` / `ADC_SCL_GPIO` переименованы в `I2C_SDA_GPIO` / `I2C_SCL_GPIO`. SHT41 пока не поддерживается: нет библиотеки `adafruit/Adafruit SHT4x Library` (и `Adafruit SHTC3 Library` для испытаний). Требования — в 4.7.
+16. ✅ DS18B20 реализованы в `temperature.cpp`: макросы `TEMP_PIPE_GPIO 5`, `TEMP_AIR_GPIO 15` в `Application.h`, библиотеки `paulstoffregen/OneWire`, `milesburton/DallasTemperature` в `platformio.ini`. ✅ `ADC_SDA_GPIO` / `ADC_SCL_GPIO` переименованы в `I2C_SDA_GPIO` / `I2C_SCL_GPIO`. ✅ SHT41 (и SHTC3 для испытаний) реализованы в `box_sensor.cpp` напрямую через `Wire`, библиотеки Adafruit не нужны. Требования — в 4.7.
 
 ### 7.3 Расхождения в документации
 
@@ -694,7 +695,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | Периодическое чтение давления | ✅ | ✅ (10 с) |
 | Чтение давления по запросу | ✅ | ✅ (`pressure/get`) |
 | Температура трубы / воздуха в боксе | ✅ DS18B20 на J4/J5 (GPIO5/15) | ✅ `temperature.cpp` (раз в 60 с) |
-| Температура и влажность в коробке | ✅ SHT41 на J6 (I2C) | ❌ |
+| Температура и влажность в коробке | ✅ SHT41 на J6 (I2C) | ✅ `box_sensor.cpp` (раз в 60 с, точка росы) |
 | Внутренняя температура ESP32 | — | ❌ (только справочно, см. 4.7) |
 | Датчик протечки | ❌ | ❌ |
 | Логика обнаружения протечки и автозакрытия | — | ❌ |

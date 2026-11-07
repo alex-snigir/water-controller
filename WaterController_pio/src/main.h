@@ -41,6 +41,12 @@ time_t boottime_get(time_t now);
 #define TOPIC_TEMPERATURE_AIR          _AREA_ "/" _HOST_NAME_ "/temperature/air"
 #define TOPIC_TEMPERATURE_AIR_STATUS   _AREA_ "/" _HOST_NAME_ "/temperature/air/status"
 
+#define TOPIC_BOX_GET              _AREA_ "/" _HOST_NAME_ "/box/get"
+#define TOPIC_BOX_TEMPERATURE      _AREA_ "/" _HOST_NAME_ "/box/temperature"
+#define TOPIC_BOX_HUMIDITY         _AREA_ "/" _HOST_NAME_ "/box/humidity"
+#define TOPIC_BOX_DEWPOINT         _AREA_ "/" _HOST_NAME_ "/box/dewpoint"
+#define TOPIC_BOX_STATUS           _AREA_ "/" _HOST_NAME_ "/box/status"
+
 #define KEEP_ALIVE_MESSAGE_INTERVAL 60000L // 1 minute
 
 // Callbacks:
@@ -84,5 +90,11 @@ void temperature_handle();
 void temperature_get();
 void temperature_status_publish();
 void temperature_debug_info();
+
+void box_sensor_init(unsigned long interval);
+void box_sensor_handle();
+void box_get();
+void box_status_publish();
+void box_debug_info();
 
 #endif
