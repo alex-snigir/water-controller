@@ -36,8 +36,7 @@ static unsigned long box_phase_start = 0L;
 static unsigned long box_lastActivity = 0L;
 static unsigned long box_interval;          // Set by box_sensor_init()
 #if BOX_SENSOR == BOX_SENSOR_SHT41
-static unsigned long box_heater_last = 0L;
-static bool box_heater_used = false;
+static unsigned long box_heater_last = 0L;  // Set by box_sensor_init() so the heater may run at once
 #endif
 
 static int box_failures = 0;                // Failed readings in a row
@@ -47,19 +46,19 @@ static float box_temperature;               // Valid while box_status is "ok"
 static float box_humidity;
 static float box_dewpoint;
 
+// Retained, so consumers can tell a sensor fault from a quiet sensor
+void box_status_publish()
+{
+    mqttClient.publish(TOPIC_BOX_STATUS, box_status, true);
+}
+
 static void box_status_set(const char *status)
 {
     bool changed = strcmp(status, box_status) != 0;
     box_status = status;
     if (changed) {
-        mqttClient.publish(TOPIC_BOX_STATUS, box_status, true);
+        box_status_publish();
     }
-}
-
-// Retained, so consumers can tell a sensor fault from a quiet sensor
-void box_status_publish()
-{
-    mqttClient.publish(TOPIC_BOX_STATUS, box_status, true);
 }
 
 // CRC-8, polynomial 0x31, init 0xFF: the same for SHT4x and SHTC3
@@ -196,7 +195,7 @@ static void box_read()
 static bool box_heater_due(unsigned long now)
 {
     return strcmp(box_status, "ok") == 0 && box_humidity >= BOX_HEATER_RH &&
-           (!box_heater_used || now - box_heater_last >= BOX_HEATER_INTERVAL);
+           now - box_heater_last >= BOX_HEATER_INTERVAL;
 }
 #endif
 
@@ -204,6 +203,9 @@ void box_sensor_init(unsigned long interval)
 {
     box_interval = interval;
     box_lastActivity = millis() - interval; // First reading right away; Wire is started by ads_init()
+#if BOX_SENSOR == BOX_SENSOR_SHT41
+    box_heater_last = millis() - BOX_HEATER_INTERVAL;
+#endif
     Serial.printf("box_sensor_init: %s at 0x%02X\n", BOX_SENSOR == BOX_SENSOR_SHT41 ? "SHT41" : "SHTC3", BOX_I2C_ADDRESS);
 }
 
@@ -222,7 +224,6 @@ void box_sensor_handle()
         if (box_phase == BOX_IDLE && box_heater_due(now)) {
             if (box_command(SHT41_CMD_HEATER) == 0) {
                 Serial.println("Box sensor: heater on");
-                box_heater_used = true;
                 box_heater_last = now;
                 box_phase = BOX_HEATING;
                 box_phase_start = now;
@@ -266,10 +267,16 @@ void box_debug_info()
     Serial.println("\nbox_sensor.cpp:\n===============");
     Serial.printf("Sensor: %s at 0x%02X\n", BOX_SENSOR == BOX_SENSOR_SHT41 ? "SHT41" : "SHTC3", BOX_I2C_ADDRESS);
     Serial.printf("Status: %s, failures %d of %d\n", box_status, box_failures, BOX_MAX_FAILURES);
-    Serial.printf("Last: %.2f C, %.1f %%RH, dew point %.2f C\n", box_temperature, box_humidity, box_dewpoint);
+    if (strcmp(box_status, "ok") == 0) {
+        Serial.printf("Last: %.2f C, %.1f %%RH, dew point %.2f C\n", box_temperature, box_humidity, box_dewpoint);
+    }
 #if BOX_SENSOR == BOX_SENSOR_SHT41
-    if (box_heater_used) {
-        Serial.printf("Heater last used: %lu s ago\n", (millis() - box_heater_last) / 1000);
+    unsigned long since = millis() - box_heater_last;
+    if (since < BOX_HEATER_INTERVAL) {
+        Serial.printf("Heater: used %lu s ago\n", since / 1000);
+    }
+    else {
+        Serial.println("Heater: ready");
     }
 #endif
 }
