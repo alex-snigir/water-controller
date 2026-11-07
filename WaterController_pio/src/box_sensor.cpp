@@ -40,7 +40,7 @@ static unsigned long box_heater_last = 0L;  // Set by box_sensor_init() so the h
 #endif
 
 static int box_failures = 0;                // Failed readings in a row
-static bool box_failures_no_answer;         // All of them were an unanswered address
+static int box_no_answer = 0;               // Unanswered address in a row
 static const char *box_status = "unknown";  // Until the first reading
 static float box_temperature;               // Valid while box_status is "ok"
 static float box_humidity;
@@ -126,21 +126,18 @@ static bool box_read_raw(uint16_t *rawT, uint16_t *rawRH)
 }
 
 // A NACK also comes from a present sensor (busy, or a transfer spoiled by motor noise):
-// "no_sensor" only if the address went unanswered every time in a row.
+// "no_sensor" only if the address went unanswered the last BOX_MAX_FAILURES times.
+// The counters run on until a good reading, so a lasting fault is not logged as a one-off.
 static void box_failed(bool noAnswer, const char *reason)
 {
-    if (box_failures == 0) {
-        box_failures_no_answer = true;
-    }
-    box_failures_no_answer = box_failures_no_answer && noAnswer;
+    box_no_answer = noAnswer ? box_no_answer + 1 : 0;
     box_failures++;
     if (box_failures < BOX_MAX_FAILURES) {
         Serial.printf("Box sensor: %s, sample skipped (%d/%d)\n", reason, box_failures, BOX_MAX_FAILURES);
         return;
     }
-    const char *status = box_failures_no_answer ? "no_sensor" : "error";
-    Serial.printf("Box sensor: %s, marked as %s\n", reason, status);
-    box_failures = 0;
+    const char *status = box_no_answer >= BOX_MAX_FAILURES ? "no_sensor" : "error";
+    Serial.printf("Box sensor: %s, status %s (%d failures in a row)\n", reason, status, box_failures);
     box_status_set(status);
 }
 
@@ -181,6 +178,7 @@ static void box_read()
     float rh = 100.0f * rawRH / 65536.0f;
 #endif
     box_failures = 0;
+    box_no_answer = 0;
     box_temperature = t;
     box_humidity = constrain(rh, 0.0f, 100.0f);
     box_dewpoint = box_dewpoint_calc(box_temperature, box_humidity);
@@ -273,7 +271,7 @@ void box_debug_info()
 {
     Serial.println("\nbox_sensor.cpp:\n===============");
     Serial.printf("Sensor: %s at 0x%02X\n", BOX_SENSOR == BOX_SENSOR_SHT41 ? "SHT41" : "SHTC3", BOX_I2C_ADDRESS);
-    Serial.printf("Status: %s, failures %d of %d\n", box_status, box_failures, BOX_MAX_FAILURES);
+    Serial.printf("Status: %s, failures in a row %d (status changes at %d)\n", box_status, box_failures, BOX_MAX_FAILURES);
     if (strcmp(box_status, "ok") == 0) {
         Serial.printf("Last: %.2f C, %.1f %%RH, dew point %.2f C\n", box_temperature, box_humidity, box_dewpoint);
     }
