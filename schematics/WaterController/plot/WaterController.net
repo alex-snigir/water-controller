@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Data\\Design\\Electronics\\SmartHome Dev Projects\\WaterController\\schematics\\WaterController\\WaterController.kicad_sch")
-		(date "2026-10-30T15:14:43")
+		(date "2026-11-07T22:31:19")
 		(tool "Eeschema 10.0.3")
 		(sheet
 			(number "1")
@@ -12,7 +12,7 @@
 				(title "Water Controller")
 				(company "Alex Snigir")
 				(rev)
-				(date)
+				(date "2026-11-07")
 				(source "WaterController.kicad_sch")
 				(comment
 					(number "1")
@@ -1227,11 +1227,11 @@
 		(comp
 			(ref "J1")
 			(value "Conn_01x02")
-			(footprint "Connector_JST:JST_XH_S2B-XH-A_1x02_P2.50mm_Horizontal")
+			(footprint "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical")
 			(description "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
 			(fields
 				(field
-					(name "Footprint") "Connector_JST:JST_XH_S2B-XH-A_1x02_P2.50mm_Horizontal")
+					(name "Footprint") "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical")
 				(field
 					(name "Datasheet")
 				)
@@ -1281,11 +1281,11 @@
 		(comp
 			(ref "J2")
 			(value "Conn_01x03")
-			(footprint "Connector_JST:JST_XH_S3B-XH-A_1x03_P2.50mm_Horizontal")
+			(footprint "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical")
 			(description "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
 			(fields
 				(field
-					(name "Footprint") "Connector_JST:JST_XH_S3B-XH-A_1x03_P2.50mm_Horizontal")
+					(name "Footprint") "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical")
 				(field
 					(name "Datasheet")
 				)
@@ -1338,11 +1338,11 @@
 		(comp
 			(ref "J3")
 			(value "Conn_01x03")
-			(footprint "Connector_JST:JST_XH_S3B-XH-A_1x03_P2.50mm_Horizontal")
+			(footprint "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical")
 			(description "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
 			(fields
 				(field
-					(name "Footprint") "Connector_JST:JST_XH_S3B-XH-A_1x03_P2.50mm_Horizontal")
+					(name "Footprint") "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical")
 				(field
 					(name "Datasheet")
 				)
@@ -1387,6 +1387,180 @@
 						)
 						(pin
 							(num "3")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J4")
+			(value "Conn_01x03")
+			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
+			(description "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			(fields
+				(field
+					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(libsource
+				(lib "Connector_Generic")
+				(part "Conn_01x03")
+				(description "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(property
+				(name "Sheetname")
+				(value "Root")
+			)
+			(property
+				(name "Sheetfile")
+				(value "WaterController.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "connector")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Connector*:*_1x??_*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "c890c7cb-9c01-4f5e-afb6-9add1774ed85")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J5")
+			(value "Conn_01x03")
+			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
+			(description "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			(fields
+				(field
+					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(libsource
+				(lib "Connector_Generic")
+				(part "Conn_01x03")
+				(description "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(property
+				(name "Sheetname")
+				(value "Root")
+			)
+			(property
+				(name "Sheetfile")
+				(value "WaterController.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "connector")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Connector*:*_1x??_*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "7d1c6783-90c0-4b95-b6bf-5bf61d97dfa6")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J6")
+			(value "Conn_01x04")
+			(footprint "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical")
+			(description "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			(fields
+				(field
+					(name "Footprint") "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(libsource
+				(lib "Connector_Generic")
+				(part "Conn_01x04")
+				(description "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(property
+				(name "Sheetname")
+				(value "Root")
+			)
+			(property
+				(name "Sheetfile")
+				(value "WaterController.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "connector")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Connector*:*_1x??_*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "4b9ba257-5e4b-4126-8463-f6237c02667b")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
 						)
 					)
 				)
@@ -2201,6 +2375,114 @@
 			)
 		)
 		(comp
+			(ref "R15")
+			(value "4.7K")
+			(footprint "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+			(description "Resistor, small symbol")
+			(fields
+				(field
+					(name "Footprint") "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Resistor, small symbol")
+			)
+			(libsource
+				(lib "Device")
+				(part "R_Small")
+				(description "Resistor, small symbol")
+			)
+			(property
+				(name "Sheetname")
+				(value "Root")
+			)
+			(property
+				(name "Sheetfile")
+				(value "WaterController.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "4a9de979-bb93-4c44-b6ec-ca1698fa2735")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R16")
+			(value "4.7K")
+			(footprint "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+			(description "Resistor, small symbol")
+			(fields
+				(field
+					(name "Footprint") "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Resistor, small symbol")
+			)
+			(libsource
+				(lib "Device")
+				(part "R_Small")
+				(description "Resistor, small symbol")
+			)
+			(property
+				(name "Sheetname")
+				(value "Root")
+			)
+			(property
+				(name "Sheetfile")
+				(value "WaterController.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "e27a0a6b-ada6-462e-965c-dc9d3d0002d0")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "SW1")
 			(value "SW_Push")
 			(footprint "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical")
@@ -2728,6 +3010,50 @@
 				(pin
 					(num "3")
 					(name "Pin_3")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Connector_Generic")
+			(part "Conn_01x04")
+			(description "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			(footprints
+				(fp "Connector*:*_1x??_*")
+			)
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "Conn_01x04")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "Pin_1")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "Pin_2")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "Pin_3")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "Pin_4")
 					(type "passive")
 				)
 			)
@@ -3438,6 +3764,24 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "J4")
+				(pin "3")
+				(pinfunction "Pin_3_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "J5")
+				(pin "3")
+				(pinfunction "Pin_3_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "J6")
+				(pin "1")
+				(pinfunction "Pin_1_1")
+				(pintype "passive")
+			)
+			(node
 				(ref "R10")
 				(pin "2")
 				(pintype "passive")
@@ -3449,6 +3793,16 @@
 			)
 			(node
 				(ref "R12")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R15")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R16")
 				(pin "2")
 				(pintype "passive")
 			)
@@ -3560,8 +3914,58 @@
 		)
 		(net
 			(code "4")
+			(name "/IO5")
+			(class "Default")
+			(node
+				(ref "J4")
+				(pin "1")
+				(pinfunction "Pin_1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R15")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "29")
+				(pinfunction "(*)IO5_29")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "5")
+			(name "/IO15")
+			(class "Default")
+			(node
+				(ref "J5")
+				(pin "1")
+				(pinfunction "Pin_1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R16")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "23")
+				(pinfunction "(*)IO15_23")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "6")
 			(name "/IO21")
 			(class "Default")
+			(node
+				(ref "J6")
+				(pin "4")
+				(pinfunction "Pin_4_4")
+				(pintype "passive")
+			)
 			(node
 				(ref "U1")
 				(pin "33")
@@ -3576,9 +3980,15 @@
 			)
 		)
 		(net
-			(code "5")
+			(code "7")
 			(name "/IO22")
 			(class "Default")
+			(node
+				(ref "J6")
+				(pin "3")
+				(pinfunction "Pin_3_3")
+				(pintype "passive")
+			)
 			(node
 				(ref "U1")
 				(pin "36")
@@ -3593,7 +4003,7 @@
 			)
 		)
 		(net
-			(code "6")
+			(code "8")
 			(name "/IO34")
 			(class "Default")
 			(node
@@ -3609,7 +4019,7 @@
 			)
 		)
 		(net
-			(code "7")
+			(code "9")
 			(name "/IO35")
 			(class "Default")
 			(node
@@ -3625,7 +4035,58 @@
 			)
 		)
 		(net
-			(code "8")
+			(code "10")
+			(name "/Valve_Black")
+			(class "Default")
+			(node
+				(ref "D10")
+				(pin "2")
+				(pinfunction "A_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "D9")
+				(pin "1")
+				(pinfunction "K_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "2")
+				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "6")
+				(pinfunction "OUT2_6")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "11")
+			(name "/Valve_Red")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "1")
+				(pinfunction "Pin_1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R14")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "5")
+				(pinfunction "OUT1_5")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "12")
 			(name "/Water_Flow")
 			(class "Default")
 			(node
@@ -3646,7 +4107,7 @@
 			)
 		)
 		(net
-			(code "9")
+			(code "13")
 			(name "/valve_close")
 			(class "Default")
 			(node
@@ -3663,7 +4124,7 @@
 			)
 		)
 		(net
-			(code "10")
+			(code "14")
 			(name "/valve_open")
 			(class "Default")
 			(node
@@ -3680,7 +4141,7 @@
 			)
 		)
 		(net
-			(code "11")
+			(code "15")
 			(name "GND")
 			(class "Default")
 			(node
@@ -3756,6 +4217,24 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "J4")
+				(pin "2")
+				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J5")
+				(pin "2")
+				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J6")
+				(pin "2")
+				(pinfunction "Pin_2_2")
+				(pintype "passive")
+			)
+			(node
 				(ref "MOD1")
 				(pin "2")
 				(pinfunction "IN-_2")
@@ -3825,7 +4304,7 @@
 			)
 		)
 		(net
-			(code "12")
+			(code "16")
 			(name "Net-(C9-Pad1)")
 			(class "Default")
 			(node
@@ -3857,7 +4336,7 @@
 			)
 		)
 		(net
-			(code "13")
+			(code "17")
 			(name "Net-(D2-A)")
 			(class "Default")
 			(node
@@ -3874,7 +4353,7 @@
 			)
 		)
 		(net
-			(code "14")
+			(code "18")
 			(name "Net-(D3-K)")
 			(class "Default")
 			(node
@@ -3912,7 +4391,7 @@
 			)
 		)
 		(net
-			(code "15")
+			(code "19")
 			(name "Net-(D4-K)")
 			(class "Default")
 			(node
@@ -3950,7 +4429,7 @@
 			)
 		)
 		(net
-			(code "16")
+			(code "20")
 			(name "Net-(D5-A)")
 			(class "Default")
 			(node
@@ -3966,7 +4445,7 @@
 			)
 		)
 		(net
-			(code "17")
+			(code "21")
 			(name "Net-(D5-K)")
 			(class "Default")
 			(node
@@ -3983,7 +4462,7 @@
 			)
 		)
 		(net
-			(code "18")
+			(code "22")
 			(name "Net-(D6-A)")
 			(class "Default")
 			(node
@@ -3999,7 +4478,7 @@
 			)
 		)
 		(net
-			(code "19")
+			(code "23")
 			(name "Net-(D6-K)")
 			(class "Default")
 			(node
@@ -4016,7 +4495,7 @@
 			)
 		)
 		(net
-			(code "20")
+			(code "24")
 			(name "Net-(D7-A)")
 			(class "Default")
 			(node
@@ -4032,7 +4511,7 @@
 			)
 		)
 		(net
-			(code "21")
+			(code "25")
 			(name "Net-(D7-K)")
 			(class "Default")
 			(node
@@ -4049,7 +4528,7 @@
 			)
 		)
 		(net
-			(code "22")
+			(code "26")
 			(name "Net-(D8-A)")
 			(class "Default")
 			(node
@@ -4065,7 +4544,7 @@
 			)
 		)
 		(net
-			(code "23")
+			(code "27")
 			(name "Net-(D8-K)")
 			(class "Default")
 			(node
@@ -4082,36 +4561,7 @@
 			)
 		)
 		(net
-			(code "24")
-			(name "Net-(D10-A)")
-			(class "Default")
-			(node
-				(ref "D10")
-				(pin "2")
-				(pinfunction "A_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "D9")
-				(pin "1")
-				(pinfunction "K_1")
-				(pintype "passive")
-			)
-			(node
-				(ref "J1")
-				(pin "2")
-				(pinfunction "Pin_2_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "U3")
-				(pin "6")
-				(pinfunction "OUT2_6")
-				(pintype "output")
-			)
-		)
-		(net
-			(code "25")
+			(code "28")
 			(name "Net-(D10-K)")
 			(class "Default")
 			(node
@@ -4133,29 +4583,7 @@
 			)
 		)
 		(net
-			(code "26")
-			(name "Net-(J1-Pin_1)")
-			(class "Default")
-			(node
-				(ref "J1")
-				(pin "1")
-				(pinfunction "Pin_1_1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R14")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "U3")
-				(pin "5")
-				(pinfunction "OUT1_5")
-				(pintype "output")
-			)
-		)
-		(net
-			(code "27")
+			(code "29")
 			(name "Net-(J2-Pin_3)")
 			(class "Default")
 			(node
@@ -4176,7 +4604,7 @@
 			)
 		)
 		(net
-			(code "28")
+			(code "30")
 			(name "Net-(J3-Pin_3)")
 			(class "Default")
 			(node
@@ -4192,7 +4620,7 @@
 			)
 		)
 		(net
-			(code "29")
+			(code "31")
 			(name "Net-(U1-IO23)")
 			(class "Default")
 			(node
@@ -4209,7 +4637,7 @@
 			)
 		)
 		(net
-			(code "30")
+			(code "32")
 			(name "Net-(U2-HV2)")
 			(class "Default")
 			(node
@@ -4226,7 +4654,7 @@
 			)
 		)
 		(net
-			(code "31")
+			(code "33")
 			(name "Net-(U2-HV3)")
 			(class "Default")
 			(node
@@ -4243,7 +4671,7 @@
 			)
 		)
 		(net
-			(code "32")
+			(code "34")
 			(name "Net-(U4-A0)")
 			(class "Default")
 			(node
@@ -4264,7 +4692,7 @@
 			)
 		)
 		(net
-			(code "33")
+			(code "35")
 			(name "unconnected-(U1-(*)IO0-Pad25)")
 			(class "Default")
 			(node
@@ -4275,35 +4703,13 @@
 			)
 		)
 		(net
-			(code "34")
+			(code "36")
 			(name "unconnected-(U1-(*)IO2-Pad24)")
 			(class "Default")
 			(node
 				(ref "U1")
 				(pin "24")
 				(pinfunction "(*)IO2_24")
-				(pintype "bidirectional+no_connect")
-			)
-		)
-		(net
-			(code "35")
-			(name "unconnected-(U1-(*)IO5-Pad29)")
-			(class "Default")
-			(node
-				(ref "U1")
-				(pin "29")
-				(pinfunction "(*)IO5_29")
-				(pintype "bidirectional+no_connect")
-			)
-		)
-		(net
-			(code "36")
-			(name "unconnected-(U1-(*)IO15-Pad23)")
-			(class "Default")
-			(node
-				(ref "U1")
-				(pin "23")
-				(pinfunction "(*)IO15_23")
 				(pintype "bidirectional+no_connect")
 			)
 		)

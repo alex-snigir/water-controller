@@ -8,7 +8,7 @@ H/W devices:
 	CR01 имеет концевики
     Power supply: 12V
 	Power: <2W
-	Full opening/closing time: 5 sec
+	Full opening/closing time: 5 sec (полный ход)
     Working current: <80mA
   
   Water Flow Sensor:
@@ -38,6 +38,7 @@ Power Consumption:
   4.5 мА / 12V   - LED5/LED6 только во время команды на кран
    15 mA /  5V   - YF-B10 Water Flow
    ?? mA /  ?V   - Система полива, Netafim Valves
+   ~3 mA / 3V3   - 2x DS18B20 и SHT41
 		  
   Valve control: Relay version: (not used)
   18 mA / 12V - Direction Relay, after DC-DC 12V->5V - 30mA/5V
@@ -52,8 +53,8 @@ MC:
 
   GPIO:
   =====
-  GPIO 21+ (SDA)  - LogicLevel LV3 -> HV3 -> SDA ADS1115
-  GPIO 22+ (SCL)  - LogicLevel LV2 -> HV2 -> SCL ADS1115
+  GPIO 21+ (SDA)  - LogicLevel LV3 -> HV3 -> SDA ADS1115 (A0 Pressure Sensor);   SDA SHT41 (Box Temperature/Humidity sensor)
+  GPIO 22+ (SCL)  - LogicLevel LV2 -> HV2 -> SCL ADS1115                     ;   SCL SHT41 (Box Temperature/Humidity sensor)
   GPIO 32+        - LED: LED1 WiFi/MQTT Status (Blue) (pull-up)
   GPIO 23+        - Water Flow: LogicLevel LV1 -> HV1 -> J3 (interrupt attached)
   GPIO ??         - AC Power detected (in case of UPS used) (pull-up)             <<- What is it??
@@ -66,8 +67,8 @@ MC:
   GPIO 19+        - Valve direction (pull-down)              HIGH: Open      LOW: Close
   GPIO 18+        - Valve power on (pull-down)               HIGH: Power-ON  LOW: Power-OFF
 
-  GPIO ??         - Water Pipe temperature (DS18B20)
-  GPIO ??         - Ambient temperature (DS18B20)
+  GPIO 05+        - Water Pipe temperature (DS18B20): J4 (DQ/GND/3V3), pull-up R15 4.7K
+  GPIO 15+        - Air temperature (DS18B20):        J5 (DQ/GND/3V3), pull-up R16 4.7K
   GPIO ??         - Сенсор протечки
   GPIO 34+        - Physical button/IN1 (open valve) status              <<- Pure INPUT GPIO can be used
   GPIO 35+        - Physical button/IN2 (close valve) status             <<- Pure INPUT GPIO can be used
@@ -77,7 +78,13 @@ MC:
   GPIO 26+        - LED: LED4 Error (Red)  (pull-up)
   GPIO 16         - reserved for Serial2 RX to connect 2nd ESP
   GPIO 17         - reserved for Serial2 TX to connect 2nd ESP
-  
+
+I2C Addresses:
+==============
+  0x48 - ADS1115
+  0x44 - SHT41-AD1B
+  0x45 - SHT41-BD1B
+  0x70 - SHTC3 для испытаний
   
 Requirements:
 =============
@@ -96,9 +103,10 @@ Requirements:
     > Realtime Water Pressure Sensor read
   Temperatures:
   =============
-    > Read Water Pipe temperature
-    > Read ambient temperature
-    > ESP chip internal Temperature
+    > Read Water Pipe temperature DS18B20
+    > Read Air temperature DS18B20
+	> Box Temperature/Humidity SHT41
+    > ESP chip internal Temperature (ESP32 internal)
   Notifications:
   ==============
     - MQTT connected

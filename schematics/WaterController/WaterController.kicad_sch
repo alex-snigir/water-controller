@@ -6,6 +6,7 @@
 	(paper "A4")
 	(title_block
 		(title "Water Controller")
+		(date "2026-11-07")
 		(company "Alex Snigir")
 	)
 	(lib_symbols
@@ -344,6 +345,222 @@
 						)
 					)
 					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Connector_Generic:Conn_01x04"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x04"
+				(at 0 -7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_01x04_1_1"
+				(rectangle
+					(start -1.27 3.81)
+					(end 1.27 -6.35)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -4.953)
+					(end 0 -5.207)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -5.08 0)
+					(length 3.81)
+					(name "Pin_4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3515,7 +3732,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "Vavle"
+	(text "Valve"
 		(exclude_from_sim no)
 		(at 275.844 118.11 0)
 		(effects
@@ -3538,6 +3755,30 @@
 			)
 		)
 		(uuid "0cb7ded0-f780-47ed-bd6e-1d69f65b59a1")
+	)
+	(text "SHT41"
+		(exclude_from_sim no)
+		(at 104.648 161.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "2be0e54b-d0dd-46ff-ab80-c3e470bc4c18")
+	)
+	(text "DS18B20"
+		(exclude_from_sim no)
+		(at 68.834 158.496 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "3789aa5c-42a2-43d0-b034-f9e8bddc091b")
 	)
 	(text "Water Flow"
 		(exclude_from_sim no)
@@ -3563,6 +3804,18 @@
 		)
 		(uuid "40816961-5684-47ae-a0ac-615cf13d0f58")
 	)
+	(text "Pipe Temperature"
+		(exclude_from_sim no)
+		(at 36.83 155.956 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "40aeaf6a-1951-4577-b668-751a77be986d")
+	)
 	(text "Level Shifter"
 		(exclude_from_sim no)
 		(at 179.578 74.168 0)
@@ -3575,7 +3828,7 @@
 		)
 		(uuid "57330430-5f6d-4b19-9a40-cd3e09747fcd")
 	)
-	(text "Preasure Sensor"
+	(text "Pressure Sensor"
 		(exclude_from_sim no)
 		(at 267.208 63.5 0)
 		(effects
@@ -3586,6 +3839,18 @@
 			)
 		)
 		(uuid "57d3c810-1ec1-4abd-b9fc-d8de5673e885")
+	)
+	(text "Air Temperature"
+		(exclude_from_sim no)
+		(at 68.326 155.956 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "5d37afbe-e4c0-4a6d-bb0a-54437f6cc719")
 	)
 	(text "ADC Module"
 		(exclude_from_sim no)
@@ -3611,6 +3876,18 @@
 		)
 		(uuid "a00d6ae9-16cc-4099-983a-7f9b68d3bc55")
 	)
+	(text "Box Temperature/Humidity"
+		(exclude_from_sim no)
+		(at 105.918 158.496 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "a37d6ee1-1b07-4883-93b1-028454fb9aae")
+	)
 	(text "Close"
 		(exclude_from_sim no)
 		(at 196.088 103.378 0)
@@ -3623,11 +3900,29 @@
 		)
 		(uuid "b62b499e-60bc-43ab-a01a-df904f23711e")
 	)
+	(text "DS18B20"
+		(exclude_from_sim no)
+		(at 36.576 158.242 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "c7739a1f-f89c-4c97-8d63-dafa32479b69")
+	)
 	(junction
 		(at 139.7 80.01)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0526647e-e9e8-4e37-94f2-2250d7a2e75b")
+	)
+	(junction
+		(at 73.66 170.18)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "089be9b1-d1db-45db-90d8-d4a3a150f24d")
 	)
 	(junction
 		(at 265.43 104.14)
@@ -3744,6 +4039,18 @@
 		(uuid "7a604642-20b9-4d8f-b3c9-c7cba9f4658f")
 	)
 	(junction
+		(at 39.37 170.18)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7d149598-6bf9-445f-acbc-2d3341bab428")
+	)
+	(junction
+		(at 39.37 184.15)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8263ceb4-83b5-4366-9740-e9c3328520e2")
+	)
+	(junction
 		(at 104.14 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3778,6 +4085,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a0889247-762e-453f-8086-da7ffd2e1102")
+	)
+	(junction
+		(at 73.66 184.15)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a983b92c-2f08-48a2-a6b0-4745d0b5482a")
 	)
 	(junction
 		(at 204.47 105.41)
@@ -3890,10 +4203,6 @@
 		(uuid "0dd50e89-9b46-4015-bcf4-177aaa6757e6")
 	)
 	(no_connect
-		(at 139.7 109.22)
-		(uuid "1353ba82-8639-4650-b8db-92c7443c5f69")
-	)
-	(no_connect
 		(at 109.22 116.84)
 		(uuid "14419564-160a-4d25-8d82-6eeeb3ba311f")
 	)
@@ -3948,10 +4257,6 @@
 	(no_connect
 		(at 109.22 93.98)
 		(uuid "98df54aa-e585-4c48-a1d2-2770c1d80fd5")
-	)
-	(no_connect
-		(at 139.7 124.46)
-		(uuid "9defe00f-4795-4d47-8f56-835b508b26a3")
 	)
 	(no_connect
 		(at 109.22 111.76)
@@ -4017,6 +4322,16 @@
 	)
 	(wire
 		(pts
+			(xy 39.37 170.18) (xy 34.29 170.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "08e899ee-7bfa-42c0-82b8-b821715d6f42")
+	)
+	(wire
+		(pts
 			(xy 265.43 107.95) (xy 264.16 107.95)
 		)
 		(stroke
@@ -4024,6 +4339,16 @@
 			(type default)
 		)
 		(uuid "0915b299-b7e7-485c-8287-d3dbc5f090b7")
+	)
+	(wire
+		(pts
+			(xy 114.3 176.53) (xy 107.95 176.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "09ad71ea-1b6c-4179-958e-1bcbf6b41f6d")
 	)
 	(wire
 		(pts
@@ -4047,6 +4372,16 @@
 	)
 	(wire
 		(pts
+			(xy 73.66 168.91) (xy 73.66 170.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0b24c9bb-79b2-41aa-8fb9-9179e33dfbef")
+	)
+	(wire
+		(pts
 			(xy 67.31 97.79) (xy 67.31 104.14)
 		)
 		(stroke
@@ -4064,6 +4399,16 @@
 			(type default)
 		)
 		(uuid "0c744cf5-7bb7-4272-b66a-0155944f5ff7")
+	)
+	(wire
+		(pts
+			(xy 68.58 170.18) (xy 68.58 179.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0d6bf66b-0b8e-48c1-80a6-48f053a705c8")
 	)
 	(wire
 		(pts
@@ -4134,6 +4479,16 @@
 			(type default)
 		)
 		(uuid "1a12bd9f-a7f3-4b66-8915-f5f2cfc80b89")
+	)
+	(wire
+		(pts
+			(xy 31.75 184.15) (xy 39.37 184.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1a2050f5-6642-4f73-b562-898a644c2220")
 	)
 	(wire
 		(pts
@@ -4327,6 +4682,26 @@
 	)
 	(wire
 		(pts
+			(xy 107.95 179.07) (xy 110.49 179.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3b8e83c2-77b4-482c-93c0-20233b87abd9")
+	)
+	(wire
+		(pts
+			(xy 39.37 168.91) (xy 39.37 170.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40282321-74fd-43a9-9af6-4be1e05871ed")
+	)
+	(wire
+		(pts
 			(xy 247.65 128.27) (xy 252.73 128.27)
 		)
 		(stroke
@@ -4374,6 +4749,16 @@
 			(type default)
 		)
 		(uuid "43a98d30-566e-4e6b-8c66-299eaae0e1b2")
+	)
+	(wire
+		(pts
+			(xy 114.3 173.99) (xy 107.95 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "43cc2ac6-a994-4c5a-85f5-daf70cd55f8f")
 	)
 	(wire
 		(pts
@@ -4434,6 +4819,16 @@
 			(type default)
 		)
 		(uuid "4f83a8fe-fa11-49af-abaa-1f6919d1f78e")
+	)
+	(wire
+		(pts
+			(xy 39.37 184.15) (xy 44.45 184.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ff600b8-582f-4dc4-acc9-9e640452f1f5")
 	)
 	(wire
 		(pts
@@ -4567,6 +4962,16 @@
 	)
 	(wire
 		(pts
+			(xy 139.7 124.46) (xy 148.59 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6440bd90-52cd-4a3d-9467-1e46cca67f79")
+	)
+	(wire
+		(pts
 			(xy 49.53 97.79) (xy 49.53 106.68)
 		)
 		(stroke
@@ -4667,6 +5072,16 @@
 	)
 	(wire
 		(pts
+			(xy 39.37 179.07) (xy 39.37 184.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6c4acdb4-97c8-4dc0-8018-b62d434a4c89")
+	)
+	(wire
+		(pts
 			(xy 257.81 104.14) (xy 257.81 100.33)
 		)
 		(stroke
@@ -4734,6 +5149,16 @@
 			(type default)
 		)
 		(uuid "7ca16eba-82c0-476d-8bbf-886ace81f12b")
+	)
+	(wire
+		(pts
+			(xy 73.66 170.18) (xy 68.58 170.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7d4f83e0-84a9-4dd1-b28d-144ea398b80a")
 	)
 	(wire
 		(pts
@@ -4897,6 +5322,16 @@
 	)
 	(wire
 		(pts
+			(xy 39.37 170.18) (xy 39.37 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96adf101-fbcd-4d61-bee4-b83d7a05098e")
+	)
+	(wire
+		(pts
 			(xy 257.81 104.14) (xy 257.81 107.95)
 		)
 		(stroke
@@ -5057,6 +5492,16 @@
 	)
 	(wire
 		(pts
+			(xy 73.66 170.18) (xy 73.66 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b779ab39-dec7-45e0-b934-8efca1b58007")
+	)
+	(wire
+		(pts
 			(xy 213.36 73.66) (xy 215.9 73.66)
 		)
 		(stroke
@@ -5094,6 +5539,16 @@
 			(type default)
 		)
 		(uuid "bd0b3ec8-9a6f-497f-8eef-d9874eabc440")
+	)
+	(wire
+		(pts
+			(xy 73.66 179.07) (xy 73.66 184.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd335504-b6ce-486d-9309-a02cfc3087c9")
 	)
 	(wire
 		(pts
@@ -5197,6 +5652,16 @@
 	)
 	(wire
 		(pts
+			(xy 110.49 181.61) (xy 107.95 181.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ce40f037-c96d-4458-82e9-ebe17e41a908")
+	)
+	(wire
+		(pts
 			(xy 204.47 111.76) (xy 204.47 113.03)
 		)
 		(stroke
@@ -5204,6 +5669,16 @@
 			(type default)
 		)
 		(uuid "ce427b01-c0bb-4a32-b58e-0a167edbe958")
+	)
+	(wire
+		(pts
+			(xy 73.66 184.15) (xy 78.74 184.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cfffc7b0-6694-4128-bcc5-2f56d6abadc7")
 	)
 	(wire
 		(pts
@@ -5304,6 +5779,16 @@
 			(type default)
 		)
 		(uuid "da653e7d-e99d-4bf7-9041-4df9b151f8a1")
+	)
+	(wire
+		(pts
+			(xy 66.04 184.15) (xy 73.66 184.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "da9d7b50-4f95-4639-afd2-b81c84a7f6b7")
 	)
 	(wire
 		(pts
@@ -5457,6 +5942,16 @@
 	)
 	(wire
 		(pts
+			(xy 139.7 109.22) (xy 148.59 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e5b4dd00-6319-4207-bbbe-2a527a73839f")
+	)
+	(wire
+		(pts
 			(xy 240.03 68.58) (xy 242.57 68.58)
 		)
 		(stroke
@@ -5537,6 +6032,16 @@
 	)
 	(wire
 		(pts
+			(xy 68.58 179.07) (xy 66.04 179.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f02c1b34-94b4-4a14-8304-92e94cf6618e")
+	)
+	(wire
+		(pts
 			(xy 242.57 73.66) (xy 245.11 73.66)
 		)
 		(stroke
@@ -5607,6 +6112,16 @@
 	)
 	(wire
 		(pts
+			(xy 31.75 179.07) (xy 34.29 179.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f61d0fc0-345f-4dcd-be17-b60b9da605af")
+	)
+	(wire
+		(pts
 			(xy 91.44 132.08) (xy 97.79 132.08)
 		)
 		(stroke
@@ -5654,6 +6169,16 @@
 			(type default)
 		)
 		(uuid "fc389ed5-b1e3-4fa9-ae3b-7e64f5a95019")
+	)
+	(wire
+		(pts
+			(xy 34.29 170.18) (xy 34.29 179.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fcb07483-e426-4531-bab8-4e79e63e9cd8")
 	)
 	(wire
 		(pts
@@ -5735,6 +6260,26 @@
 		)
 		(uuid "2f7699fb-d9d8-4d68-a53a-cb3a1855a552")
 	)
+	(label "Valve_Red"
+		(at 265.43 123.19 180)
+		(effects
+			(font
+				(size 1.016 1.016)
+			)
+			(justify right bottom)
+		)
+		(uuid "4d707535-426e-4af3-a15c-f6bdd92b881d")
+	)
+	(label "IO15"
+		(at 148.59 124.46 180)
+		(effects
+			(font
+				(size 1.016 1.016)
+			)
+			(justify right bottom)
+		)
+		(uuid "666b824c-44a0-4878-8e84-8568c794fd51")
+	)
 	(label "IO22"
 		(at 148.59 91.44 180)
 		(effects
@@ -5744,6 +6289,36 @@
 			(justify right bottom)
 		)
 		(uuid "7277106f-d7b6-4db4-a158-a841da22aee1")
+	)
+	(label "IO5"
+		(at 44.45 184.15 180)
+		(effects
+			(font
+				(size 1.016 1.016)
+			)
+			(justify right bottom)
+		)
+		(uuid "74227fb3-ccaf-4f6a-aaab-c8c42a11d654")
+	)
+	(label "Valve_Black"
+		(at 265.43 125.73 180)
+		(effects
+			(font
+				(size 1.016 1.016)
+			)
+			(justify right bottom)
+		)
+		(uuid "94e657f2-d1e2-4bd6-a759-483bd3525273")
+	)
+	(label "IO21"
+		(at 114.3 173.99 180)
+		(effects
+			(font
+				(size 1.016 1.016)
+			)
+			(justify right bottom)
+		)
+		(uuid "a0729e02-02ee-45f1-b21d-4954ba36de12")
 	)
 	(label "valve_open"
 		(at 151.13 104.14 180)
@@ -5755,6 +6330,16 @@
 		)
 		(uuid "a200acc1-0fb0-4108-8dd2-6fc3a2495a97")
 	)
+	(label "IO15"
+		(at 78.74 184.15 180)
+		(effects
+			(font
+				(size 1.016 1.016)
+			)
+			(justify right bottom)
+		)
+		(uuid "b84c80fe-1709-4d21-bd8e-605ca094f767")
+	)
 	(label "IO34"
 		(at 175.26 123.19 0)
 		(effects
@@ -5765,6 +6350,16 @@
 		)
 		(uuid "bbd48d95-ac39-4c44-9ab8-499ca65d835e")
 	)
+	(label "IO22"
+		(at 114.3 176.53 180)
+		(effects
+			(font
+				(size 1.016 1.016)
+			)
+			(justify right bottom)
+		)
+		(uuid "cb960572-c85e-413c-b64e-024bf4dc7b17")
+	)
 	(label "IO34"
 		(at 100.33 96.52 0)
 		(effects
@@ -5774,6 +6369,16 @@
 			(justify left bottom)
 		)
 		(uuid "dbdb1aed-a06e-409b-9e70-4a2c63d8d4f1")
+	)
+	(label "IO5"
+		(at 148.59 109.22 180)
+		(effects
+			(font
+				(size 1.016 1.016)
+			)
+			(justify right bottom)
+		)
+		(uuid "df2a9a93-cf24-415b-872f-e2c030e63f5b")
 	)
 	(label "GND"
 		(at 147.32 86.36 180)
@@ -6142,7 +6747,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_XH_S2B-XH-A_1x02_P2.50mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
 			(at 275.59 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -6594,6 +7199,83 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "D10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 66.04 181.61 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "2810435a-397e-4da3-80a4-883ee64f8371")
+		(property "Reference" "#PWR029"
+			(at 72.39 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 71.12 181.61 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 66.04 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 66.04 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 66.04 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "46c53db3-dbca-4971-b939-b96cdd038eec")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "#PWR029")
 					(unit 1)
 				)
 			)
@@ -7217,7 +7899,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_XH_S3B-XH-A_1x03_P2.50mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical"
 			(at 269.24 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -7342,6 +8024,173 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "R13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 39.37 176.53 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "4a9de979-bb93-4c44-b6ec-ca1698fa2735")
+		(property "Reference" "R15"
+			(at 42.672 173.736 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "4.7K"
+			(at 42.672 176.784 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal"
+			(at 39.37 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 39.37 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 39.37 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3f354366-9e32-4884-b236-f7fd80d3ae2e")
+		)
+		(pin "2"
+			(uuid "fffe8dea-1483-4498-9fdf-c1ea8c0ef16f")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "R15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x04")
+		(at 102.87 179.07 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4b9ba257-5e4b-4126-8463-f6237c02667b")
+		(property "Reference" "J6"
+			(at 102.87 167.64 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x04"
+			(at 102.87 170.18 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical"
+			(at 102.87 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 102.87 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 102.87 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "30f32596-5db0-462c-b123-d6becfacdead")
+		)
+		(pin "3"
+			(uuid "19bd785e-4c2b-4ce7-b371-60aeb966bb58")
+		)
+		(pin "4"
+			(uuid "31eb5a33-8e09-45c0-b3f9-f392357203f5")
+		)
+		(pin "1"
+			(uuid "9769e48f-8266-40a7-8ef9-a13f044e92e9")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "J6")
 					(unit 1)
 				)
 			)
@@ -7757,6 +8606,84 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "D6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 39.37 168.91 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5b57731f-e3ea-4376-b8fd-407f6fe65a0a")
+		(property "Reference" "#PWR027"
+			(at 39.37 172.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 39.37 163.83 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 39.37 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 39.37 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 39.37 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8ed997ba-6295-400c-958e-0956e7bcc44b")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "#PWR027")
 					(unit 1)
 				)
 			)
@@ -8232,6 +9159,83 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 31.75 181.61 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "6173bc96-efce-46ab-aa5b-95750ef0f2b6")
+		(property "Reference" "#PWR028"
+			(at 38.1 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 36.83 181.61 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 31.75 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "31f74ba8-8aee-45fe-985d-e8214e98b0ee")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "#PWR028")
 					(unit 1)
 				)
 			)
@@ -9048,6 +10052,89 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 60.96 181.61 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7d1c6783-90c0-4b95-b6bf-5bf61d97dfa6")
+		(property "Reference" "J5"
+			(at 60.96 172.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x03"
+			(at 60.96 175.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 60.96 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 60.96 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 60.96 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "3"
+			(uuid "83fa74a6-36c5-497c-ba4e-adf8830bdb65")
+		)
+		(pin "2"
+			(uuid "1a8f38b4-b035-4663-9c1d-933e7d13363d")
+		)
+		(pin "1"
+			(uuid "5f42b00b-5b1d-4d65-8718-c06b5ebc7d1b")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "J5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "_my_MC_Dev_Boards:ESP32-DEVKITC-32-38PINS")
 		(at 124.46 109.22 0)
 		(unit 1)
@@ -9653,6 +10740,83 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "D2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 110.49 181.61 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "a4d7745e-3f4a-40b6-b1e8-0e3d6edf6742")
+		(property "Reference" "#PWR032"
+			(at 106.68 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 115.57 181.61 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 110.49 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 110.49 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 110.49 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "00f7e766-482a-4a04-a21f-36505a794fd4")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "#PWR032")
 					(unit 1)
 				)
 			)
@@ -10323,7 +11487,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_XH_S3B-XH-A_1x03_P2.50mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical"
 			(at 238.76 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -10369,6 +11533,89 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "J3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 26.67 181.61 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c890c7cb-9c01-4f5e-afb6-9add1774ed85")
+		(property "Reference" "J4"
+			(at 26.67 172.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x03"
+			(at 26.67 175.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 26.67 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 26.67 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 26.67 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "3"
+			(uuid "fabf9040-5fed-4233-bbaf-50480024d6b4")
+		)
+		(pin "2"
+			(uuid "f4420632-ef41-40e4-b32b-fbb5bd2dfbf0")
+		)
+		(pin "1"
+			(uuid "27fb38ab-5c78-4aec-887f-90477dbb3d18")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "J4")
 					(unit 1)
 				)
 			)
@@ -10450,6 +11697,84 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 73.66 168.91 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ca376a44-d705-442e-a2ab-8bb3504881b3")
+		(property "Reference" "#PWR030"
+			(at 73.66 172.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 73.66 163.83 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 73.66 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 73.66 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 73.66 168.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6b81b900-1d68-4fab-b495-d7e247038546")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "#PWR030")
 					(unit 1)
 				)
 			)
@@ -11254,6 +12579,164 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "D4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 73.66 176.53 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e27a0a6b-ada6-462e-965c-dc9d3d0002d0")
+		(property "Reference" "R16"
+			(at 76.962 173.736 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "4.7K"
+			(at 76.962 176.784 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal"
+			(at 73.66 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 73.66 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 73.66 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "50c584cc-8987-47d2-90fe-dff4c71f0da8")
+		)
+		(pin "2"
+			(uuid "ab83c71f-fe82-4643-b73a-3daff086f301")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "R16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 110.49 179.07 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e752f187-2c58-4639-97cd-2eb72ac78c67")
+		(property "Reference" "#PWR031"
+			(at 116.84 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 115.57 179.07 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 110.49 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 110.49 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 110.49 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "46e00dd8-62ba-4b00-8600-fd3c55012e77")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "#PWR031")
 					(unit 1)
 				)
 			)

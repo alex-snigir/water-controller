@@ -23,13 +23,15 @@
 #define VALVE_LED              33
 #define FLOW_LED               25
 #define ERROR_LED              26
-#define ADC_SDA_GPIO           21
-#define ADC_SCL_GPIO           22
+#define I2C_SDA_GPIO           21
+#define I2C_SCL_GPIO           22
 #define WATER_FLOW_GPIO        23
-#define VALVE_OPEN_PIN         19  // MC output: open command (IN1 via D3)
-#define VALVE_CLOSE_PIN        18  // MC output: close command (IN2 via D4)
-#define VALVE_OPEN_STATUS      34  // input: IN1 level (Open button or MC), via R7. Not valve position
-#define VALVE_CLOSE_STATUS     35  // input: IN2 level (Close button or MC), via R8. Not valve position
+#define VALVE_OPEN_PIN         19   // MC output: open command (IN1 via D3)
+#define VALVE_CLOSE_PIN        18   // MC output: close command (IN2 via D4)
+#define VALVE_OPEN_STATUS      34   // input: IN1 level (Open button or MC), via R7. Not valve position
+#define VALVE_CLOSE_STATUS     35   // input: IN2 level (Close button or MC), via R8. Not valve position
+#define TEMP_PIPE_GPIO          5   // DS18B20 via J4, pull-up R15
+#define TEMP_AIR_GPIO          15   // DS18B20 via J5, pull-up R16
 #define AC_POWER_DETECT_GPIO   ?
 #endif
 

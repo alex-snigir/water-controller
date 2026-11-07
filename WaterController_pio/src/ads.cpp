@@ -52,7 +52,7 @@ static void ads_start()
 
 void ads_init()
 {
-    Wire.begin(ADC_SDA_GPIO, ADC_SCL_GPIO);
+    Wire.begin(I2C_SDA_GPIO, I2C_SCL_GPIO);
     ads_start();
 }
 
@@ -63,10 +63,10 @@ static void ads_bus_recover()
 {
     Wire.end();
 
-    digitalWrite(ADC_SDA_GPIO, HIGH);
-    digitalWrite(ADC_SCL_GPIO, HIGH);
-    pinMode(ADC_SDA_GPIO, OUTPUT_OPEN_DRAIN);
-    pinMode(ADC_SCL_GPIO, OUTPUT_OPEN_DRAIN);
+    digitalWrite(I2C_SDA_GPIO, HIGH);
+    digitalWrite(I2C_SCL_GPIO, HIGH);
+    pinMode(I2C_SDA_GPIO, OUTPUT_OPEN_DRAIN);
+    pinMode(I2C_SCL_GPIO, OUTPUT_OPEN_DRAIN);
 
     for (int i = 0; i < 9; i++) {
         digitalWrite(ADC_SCL_GPIO, LOW);
@@ -78,14 +78,14 @@ static void ads_bus_recover()
     // STOP: SDA rises while SCL is high
     digitalWrite(ADC_SCL_GPIO, LOW);
     delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
-    digitalWrite(ADC_SDA_GPIO, LOW);
+    digitalWrite(I2C_SDA_GPIO, LOW);
     delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
-    digitalWrite(ADC_SCL_GPIO, HIGH);
+    digitalWrite(I2C_SCL_GPIO, HIGH);
     delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
-    digitalWrite(ADC_SDA_GPIO, HIGH);
+    digitalWrite(I2C_SDA_GPIO, HIGH);
     delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
 
-    Wire.begin(ADC_SDA_GPIO, ADC_SCL_GPIO);
+    Wire.begin(I2C_SDA_GPIO, I2C_SCL_GPIO);
 
     // General call reset, for a chip that acknowledges but no longer converts.
     // The config is written on every sample, so nothing has to be restored.
