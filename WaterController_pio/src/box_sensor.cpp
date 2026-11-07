@@ -239,9 +239,16 @@ void box_sensor_handle()
         }
         // The heater ends with a measurement of the heated sensor: read it out and drop it
         uint16_t rawT, rawRH;
-        box_read_raw(&rawT, &rawRH);
         box_phase = BOX_IDLE;
-        Serial.println("Box sensor: heater off");
+        if (box_read_raw(&rawT, &rawRH)) {
+            Serial.println("Box sensor: heater off");
+        }
+        else {
+            // The heating may have been cut short, e.g. by the general call reset in ads_bus_recover().
+            // Allow it again after the next reading: at most 1 s per minute, under the 10% duty limit.
+            Serial.println("Box sensor: heater result not read, heating may be incomplete");
+            box_heater_last = now - BOX_HEATER_INTERVAL;
+        }
         return;
     }
 #endif
