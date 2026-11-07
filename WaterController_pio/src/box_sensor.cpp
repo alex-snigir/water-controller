@@ -41,6 +41,7 @@ static bool box_heater_used = false;
 #endif
 
 static int box_failures = 0;                // Failed readings in a row
+static bool box_failures_no_answer;         // All of them were an unanswered address
 static const char *box_status = "unknown";  // Until the first reading
 static float box_temperature;               // Valid while box_status is "ok"
 static float box_humidity;
@@ -95,7 +96,11 @@ static uint8_t box_start_measure()
         return err;
     }
     delayMicroseconds(240); // Wake-up time
-    return box_command(SHTC3_CMD_MEASURE);
+    err = box_command(SHTC3_CMD_MEASURE);
+    if (err != 0) {
+        box_command(SHTC3_CMD_SLEEP); // Otherwise it stays awake until the next good cycle
+    }
+    return err;
 #endif
 }
 
@@ -121,13 +126,20 @@ static bool box_read_raw(uint16_t *rawT, uint16_t *rawRH)
     return true;
 }
 
-static void box_failed(const char *status, const char *reason)
+// A NACK also comes from a present sensor (busy, or a transfer spoiled by motor noise):
+// "no_sensor" only if the address went unanswered every time in a row.
+static void box_failed(bool noAnswer, const char *reason)
 {
+    if (box_failures == 0) {
+        box_failures_no_answer = true;
+    }
+    box_failures_no_answer = box_failures_no_answer && noAnswer;
     box_failures++;
     if (box_failures < BOX_MAX_FAILURES) {
         Serial.printf("Box sensor: %s, sample skipped (%d/%d)\n", reason, box_failures, BOX_MAX_FAILURES);
         return;
     }
+    const char *status = box_failures_no_answer ? "no_sensor" : "error";
     Serial.printf("Box sensor: %s, marked as %s\n", reason, status);
     box_failures = 0;
     box_status_set(status);
@@ -159,7 +171,7 @@ static void box_read()
 {
     uint16_t rawT, rawRH;
     if (!box_read_raw(&rawT, &rawRH)) {
-        box_failed("error", "read failed");
+        box_failed(false, "read failed");
         return;
     }
 #if BOX_SENSOR == BOX_SENSOR_SHT41
@@ -241,7 +253,7 @@ void box_sensor_handle()
         box_lastActivity = now;
         uint8_t err = box_start_measure();
         if (err != 0) {
-            box_failed(err == 2 ? "no_sensor" : "error", err == 2 ? "no answer" : "command failed");
+            box_failed(err == 2, err == 2 ? "no answer" : "command failed");
             return;
         }
         box_phase = BOX_MEASURING;
