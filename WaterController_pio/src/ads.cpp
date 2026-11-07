@@ -69,14 +69,14 @@ static void ads_bus_recover()
     pinMode(I2C_SCL_GPIO, OUTPUT_OPEN_DRAIN);
 
     for (int i = 0; i < 9; i++) {
-        digitalWrite(ADC_SCL_GPIO, LOW);
+        digitalWrite(I2C_SCL_GPIO, LOW);
         delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
-        digitalWrite(ADC_SCL_GPIO, HIGH);
+        digitalWrite(I2C_SCL_GPIO, HIGH);
         delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
     }
 
     // STOP: SDA rises while SCL is high
-    digitalWrite(ADC_SCL_GPIO, LOW);
+    digitalWrite(I2C_SCL_GPIO, LOW);
     delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);
     digitalWrite(I2C_SDA_GPIO, LOW);
     delayMicroseconds(ADS_BUS_RECOVER_HALF_CLOCK);

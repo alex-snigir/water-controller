@@ -35,6 +35,12 @@ time_t boottime_get(time_t now);
 #define TOPIC_FLOW_RATE_GET        _AREA_ "/" _HOST_NAME_ "/flowrate/get"
 #define TOPIC_FLOW_TOTAL           _AREA_ "/" _HOST_NAME_ "/flowtotal"
 
+#define TOPIC_TEMPERATURE_GET          _AREA_ "/" _HOST_NAME_ "/temperature/get"
+#define TOPIC_TEMPERATURE_PIPE         _AREA_ "/" _HOST_NAME_ "/temperature/pipe"
+#define TOPIC_TEMPERATURE_PIPE_STATUS  _AREA_ "/" _HOST_NAME_ "/temperature/pipe/status"
+#define TOPIC_TEMPERATURE_AIR          _AREA_ "/" _HOST_NAME_ "/temperature/air"
+#define TOPIC_TEMPERATURE_AIR_STATUS   _AREA_ "/" _HOST_NAME_ "/temperature/air/status"
+
 #define KEEP_ALIVE_MESSAGE_INTERVAL 60000L // 1 minute
 
 // Callbacks:
@@ -72,5 +78,11 @@ void water_flow_sensor_init(unsigned long interval);
 void water_flow_handle();
 void water_flow_get();
 void water_flow_debug_info();
+
+void temperature_init(unsigned long interval);
+void temperature_handle();
+void temperature_get();
+void temperature_status_publish();
+void temperature_debug_info();
 
 #endif

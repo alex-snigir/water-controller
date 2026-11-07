@@ -51,7 +51,7 @@ const char *lastWillTopic     = _AREA_ "/announcement/" _HOST_NAME_;
 const char* mqtt_server = _MQTT_BROKER_;
 const char* clientId = _HOST_NAME_;
 
-#define TOPIC_COUNT 8
+#define TOPIC_COUNT 9
 const char *topics[] = {
   TOPIC_ALIVE_GET,
   TOPIC_INFO_GET,
@@ -60,7 +60,8 @@ const char *topics[] = {
   TOPIC_VALVE_CLOSE,
   TOPIC_VALVE_STATE_GET,
   TOPIC_PRESSURE_GET,
-  TOPIC_FLOW_RATE_GET
+  TOPIC_FLOW_RATE_GET,
+  TOPIC_TEMPERATURE_GET
 };
 
 // JSON and temp buffers
@@ -138,6 +139,7 @@ void setup() {
     ads_init();
     pressure_sensor_init(10000L); // Millis
     water_flow_sensor_init(60000L); // Millis
+    temperature_init(60000L); // Millis
 
     profiler.begin(60000, 100, 1000, 10000, 300000);
 }
@@ -154,6 +156,7 @@ void loop() {
     ads_handle();
     pressure_sensor_handle();
     water_flow_handle();
+    temperature_handle();
     valve_handle();
 
     serialDebug.handleClient();
@@ -277,8 +280,6 @@ void send_info(const char* topic, InfoLevel level)
 }
 
 
-
-
 void mqtt_callback(char* topic, byte* payload, unsigned int length) {
     LOG("mqtt_callback called");
     if(strcmp(topic, TOPIC_VALVE_OPEN) == 0) {
@@ -292,6 +293,8 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
         pressure_get();
     } else if(strcmp(topic, TOPIC_FLOW_RATE_GET) == 0) {
         water_flow_get();
+    } else if(strcmp(topic, TOPIC_TEMPERATURE_GET) == 0) {
+        temperature_get();
     } else if(strcmp(topic, TOPIC_ALIVE_GET) == 0) {
         send_info(TOPIC_ALIVE, INFO_BASIC);
     } else if(strcmp(topic, TOPIC_INFO_GET) == 0) {
@@ -299,12 +302,14 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
     }
 }
 
+
 void test_change_event_callback(uint8_t event) {
     if (event == EVENT_MQTT_RESTORED) {
         send_info(TOPIC_CONNECTION_INFO, INFO_WITH_CONNECTION);
         keepAlive_event_callback();
         valve_state_publish(); // Changes made while MQTT was down were not delivered
         pressure_status_publish();
+        temperature_status_publish();
     }
 }
 
