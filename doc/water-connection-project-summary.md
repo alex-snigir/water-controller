@@ -459,7 +459,7 @@ OUT1 ──[R14 2.2k]──┬──►|── D9  LED5 (Open, зелёный)  
 | 32 | D5 LED1 (WIFI), активный LOW | `TEST_WIFI_LED` (`connectionMonitor`, `LED_PULLUP`) | LED1 Wi-Fi/MQTT (синий), pull-up |
 | 33 | D6 LED2 (Valve), активный LOW | `VALVE_LED` (`valve.cpp`) | LED2 состояние крана (зелёный), pull-up: горит — открыт, не горит — закрыт, мигает — движется, короткая вспышка раз в 2 с — положение неизвестно |
 | 25 | D7 LED3 (Flow), активный LOW | `FLOW_LED` (не используется) | LED3 расход (жёлтый), pull-up |
-| 26 | D8 LED4 (Error), активный LOW | `ERROR_LED` (не используется) | LED4 ошибка (красный), pull-up |
+| 26 | D8 LED4 (Error), активный LOW | `ERROR_LED` (`alarms.cpp`) | LED4 ошибка (красный), pull-up: горит — активно предупреждение, медленно мигает (1 с) — датчик температуры или коробки в статусе `error`/`no_sensor`, не горит — всё в порядке |
 | ? | — | `AC_POWER_DETECT_GPIO ?` | наличие сетевого питания (UPS) |
 
 ⚠ — расхождение, подробности в разделе 7.
@@ -541,7 +541,7 @@ IO22 (SCL) ── J6.3   IO21 (SDA) ── J6.4   J6: +3V3 / GND / SCL / SDA →
 - DS18B20: `OneWire` + `DallasTemperature` на каждый GPIO; `setWaitForConversion(false)`, запуск обоих одновременно, чтение через 750 мс по `millis()`; разрешение 12 бит; −127 и 85 °C считать ошибкой.
 - SHT41: библиотека Adafruit SHT4x (для SHTC3 — Adafruit SHTC3); запуск измерения и чтение через `millis()` (~10 мс); выбор датчика макросом в `Application.h`; при влажности > ~85–90 % — редкий короткий нагрев (~1 с), температуру после нагрева несколько секунд не читать.
 - Опрос раз в минуту. MQTT — в стиле существующих топиков, например: `temperature/pipe`, `temperature/air`, `temperature/chip`, `box/temperature`, `box/humidity`, `box/dewpoint`, `temperature/status` (retained, по каждому датчику).
-- Предупреждения в Home Assistant: труба < +3 °C — заморозки; коробка > +55…60 °C — перегрев; `temperature/air` − `box/dewpoint` < 2–3 °C — риск конденсата.
+- Предупреждения: ✅ вычисляются в прошивке (`alarms.cpp`) с гистерезисом и публикуются retained в `alarm/freeze` (труба < 3 °C, сброс > 4 °C), `alarm/overheat` (коробка > 55 °C, сброс < 50 °C), `alarm/condensation` (`temperature/air` − `box/dewpoint` < 2 °C, сброс > 3 °C): `on`, `off`, `unknown` (нет данных нужного датчика); LED4 горит при активном предупреждении. Уведомления — автоматизациями Home Assistant по этим топикам. Прошивка ничего не делает с краном.
 
 ## 5. Бюджет питания (оценка)
 
@@ -592,7 +592,8 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | `water_flow.cpp` | прерывание по спаду на GPIO23 (`WATER_FLOW_GPIO`), подсчёт импульсов под `portMUX`; раз в 60 с — расход в л/мин (= импульсы / 476) и накопленный объём `flowtotal`; ответ на `flowrate/get` |
 | `temperature.cpp` | DS18B20 Pipe (GPIO5) и Air (GPIO15), по датчику на шину; опрос раз в 60 с без блокировки: запуск преобразования, чтение через 800 мс по `millis()`; `temperature/pipe`, `temperature/air` (`%.2f`); статусы `temperature/pipe/status`, `temperature/air/status` (retained): `unknown`, `ok`, `no_sensor`, `error` (3 неудачных чтения подряд: −127 или 85 °C); `temperature/get` |
 | `box_sensor.cpp` | SHT41 (0x44) на шине I2C с ADS1115, напрямую через `Wire` без библиотеки Adafruit (она ждёт измерение через `delay()`, нагреватель — 1.1 с); SHTC3 для испытаний — `BOX_SENSOR` в `Application.h`. Опрос раз в 60 с без блокировки: команда измерения, чтение через 10 мс по `millis()`, проверка CRC; `box/temperature` (`%.2f`), `box/humidity` (`%.1f`), `box/dewpoint` (формула Магнуса); статус `box/status` (retained): `unknown`, `ok`, `no_sensor`, `error` (3 неудачи подряд); `box/get`. Нагреватель SHT41: 110 мВт, 1 с, после измерения с влажностью ≥ 90 %, не чаще раза в 30 мин; измерение после нагрева отбрасывается, следующее — через минуту |
-| `debug.cpp` | команды серийной консоли: `wifi_reconnect`, `wifi_set_11b/g/n/lr`, `wifi_info`, `mqtt_info`, `restart` |
+| `alarms.cpp` | предупреждения `alarm/freeze`, `alarm/overheat`, `alarm/condensation` (retained, `on`/`off`/`unknown`, с гистерезисом) по последним значениям `temperature.cpp` и `box_sensor.cpp`; `alarm/get`; LED4: горит при предупреждении, медленно мигает при неисправном датчике |
+| `debug.cpp` | команды серийной консоли: `wifi_reconnect`, `wifi_set_11b/g/n`, `wifi_info`, `mqtt_info`, `valve_info`, `sensors_info`, `restart` |
 
 - Время: SNTP `pool.ntp.org`, часовой пояс Израиля.
 
@@ -650,7 +651,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 
 ### 7.2 Прошивка
 
-1. ✅ `VALVE_LED` исправлен на 33 — совпадает со схемой (D6). `VALVE_LED` используется в `valve.cpp`, `TEST_WIFI_LED` — в `connectionMonitor`; `FLOW_LED` и `ERROR_LED` объявлены, но в коде пока не используются.
+1. ✅ `VALVE_LED` исправлен на 33 — совпадает со схемой (D6). `VALVE_LED` используется в `valve.cpp`, `TEST_WIFI_LED` — в `connectionMonitor`, `ERROR_LED` — в `alarms.cpp`; `FLOW_LED` объявлен, но в коде пока не используется.
 2. ✅ Подключение LED согласовано: на схеме анод через резистор к +3V3, катод на GPIO (активный LOW) — как `LED_PULLUP` в прошивке. Устарел только `INFO.txt` («pull-down»). При инициализации LED: сначала `HIGH`, потом `OUTPUT`.
 3. `AC_POWER_DETECT_GPIO ?` — заглушка, при первом использовании сломает сборку.
 4. Подписка на `valve_enable/get` есть, а в `mqtt_callback()` его нет. ✅ `flowrate/get` обрабатывается через `water_flow_get()`.

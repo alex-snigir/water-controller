@@ -46,6 +46,22 @@ static float box_temperature;               // Valid while box_status is "ok"
 static float box_humidity;
 static float box_dewpoint;
 
+// The last reading, if the status is "ok"
+bool box_value(float *celsius, float *dewpoint)
+{
+    if (strcmp(box_status, "ok") != 0) {
+        return false;
+    }
+    *celsius = box_temperature;
+    *dewpoint = box_dewpoint;
+    return true;
+}
+
+bool box_faulty()
+{
+    return strcmp(box_status, "error") == 0 || strcmp(box_status, "no_sensor") == 0;
+}
+
 // Retained, so consumers can tell a sensor fault from a quiet sensor
 void box_status_publish()
 {

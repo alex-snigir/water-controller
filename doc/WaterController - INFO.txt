@@ -119,7 +119,7 @@ Requirements:
   > LED: WiFi/MQTT Status   LED1 (Blue)    - WiFi/MQTT status OFF: WiFi is not connected, Blinking: WiFi connected but MQTT is not connected, ON: WiFi+MQTT connected 
   > LED: Water Valve Status LED2 (Green)   - ON:valve open, OFF: valve closed, Blinking: valve opening/closing, Short flash every 2 s: valve state unknown
   > LED: Water Flow Rate    LED3 (Yellow)  - blinking according to flow rate
-  > LED: Error              LED4 (Red)     - Error / Malfunction detection
+  > LED: Error              LED4 (Red)     - ON: an alarm is active (freeze, overheat, condensation), Slow blink (1 s): a temperature/box sensor is "error" or "no_sensor", OFF: no alarm, no sensor fault
   > LED: Valve Opening      LED5 (Green)   - Valve Opening Status
   > LED: Valve Closing      LED6 (Red)     - Valve Closing Status
   > LED: Power              LED7 (Green)   - Power is ON. GPIO not used. LED not yet implemented. Reserved
@@ -151,6 +151,7 @@ MQTT Interface:
     "home/watercontroller1/flowrate/get"    // RETAIN=false  Payload: N/A    - Get flow rate: request the "home/watercontroller1/flowrate" response with the last calculated value
     "home/watercontroller1/temperature/get" // RETAIN=false  Payload: N/A    - Get temperatures: request "home/watercontroller1/temperature/pipe" and ".../temperature/air" with the last readings, or their status if there is no valid reading
     "home/watercontroller1/box/get"         // RETAIN=false  Payload: N/A    - Get box air: request "home/watercontroller1/box/temperature", ".../box/humidity" and ".../box/dewpoint" with the last reading, or "box/status" if there is no valid reading
+    "home/watercontroller1/alarm/get"       // RETAIN=false  Payload: N/A    - Get alarms: request "home/watercontroller1/alarm/freeze", ".../alarm/overheat" and ".../alarm/condensation"
   
   Published:
   ==========
@@ -172,6 +173,9 @@ MQTT Interface:
     "home/watercontroller1/box/humidity"    // RETAIN=false  Payload: STRING - Sent each minute and on request. %RH. Payload: "%.1f"
     "home/watercontroller1/box/dewpoint"    // RETAIN=false  Payload: STRING - Sent each minute and on request. Celsius, Magnus formula. Payload: "%.2f"
     "home/watercontroller1/box/status"      // RETAIN=true   Payload: STRING - Sent on change, on MQTT connect and in response of "home/watercontroller1/box/get" if there is no valid reading. Payload: "unknown", "ok", "no_sensor" (no answer at the I2C address, 3 times in a row), "error" (3 failed readings in a row: CRC or bus error)
+    "home/watercontroller1/alarm/freeze"       // RETAIN=true  Payload: STRING - Pipe freeze risk: "on" below 3 C, "off" above 4 C (temperature/pipe). Sent on change, on MQTT connect and on request. Payload: "on", "off", "unknown" (no valid reading of a sensor it needs)
+    "home/watercontroller1/alarm/overheat"     // RETAIN=true  Payload: STRING - Controller box overheat: "on" above 55 C, "off" below 50 C (box/temperature). Same rules as "alarm/freeze"
+    "home/watercontroller1/alarm/condensation" // RETAIN=true  Payload: STRING - Condensation risk: "on" when temperature/air minus box/dewpoint is below 2 C, "off" above 3 C. Same rules as "alarm/freeze"
 
 
 MQTT Payload Examples:

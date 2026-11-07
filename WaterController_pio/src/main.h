@@ -47,6 +47,11 @@ time_t boottime_get(time_t now);
 #define TOPIC_BOX_DEWPOINT         _AREA_ "/" _HOST_NAME_ "/box/dewpoint"
 #define TOPIC_BOX_STATUS           _AREA_ "/" _HOST_NAME_ "/box/status"
 
+#define TOPIC_ALARM_GET            _AREA_ "/" _HOST_NAME_ "/alarm/get"
+#define TOPIC_ALARM_FREEZE         _AREA_ "/" _HOST_NAME_ "/alarm/freeze"
+#define TOPIC_ALARM_OVERHEAT       _AREA_ "/" _HOST_NAME_ "/alarm/overheat"
+#define TOPIC_ALARM_CONDENSATION   _AREA_ "/" _HOST_NAME_ "/alarm/condensation"
+
 #define KEEP_ALIVE_MESSAGE_INTERVAL 60000L // 1 minute
 
 // Callbacks:
@@ -90,11 +95,21 @@ void temperature_handle();
 void temperature_get();
 void temperature_status_publish();
 void temperature_debug_info();
+enum TempProbe { TEMP_PROBE_PIPE, TEMP_PROBE_AIR }; // Index in the sensors[] of temperature.cpp
+bool temperature_value(TempProbe probe, float *celsius);
+bool temperature_faulty();
 
 void box_sensor_init(unsigned long interval);
 void box_sensor_handle();
 void box_get();
 void box_status_publish();
 void box_debug_info();
+bool box_value(float *celsius, float *dewpoint);
+bool box_faulty();
+
+void alarms_init();
+void alarms_handle();
+void alarms_publish();
+void alarms_debug_info();
 
 #endif

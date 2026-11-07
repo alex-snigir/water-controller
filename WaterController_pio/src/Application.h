@@ -10,7 +10,7 @@
 #include "pins_arduino.h"  // for digitalPinToBitMask, etc
 #endif
 
-#include "lib\Log.h"
+#include "lib/Log.h"
 
 
 #if defined(ESP8266)

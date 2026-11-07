@@ -42,6 +42,27 @@ static void temperature_status_set(TempSensor &s, const char *status)
     }
 }
 
+// The last reading, if the probe is "ok"
+bool temperature_value(TempProbe probe, float *celsius)
+{
+    TempSensor &s = sensors[probe];
+    if (strcmp(s.status, "ok") != 0) {
+        return false;
+    }
+    *celsius = s.last;
+    return true;
+}
+
+bool temperature_faulty()
+{
+    for (TempSensor &s : sensors) {
+        if (strcmp(s.status, "error") == 0 || strcmp(s.status, "no_sensor") == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Retained, so consumers can tell a sensor fault from a quiet sensor
 void temperature_status_publish()
 {

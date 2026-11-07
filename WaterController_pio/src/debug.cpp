@@ -60,6 +60,7 @@ static void sensors_debug_info() {
     water_flow_debug_info();
     temperature_debug_info();
     box_debug_info();
+    alarms_debug_info();
 }
 
 

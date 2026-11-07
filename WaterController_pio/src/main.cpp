@@ -51,7 +51,7 @@ const char *lastWillTopic     = _AREA_ "/announcement/" _HOST_NAME_;
 const char* mqtt_server = _MQTT_BROKER_;
 const char* clientId = _HOST_NAME_;
 
-#define TOPIC_COUNT 10
+#define TOPIC_COUNT 11
 const char *topics[] = {
   TOPIC_ALIVE_GET,
   TOPIC_INFO_GET,
@@ -62,7 +62,8 @@ const char *topics[] = {
   TOPIC_PRESSURE_GET,
   TOPIC_FLOW_RATE_GET,
   TOPIC_TEMPERATURE_GET,
-  TOPIC_BOX_GET
+  TOPIC_BOX_GET,
+  TOPIC_ALARM_GET
 };
 
 // JSON and temp buffers
@@ -142,6 +143,7 @@ void setup() {
     water_flow_sensor_init(60000L); // Millis
     temperature_init(60000L); // Millis
     box_sensor_init(60000L); // Millis
+    alarms_init();
 
     profiler.begin(60000, 100, 1000, 10000, 300000);
 }
@@ -160,6 +162,7 @@ void loop() {
     water_flow_handle();
     temperature_handle();
     box_sensor_handle();
+    alarms_handle();
     valve_handle();
 
     serialDebug.handleClient();
@@ -300,6 +303,8 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
         temperature_get();
     } else if(strcmp(topic, TOPIC_BOX_GET) == 0) {
         box_get();
+    } else if(strcmp(topic, TOPIC_ALARM_GET) == 0) {
+        alarms_publish();
     } else if(strcmp(topic, TOPIC_ALIVE_GET) == 0) {
         send_info(TOPIC_ALIVE, INFO_BASIC);
     } else if(strcmp(topic, TOPIC_INFO_GET) == 0) {
@@ -316,6 +321,7 @@ void test_change_event_callback(uint8_t event) {
         pressure_status_publish();
         temperature_status_publish();
         box_status_publish();
+        alarms_publish();
     }
 }
 
