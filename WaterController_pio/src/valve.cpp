@@ -1,3 +1,4 @@
+#include <Preferences.h>
 #include "lib/MqttClient.h"
 #include "main.h"
 
@@ -17,7 +18,19 @@ static bool isValveMoving = false;         // Флаг движения
 #define VALVE_LED_UNKNOWN_PERIOD 2000 // Unknown state: a short flash, so it does not read as closed
 #define VALVE_LED_UNKNOWN_FLASH  100
 
+#define VALVE_LOCK_DEBOUNCE_MS   50
+#define VALVE_NVS_NAMESPACE      "valve"
+#define VALVE_NVS_KEY_ENABLE     "enable"
+
 static unsigned long valveOutputOffTimer = 0; // When the outputs were last switched off
+
+// Two independent bans on opening; closing always works.
+// Lock Switch J7 cuts IN1 in hardware, so it stops the firmware and SW1 alike: IO13 = 1 (also with the cable pulled out).
+// valve_enable bans firmware opens only: SW1 drives IN1 past the ESP32. Kept in NVS.
+static bool valveLocked = false;        // Debounced IO13
+static bool lockLevel = false;          // Last raw IO13 level
+static unsigned long lockLevelTimer = 0;
+static bool valveEnabled = true;        // Default for the first boot
 
 // There is no position feedback: the state follows the last command or button hold.
 // It stays unknown after boot and after any partial travel, until a full move completes.
@@ -34,12 +47,14 @@ struct ValveButton
     ValveState moving;  // State while this button is held
     ValveState reached; // State after a full travel
     const char *name;
+    bool lockable;      // J7 cuts this button off DRV8871 (IN1 only)
     bool pressed;       // Debounced
+    bool active;        // Pressed and reaches DRV8871: false while Open is held under the lock
     bool level;         // Last raw level
     unsigned long levelTimer;
 };
-static ValveButton openButton  = {VALVE_OPEN_STATUS,  VALVE_OPENING, VALVE_OPEN,   "open",  false, false, 0};
-static ValveButton closeButton = {VALVE_CLOSE_STATUS, VALVE_CLOSING, VALVE_CLOSED, "close", false, false, 0};
+static ValveButton openButton  = {VALVE_OPEN_STATUS,  VALVE_OPENING, VALVE_OPEN,   "open",  true,  false, false, false, 0};
+static ValveButton closeButton = {VALVE_CLOSE_STATUS, VALVE_CLOSING, VALVE_CLOSED, "close", false, false, false, false, 0};
 
 static unsigned long manualMoveTimer = 0;            // When the current button move started
 static ValveState manualStartState = VALVE_UNKNOWN; // State before the current button move
@@ -69,17 +84,88 @@ bool valve_is_open()
     return valveState == VALVE_OPEN;
 }
 
+const char *valve_lock_name()
+{
+    return valveLocked ? "locked" : "unlocked";
+}
+
+// Retained, like valve/state
+void valve_lock_publish()
+{
+    mqttClient.publish(TOPIC_VALVE_LOCK, valve_lock_name(), true);
+}
+
+bool valve_enabled()
+{
+    return valveEnabled;
+}
+
+// Retained, like valve/state
+void valve_enable_publish()
+{
+    mqttClient.publish(TOPIC_VALVE_ENABLED, valveEnabled ? "1" : "0", true);
+}
+
+// Opening is banned now, by J7 or valve_enable: LED4 shows it
+bool valve_open_blocked()
+{
+    return valveLocked || !valveEnabled;
+}
+
+// Not retained: an event, not a state
+static void valve_rejected_publish(const char *reason)
+{
+    alarms_led_rejected();
+    mqttClient.publish(TOPIC_VALVE_REJECTED, reason);
+}
+
+// Written to NVS only on a change, to spare the flash. Republished either way, as a reply to the sender.
+void valve_enable_set(bool enable)
+{
+    if (enable != valveEnabled)
+    {
+        valveEnabled = enable;
+        Serial.printf("Valve open %s\n", enable ? "enabled" : "disabled");
+        Preferences prefs;
+        if (prefs.begin(VALVE_NVS_NAMESPACE, false))
+        {
+            if (prefs.putUChar(VALVE_NVS_KEY_ENABLE, enable ? 1 : 0) == 0)
+                Serial.println("ERROR: valve_enable: NVS write failed");
+            prefs.end();
+        }
+        else
+        {
+            Serial.println("ERROR: valve_enable: NVS open failed");
+        }
+    }
+    valve_enable_publish();
+}
+
+// valve_enable/set: "1" enables, "0" disables opening; anything else, empty included, is ignored
+void valve_enable_command(const byte *payload, unsigned int length)
+{
+    if (length == 1 && (payload[0] == '0' || payload[0] == '1'))
+    {
+        valve_enable_set(payload[0] == '1');
+        return;
+    }
+    Serial.printf("valve_enable/set ignored: payload \"%.*s\" (%u bytes), expected \"0\" or \"1\"\n",
+                  (int)(length < 16 ? length : 16), (const char *)payload, length);
+}
+
 void valve_debug_info()
 {
     Serial.println("\nvalve.cpp:\n==========");
     Serial.printf("State: %s\n", valve_state_name());
+    Serial.printf("Lock: %s, IO13 %d\n", valve_lock_name(), digitalRead(VALVE_LOCK_GPIO));
+    Serial.printf("valve_enable: %d\n", valveEnabled);
     Serial.printf("Moving: %d\n", isValveMoving);
     Serial.printf("Drive pending: %d\n", valveDrivePending);
     if (isValveMoving)
         Serial.printf("Moving for: %lu of %lu ms\n", millis() - valveMovingTimer, valve_move_time_mills);
     Serial.printf("Publish pending: %d\n", valveStatePublishPending);
-    Serial.printf("Open button: pressed %d, IN1 %d\n", openButton.pressed, digitalRead(openButton.statusPin));
-    Serial.printf("Close button: pressed %d, IN2 %d\n", closeButton.pressed, digitalRead(closeButton.statusPin));
+    Serial.printf("Open button: pressed %d, active %d, IN1 %d\n", openButton.pressed, openButton.active, digitalRead(openButton.statusPin));
+    Serial.printf("Close button: pressed %d, active %d, IN2 %d\n", closeButton.pressed, closeButton.active, digitalRead(closeButton.statusPin));
 }
 
 void valve_init()
@@ -92,6 +178,20 @@ void valve_init()
     pinMode(VALVE_CLOSE_STATUS, INPUT);
     digitalWrite(VALVE_LED, VALVE_LED_OFF);
     pinMode(VALVE_LED, OUTPUT);
+
+    // Known before the first command: R18/C14 settle in about 1 ms, long before setup() runs
+    pinMode(VALVE_LOCK_GPIO, INPUT);    // No pull-up: R18 is external
+    valveLocked = (digitalRead(VALVE_LOCK_GPIO) == HIGH);
+    lockLevel = valveLocked;
+    lockLevelTimer = millis();
+
+    // Read-only: no namespace yet on the first boot, then the default stays
+    Preferences prefs;
+    if (prefs.begin(VALVE_NVS_NAMESPACE, true))
+    {
+        valveEnabled = (prefs.getUChar(VALVE_NVS_KEY_ENABLE, 1) != 0);
+        prefs.end();
+    }
 }
 
 // Функция полной остановки (IN1 = IN2 = 0: coast)
@@ -127,15 +227,16 @@ static void valve_start(ValveState moving)
         valve_drive();
 }
 
-static void button_pressed(ValveButton &button, ValveButton &other, unsigned long now)
+// A held button now reaches DRV8871: on a press, or when J7 is unlocked while Open is held
+static void button_start(ValveButton &button, ValveButton &other, unsigned long now)
 {
-    Serial.printf("Valve button pressed: %s\n", button.name);
+    button.active = true;
 
     // The button wins: against a firmware output it would only brake the valve
     if (isValveMoving || valveDrivePending)
         valve_stop();
 
-    if (other.pressed)
+    if (other.active)
     {
         valveState = VALVE_UNKNOWN; // Both buttons: brake, the valve stands wherever it is
     }
@@ -145,6 +246,30 @@ static void button_pressed(ValveButton &button, ValveButton &other, unsigned lon
         manualStartState = valveState;
         valveState = button.moving;
     }
+}
+
+// The other button is still held and now moves the valve from an unknown position
+static void button_takeover(ValveButton &button, unsigned long now)
+{
+    manualMoveTimer = now;
+    manualStartState = VALVE_UNKNOWN;
+    valveState = button.moving;
+}
+
+static void button_pressed(ValveButton &button, ValveButton &other, unsigned long now)
+{
+    Serial.printf("Valve button pressed: %s\n", button.name);
+
+    // J7 cuts IN1: IO34 sees the press, but the valve does not move and a firmware close goes on
+    if (button.lockable && valveLocked)
+    {
+        Serial.println("Valve button rejected: lock switch");
+        mqttClient.publish(TOPIC_VALVE_MANUAL, button.name);
+        valve_rejected_publish("locked");
+        return;
+    }
+
+    button_start(button, other, now);
     valve_state_publish();
     mqttClient.publish(TOPIC_VALVE_MANUAL, button.name);
 }
@@ -153,12 +278,17 @@ static void button_released(ValveButton &button, ValveButton &other, unsigned lo
 {
     Serial.printf("Valve button released: %s\n", button.name);
 
-    if (other.pressed)
+    // A press rejected by the lock (or cut by it) did not move the valve
+    if (!button.active)
     {
-        // The other button is still held and now moves the valve from an unknown position
-        manualMoveTimer = now;
-        manualStartState = VALVE_UNKNOWN;
-        valveState = other.moving;
+        mqttClient.publish(TOPIC_VALVE_MANUAL, "released");
+        return;
+    }
+    button.active = false;
+
+    if (other.active)
+    {
+        button_takeover(other, now);
     }
     else if (manualStartState == button.reached || now - manualMoveTimer >= valve_move_time_mills)
     {
@@ -221,10 +351,52 @@ static void valve_led_handle(unsigned long now)
     digitalWrite(VALVE_LED, on ? VALVE_LED_ON : VALVE_LED_OFF);
 }
 
+static bool valve_abort(const char *reason);
+
+// J7: IO13 = 1 locked. Only opening is affected: IN2 goes past J7, so a close goes on.
+static void lock_handle(unsigned long now)
+{
+    bool level = (digitalRead(VALVE_LOCK_GPIO) == HIGH);
+    if (level != lockLevel)
+    {
+        lockLevel = level;
+        lockLevelTimer = now;
+    }
+    if (level == valveLocked || now - lockLevelTimer < VALVE_LOCK_DEBOUNCE_MS)
+        return;
+
+    valveLocked = level;
+    Serial.printf("Lock switch: %s\n", valve_lock_name());
+
+    if (valveLocked)
+    {
+        // IN1 is cut, the motor has already stopped part-way
+        if (valveState == VALVE_OPENING)
+            valve_abort("lock switch");
+        if (openButton.active)
+        {
+            openButton.active = false;
+            if (closeButton.active)
+                button_takeover(closeButton, now); // Was a brake, now Close alone drives
+            else
+                valveState = VALVE_UNKNOWN;
+            valveStatePublishPending = true;
+        }
+    }
+    else if (openButton.pressed && !openButton.active)
+    {
+        // IN1 is connected again under the held button: the valve starts opening
+        button_start(openButton, closeButton, now);
+        valveStatePublishPending = true;
+    }
+    valve_lock_publish();
+}
+
 void valve_handle()
 {
     unsigned long now = millis();
     valve_led_handle(now);
+    lock_handle(now);
     button_handle(openButton, closeButton, now);
     button_handle(closeButton, openButton, now);
 
@@ -288,7 +460,7 @@ static bool command_blocked(ValveState moving)
 {
     if ((isValveMoving || valveDrivePending) && valveState == moving)
         Serial.println("Valve command ignored: already moving this way");
-    else if (openButton.pressed || closeButton.pressed)
+    else if (openButton.active || closeButton.active) // Open held under the lock does not reach DRV8871
         Serial.println("Valve command ignored: button is pressed");
     else
         return false;
@@ -296,8 +468,21 @@ static bool command_blocked(ValveState moving)
     return true;
 }
 
+// Opening needs IO13 = 0 and valve_enable = 1. The state is left as it is: the reply is valve/rejected.
+static bool open_rejected()
+{
+    const char *reason = valveLocked ? "locked" : (!valveEnabled ? "disabled" : nullptr);
+    if (reason == nullptr)
+        return false;
+    Serial.printf("Valve open rejected: %s\n", reason);
+    valve_rejected_publish(reason);
+    return true;
+}
+
 static void valve_command(ValveState moving)
 {
+    if (moving == VALVE_OPENING && open_rejected())
+        return;
     if (command_blocked(moving))
         return;
 

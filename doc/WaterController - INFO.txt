@@ -72,6 +72,7 @@ MC:
   GPIO ??         - Сенсор протечки
   GPIO 34+        - Physical button/IN1 (open valve) status              <<- Pure INPUT GPIO can be used
   GPIO 35+        - Physical button/IN2 (close valve) status             <<- Pure INPUT GPIO can be used
+  GPIO 13+        - Lock Switch J7 (input, 1 = locked, R18 pull-up): jumpers 1-2 and 3-4 (or DPST switch "Normal") - open allowed; no jumpers / "LOCK" / cable pulled out - opening blocked in hardware (IN1 cut), closing works
   GPIO ??         - Spare KEY1 Button                                    <<- подойдут GPIO36/39 с внешней подтяжкой
   GPIO 33+        - LED: LED2 Water Valve Status (Green) (pull-up)
   GPIO 25+        - LED: LED3 Water Flow Rate (Yellow) (pull-up)
@@ -119,7 +120,7 @@ Requirements:
   > LED: WiFi/MQTT Status   LED1 (Blue)    - WiFi/MQTT status OFF: WiFi is not connected, Blinking: WiFi connected but MQTT is not connected, ON: WiFi+MQTT connected 
   > LED: Water Valve Status LED2 (Green)   - ON:valve open, OFF: valve closed, Blinking: valve opening/closing, Short flash every 2 s: valve state unknown
   > LED: Water Flow Rate    LED3 (Yellow)  - blinking according to flow rate
-  > LED: Error              LED4 (Red)     - ON: an alarm is active (freeze, overheat, condensation, low_pressure), Slow blink (1 s): a temperature/box sensor is "error" or "no_sensor", OFF: no alarm, no sensor fault
+  > LED: Error              LED4 (Red)     - ON: an alarm is active (freeze, overheat, condensation, low_pressure), Slow blink (1 s): a temperature/box sensor is "error" or "no_sensor", Double short flash every 2 s: opening is blocked (lock switch or valve_enable = 0), 3 fast blinks: an open was rejected, OFF: none of these
   > LED: Valve Opening      LED5 (Green)   - Valve Opening Status
   > LED: Valve Closing      LED6 (Red)     - Valve Closing Status
   > LED: Power              LED7 (Green)   - Power is ON. GPIO not used. LED not yet implemented. Reserved
@@ -146,7 +147,9 @@ MQTT Interface:
     "home/watercontroller1/valve/open"      // RETAIN=false  Payload: N/A    - Open water valve
     "home/watercontroller1/valve/close"     // RETAIN=false  Payload: N/A    - Close water valve
     "home/watercontroller1/valve/state/get" // RETAIN=false  Payload: N/A    - Get valve state: request the "home/watercontroller1/valve/state" response
-    "home/watercontroller1/valve_enable/get" // RETAIN=false Payload: N/A    - Subscribed, not handled yet: no response
+    "home/watercontroller1/valve/lock/get"  // RETAIN=false  Payload: N/A    - Get lock switch state: request the "home/watercontroller1/valve/lock" response
+    "home/watercontroller1/valve_enable/get" // RETAIN=false Payload: N/A    - Get software open permission: request the "home/watercontroller1/valve_enable" response
+    "home/watercontroller1/valve_enable/set" // RETAIN=false Payload: STRING - "1": allow opening, "0": forbid opening by MQTT commands (SW1 button still opens, closing always works). Kept in NVS, written only on change, default "1". Any other payload, empty included, is ignored (logged)
     "home/watercontroller1/pressure/get"    // RETAIN=false  Payload: N/A    - Get pressure: request the "home/watercontroller1/pressure" response with the last reading
     "home/watercontroller1/flowrate/get"    // RETAIN=false  Payload: N/A    - Get flow rate: request the "home/watercontroller1/flowrate" response with the last calculated value
     "home/watercontroller1/temperature/get" // RETAIN=false  Payload: N/A    - Get temperatures: request "home/watercontroller1/temperature/pipe" and ".../temperature/air" with the last readings, or their status if there is no valid reading
@@ -161,6 +164,9 @@ MQTT Interface:
     "home/watercontroller1/connection/info" // RETAIN=false  Payload: JSON   - Sent when MQTT connected or re-connected
     "home/watercontroller1/valve/state"     // RETAIN=true   Payload: STRING - Sent on each state change, on MQTT connect and on request. Payload: "unknown", "opening", "open", "closing", "closed"
     "home/watercontroller1/valve/manual"    // RETAIN=false  Payload: STRING - Sent when a physical button is pressed or released. Payload: "open", "close", "released"
+    "home/watercontroller1/valve/lock"      // RETAIN=true   Payload: STRING - Lock Switch J7 (GPIO13). Sent on change (50 ms debounce), on MQTT connect and on request. Payload: "locked", "unlocked"
+    "home/watercontroller1/valve_enable"    // RETAIN=true   Payload: STRING - Software open permission. Sent on change, on "valve_enable/set", on MQTT connect and on request. Payload: "1", "0"
+    "home/watercontroller1/valve/rejected"  // RETAIN=false  Payload: STRING - Open refused: "valve/open" with the lock on ("locked") or with valve_enable = 0 ("disabled"); Open button SW1 pressed with the lock on ("locked"). The valve does not move, "valve/state" is not changed
     "home/watercontroller1/flowrate"        // RETAIN=false  Payload: STRING - Sent each minute and on request. Liters per minute. Payload: "%f"
     "home/watercontroller1/pressure"        // RETAIN=false  Payload: STRING - Sent every 10 seconds and on request. Bar. Payload: "%.2f"
     "home/watercontroller1/flowtotal"       // RETAIN=false  Payload: STRING - Sent each minute. Liters since boot, drops to 0 after reboot. Payload: "%.3f"
@@ -186,7 +192,7 @@ MQTT Payload Examples:
 ---------------------------------------
 {
 	"app": "Water Controller",
-	"ver": "1.00 build 20261031",
+	"ver": "1.00 build 20261108",
 	"host": "watercontroller1",
 	"ts": 3,
 	"now": "Jan  1 02:00:03 1970",
@@ -219,5 +225,7 @@ MQTT Payload Examples:
 	"mqtt_conn": 3,
 	"wifiConn": "Jan  1 02:00:03 1970",
 	"mqttConn": "Jan  1 02:00:03 1970",
-	"badIp": 0
+	"badIp": 0,
+	"lock": "unlocked",
+	"valveEnable": 1
 }

@@ -64,6 +64,17 @@ static void sensors_debug_info() {
 }
 
 
+// SerialDebug commands take no arguments, hence two commands instead of "valve_enable 0|1"
+static void valve_enable_0() {
+    valve_enable_set(false);
+}
+
+
+static void valve_enable_1() {
+    valve_enable_set(true);
+}
+
+
 static void restart() {
     valve_restart_prepare();
     ESP.restart();
@@ -124,6 +135,8 @@ void debug_init() {
     serialDebug.addCommandHandler("wifi_info", wifiConnect_debug_info);
     serialDebug.addCommandHandler("mqtt_info", mqttClient_debug_info);
     serialDebug.addCommandHandler("valve_info", valve_debug_info);
+    serialDebug.addCommandHandler("valve_enable_0", valve_enable_0);
+    serialDebug.addCommandHandler("valve_enable_1", valve_enable_1);
     serialDebug.addCommandHandler("sensors_info", sensors_debug_info);
     serialDebug.addCommandHandler("restart", restart);
 }

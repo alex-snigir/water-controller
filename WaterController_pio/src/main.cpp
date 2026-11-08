@@ -29,7 +29,7 @@
 #include "main.h"
 
 const char APP_NAME[] PROGMEM = "Water Controller";
-const char APP_VER[]  PROGMEM = "1.00 build 20261031";
+const char APP_VER[]  PROGMEM = "1.00 build 20261108";
 
 volatile time_t boottime = 0L;
 volatile int timeset_cnt = 0;
@@ -51,14 +51,16 @@ const char *lastWillTopic     = _AREA_ "/announcement/" _HOST_NAME_;
 const char* mqtt_server = _MQTT_BROKER_;
 const char* clientId = _HOST_NAME_;
 
-#define TOPIC_COUNT 11
+#define TOPIC_COUNT 13
 const char *topics[] = {
   TOPIC_ALIVE_GET,
   TOPIC_INFO_GET,
   TOPIC_VALVE_ENABLED_GET,
+  TOPIC_VALVE_ENABLED_SET,
   TOPIC_VALVE_OPEN,
   TOPIC_VALVE_CLOSE,
   TOPIC_VALVE_STATE_GET,
+  TOPIC_VALVE_LOCK_GET,
   TOPIC_PRESSURE_GET,
   TOPIC_FLOW_RATE_GET,
   TOPIC_TEMPERATURE_GET,
@@ -67,8 +69,8 @@ const char *topics[] = {
 };
 
 // JSON and temp buffers
-DynamicJsonDocument doc(1024); // JSON
-#define BUFFER_SIZE  (1024)
+DynamicJsonDocument doc(1536); // JSON: connection/info is close to 1 KB
+#define BUFFER_SIZE  (1536)
 char BUF[BUFFER_SIZE];
 
 
@@ -272,6 +274,8 @@ void send_info(const char* topic, InfoLevel level)
     add_runtime_info(doc);
     if (level == INFO_WITH_CONNECTION) {
         add_connection_info(doc);
+        doc["lock"] = valve_lock_name();
+        doc["valveEnable"] = valve_enabled() ? 1 : 0;
     }
 
     if (doc.overflowed()) {
@@ -295,6 +299,12 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
         valve_close();
     } else if(strcmp(topic, TOPIC_VALVE_STATE_GET) == 0) {
         valve_state_publish();
+    } else if(strcmp(topic, TOPIC_VALVE_LOCK_GET) == 0) {
+        valve_lock_publish();
+    } else if(strcmp(topic, TOPIC_VALVE_ENABLED_GET) == 0) {
+        valve_enable_publish();
+    } else if(strcmp(topic, TOPIC_VALVE_ENABLED_SET) == 0) {
+        valve_enable_command(payload, length);
     } else if(strcmp(topic, TOPIC_PRESSURE_GET) == 0) {
         pressure_get();
     } else if(strcmp(topic, TOPIC_FLOW_RATE_GET) == 0) {
@@ -318,6 +328,8 @@ void test_change_event_callback(uint8_t event) {
         send_info(TOPIC_CONNECTION_INFO, INFO_WITH_CONNECTION);
         keepAlive_event_callback();
         valve_state_publish(); // Changes made while MQTT was down were not delivered
+        valve_lock_publish();
+        valve_enable_publish();
         pressure_status_publish();
         temperature_status_publish();
         box_status_publish();

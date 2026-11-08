@@ -19,6 +19,7 @@ time_t boottime_get(time_t now);
 
 #define TOPIC_VALVE_ENABLED       _AREA_ "/" _HOST_NAME_ "/valve_enable"
 #define TOPIC_VALVE_ENABLED_GET   _AREA_ "/" _HOST_NAME_ "/valve_enable/get"
+#define TOPIC_VALVE_ENABLED_SET   _AREA_ "/" _HOST_NAME_ "/valve_enable/set"
 
 // #define TOPIC_VALVE            _AREA_ "/" _HOST_NAME_ "/valve"
 #define TOPIC_VALVE_OPEN          _AREA_ "/" _HOST_NAME_ "/valve/open"
@@ -26,6 +27,9 @@ time_t boottime_get(time_t now);
 #define TOPIC_VALVE_STATE         _AREA_ "/" _HOST_NAME_ "/valve/state"
 #define TOPIC_VALVE_STATE_GET     _AREA_ "/" _HOST_NAME_ "/valve/state/get"
 #define TOPIC_VALVE_MANUAL        _AREA_ "/" _HOST_NAME_ "/valve/manual"
+#define TOPIC_VALVE_LOCK          _AREA_ "/" _HOST_NAME_ "/valve/lock"
+#define TOPIC_VALVE_LOCK_GET      _AREA_ "/" _HOST_NAME_ "/valve/lock/get"
+#define TOPIC_VALVE_REJECTED      _AREA_ "/" _HOST_NAME_ "/valve/rejected"
 
 #define TOPIC_PRESSURE              _AREA_ "/" _HOST_NAME_ "/pressure"
 #define TOPIC_PRESSURE_GET          _AREA_ "/" _HOST_NAME_ "/pressure/get"
@@ -72,6 +76,13 @@ void valve_ota_start();
 void valve_restart_prepare();
 void valve_debug_info();
 bool valve_is_open();
+void valve_lock_publish();
+const char *valve_lock_name();
+void valve_enable_publish();
+void valve_enable_set(bool enable);
+void valve_enable_command(const byte *payload, unsigned int length);
+bool valve_enabled();
+bool valve_open_blocked();
 
 #define ADS_CHANNEL_PRESSURE_SENSOR 0
 
@@ -114,5 +125,6 @@ void alarms_init();
 void alarms_handle();
 void alarms_publish();
 void alarms_debug_info();
+void alarms_led_rejected();
 
 #endif

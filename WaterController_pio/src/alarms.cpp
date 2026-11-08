@@ -21,6 +21,11 @@
 #define ERROR_LED_ON            LOW   // LED cathode is on the pin
 #define ERROR_LED_OFF           HIGH
 #define ERROR_LED_FAULT_MS      1000  // Half period of the slow blink on a sensor fault
+#define ERROR_LED_BLOCKED_PERIOD 2000 // Opening banned (J7 or valve_enable): a double flash every 2 s
+#define ERROR_LED_BLOCKED_FLASH  100
+#define ERROR_LED_BLOCKED_GAP    150
+#define ERROR_LED_REJECT_MS      150  // Half period of the fast blink after a rejected open
+#define ERROR_LED_REJECT_BLINKS  3
 
 enum AlarmState { ALARM_UNKNOWN, ALARM_OFF, ALARM_ON };
 
@@ -42,6 +47,9 @@ static bool valveWasOpen = false;
 static unsigned long valveOpenSince = 0L;
 static bool pressureWasLow = false;
 static unsigned long pressureLowSince = 0L;
+
+static bool rejectBlink = false;
+static unsigned long rejectBlinkSince = 0L;
 
 static const char *alarm_state_name(AlarmState state)
 {
@@ -120,15 +128,40 @@ void alarms_init()
     pinMode(ERROR_LED, OUTPUT);
 }
 
-// LED4: on while any alarm is active, slow blink on a sensor fault, off otherwise
+// A rejected open (command or SW1 under the lock): LED4 blinks fast 3 times, over any other pattern
+void alarms_led_rejected()
+{
+    rejectBlink = true;
+    rejectBlinkSince = millis();
+}
+
+// LED4, highest priority first: fast blink 3 times after a rejected open; on while any alarm is active;
+// slow blink on a sensor fault; double flash every 2 s while opening is banned; off otherwise
 static void error_led_handle(unsigned long now)
 {
     bool on = false;
+    bool alarm = false;
     for (Alarm *a : alarms) {
-        on = on || a->state == ALARM_ON;
+        alarm = alarm || a->state == ALARM_ON;
     }
-    if (!on && (temperature_faulty() || box_faulty())) {
+    if (alarm) {
+        on = true;
+    } else if (temperature_faulty() || box_faulty()) {
         on = (now / ERROR_LED_FAULT_MS) & 1;
+    } else if (valve_open_blocked()) {
+        unsigned long phase = now % ERROR_LED_BLOCKED_PERIOD;
+        on = phase < ERROR_LED_BLOCKED_FLASH ||
+             (phase >= ERROR_LED_BLOCKED_FLASH + ERROR_LED_BLOCKED_GAP &&
+              phase < 2 * ERROR_LED_BLOCKED_FLASH + ERROR_LED_BLOCKED_GAP);
+    }
+
+    if (rejectBlink) {
+        unsigned long elapsed = now - rejectBlinkSince;
+        if (elapsed < 2UL * ERROR_LED_REJECT_MS * ERROR_LED_REJECT_BLINKS) {
+            on = ((elapsed / ERROR_LED_REJECT_MS) & 1) == 0;
+        } else {
+            rejectBlink = false;
+        }
     }
     digitalWrite(ERROR_LED, on ? ERROR_LED_ON : ERROR_LED_OFF);
 }
@@ -158,4 +191,5 @@ void alarms_debug_info()
         Serial.printf("%s: %s\n", a->name, alarm_state_name(a->state));
     }
     Serial.printf("Sensor fault: %d\n", temperature_faulty() || box_faulty());
+    Serial.printf("Open blocked: %d\n", valve_open_blocked());
 }

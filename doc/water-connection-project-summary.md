@@ -505,13 +505,13 @@ OUT1 ──[R14 2.2k]──┬──►|── D9  LED5 (Open, зелёный)  
 | 23 | J3.3 → R13 → U2 HV1/LV1 → IO23 | `WATER_FLOW_GPIO` (INPUT_PULLUP, прерывание FALLING) | Water Flow: LV1 → HV1 → J3 |
 | 5 | J4 DQ, подтяжка R15 4.7 кОм — DS18B20 Pipe | `TEMP_PIPE_GPIO` (`temperature.cpp`) | Water Pipe temperature (DS18B20) |
 | 15 | J5 DQ, подтяжка R16 4.7 кОм — DS18B20 Air | `TEMP_AIR_GPIO` (`temperature.cpp`) | Air temperature (DS18B20) |
-| 13 | J7.3 → R19 → IO13 (вход, Lock Switch), R18 10 кОм к +3V3, C14 на GND | — (план: `VALVE_LOCK_GPIO`, см. 6.4) | — ⚠ нет строки |
+| 13 | J7.3 → R19 → IO13 (вход, Lock Switch), R18 10 кОм к +3V3, C14 на GND | `VALVE_LOCK_GPIO` (`INPUT` без подтяжки, `valve.cpp`, антидребезг 50 мс) | Lock Switch J7 (input, 1 = locked, R18 pull-up) |
 | 16 | не подключён (резерв) | — | reserved for Serial2 RX (2nd ESP) |
 | 17 | не подключён (резерв) | — | reserved for Serial2 TX (2nd ESP) |
 | 32 | D5 LED1 (WIFI), активный LOW | `TEST_WIFI_LED` (`connectionMonitor`, `LED_PULLUP`) | LED1 Wi-Fi/MQTT (синий), pull-up |
 | 33 | D6 LED2 (Valve), активный LOW | `VALVE_LED` (`valve.cpp`) | LED2 состояние крана (зелёный), pull-up: горит — открыт, не горит — закрыт, мигает — движется, короткая вспышка раз в 2 с — положение неизвестно |
 | 25 | D7 LED3 (Flow), активный LOW | `FLOW_LED` (не используется) | LED3 расход (жёлтый), pull-up |
-| 26 | D8 LED4 (Error), активный LOW | `ERROR_LED` (`alarms.cpp`) | LED4 ошибка (красный), pull-up: горит — активно предупреждение, медленно мигает (1 с) — датчик температуры или коробки в статусе `error`/`no_sensor`, не горит — всё в порядке |
+| 26 | D8 LED4 (Error), активный LOW | `ERROR_LED` (`alarms.cpp`) | LED4 ошибка (красный), pull-up: горит — активно предупреждение, медленно мигает (1 с) — датчик температуры или коробки в статусе `error`/`no_sensor`, двойная короткая вспышка раз в 2 с — открытие запрещено (J7 или `valve_enable` = 0), 3 быстрые вспышки — открытие отклонено, не горит — всё в порядке |
 | ? | — | `AC_POWER_DETECT_GPIO ?` | наличие сетевого питания (UPS) |
 
 ⚠ — расхождение, подробности в разделе 7.
@@ -638,14 +638,14 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 
 | Модуль | Функция |
 |---|---|
-| `valve.cpp` | H-мост: открытие/закрытие подачей 1 на IN1/IN2, автостоп через `valve_move_time_mills = 7000` мс; пауза 20 мс при реверсе (`VALVE_REVERSE_PAUSE_MS`); чтение кнопок через IO34/IO35 (маскирование 20 мс, антидребезг 30 мс); состояние крана (`valve/state`), ручные действия (`valve/manual`); LED2 |
+| `valve.cpp` | H-мост: открытие/закрытие подачей 1 на IN1/IN2, автостоп через `valve_move_time_mills = 7000` мс; пауза 20 мс при реверсе (`VALVE_REVERSE_PAUSE_MS`); чтение кнопок через IO34/IO35 (маскирование 20 мс, антидребезг 30 мс); состояние крана (`valve/state`), ручные действия (`valve/manual`); LED2; Lock Switch J7 на IO13 (антидребезг 50 мс, `valve/lock`) и программный запрет открытия `valve_enable` (NVS, `Preferences`), отказ — `valve/rejected` (см. 6.4) |
 | `ads.cpp` | ADS1115 (gain 2/3, ±6.144 В, 0.1875 мВ/бит), одиночное преобразование с таймаутом 50 мс; при пропаже устройства повторная инициализация раз в минуту |
 | `pressure_sensor.cpp` | канал A0, `бар = В × 2`, 0–10 бар; публикация каждые 10 с (`%.2f`); статус датчика `pressure/status`: `ok`, `over_range` (≥ 10 бар), `no_adc` (3 неудачных чтения подряд), `out_of_range`, `unknown`; `pressure/get` — последнее измерение без нового чтения АЦП |
 | `water_flow.cpp` | прерывание по спаду на GPIO23 (`WATER_FLOW_GPIO`), подсчёт импульсов под `portMUX`; раз в 60 с — расход в л/мин (= импульсы / 476) и накопленный объём `flowtotal`; ответ на `flowrate/get` |
 | `temperature.cpp` | DS18B20 Pipe (GPIO5) и Air (GPIO15), по датчику на шину; опрос раз в 60 с без блокировки: запуск преобразования, чтение через 800 мс по `millis()`; `temperature/pipe`, `temperature/air` (`%.2f`); статусы `temperature/pipe/status`, `temperature/air/status` (retained): `unknown`, `ok`, `no_sensor`, `error` (3 неудачных чтения подряд: −127 или 85 °C); `temperature/get` |
 | `box_sensor.cpp` | SHT41 (0x44) на шине I2C с ADS1115, напрямую через `Wire` без библиотеки Adafruit (она ждёт измерение через `delay()`, нагреватель — 1.1 с); SHTC3 для испытаний — `BOX_SENSOR` в `Application.h`. Опрос раз в 60 с без блокировки: команда измерения, чтение через 10 мс по `millis()`, проверка CRC; `box/temperature` (`%.2f`), `box/humidity` (`%.1f`), `box/dewpoint` (формула Магнуса); статус `box/status` (retained): `unknown`, `ok`, `no_sensor`, `error` (3 неудачи подряд); `box/get`. Нагреватель SHT41: 110 мВт, 1 с, после измерения с влажностью ≥ 90 %, не чаще раза в 30 мин; измерение после нагрева отбрасывается, следующее — через минуту |
-| `alarms.cpp` | предупреждения `alarm/freeze`, `alarm/overheat`, `alarm/condensation` (retained, `on`/`off`/`unknown`, с гистерезисом) по последним значениям `temperature.cpp` и `box_sensor.cpp`; `alarm/low_pressure`: кран открыт ≥ 30 с и давление < 0.5 бар ≥ 30 с (сброс > 1 бар или кран не открыт); `alarm/get`; LED4: горит при предупреждении, медленно мигает при неисправном датчике |
-| `debug.cpp` | команды серийной консоли: `wifi_reconnect`, `wifi_set_11b/g/n`, `wifi_info`, `mqtt_info`, `valve_info`, `sensors_info`, `restart` |
+| `alarms.cpp` | предупреждения `alarm/freeze`, `alarm/overheat`, `alarm/condensation` (retained, `on`/`off`/`unknown`, с гистерезисом) по последним значениям `temperature.cpp` и `box_sensor.cpp`; `alarm/low_pressure`: кран открыт ≥ 30 с и давление < 0.5 бар ≥ 30 с (сброс > 1 бар или кран не открыт); `alarm/get`; LED4: горит при предупреждении, медленно мигает при неисправном датчике, двойная вспышка раз в 2 с — открытие запрещено, 3 быстрые вспышки — открытие отклонено |
+| `debug.cpp` | команды серийной консоли: `wifi_reconnect`, `wifi_set_11b/g/n`, `wifi_info`, `mqtt_info`, `valve_info` (в т.ч. `lock`, `valve_enable`), `valve_enable_0`, `valve_enable_1`, `sensors_info`, `restart` |
 
 - Время: SNTP `pool.ntp.org`, часовой пояс Израиля.
 
@@ -656,10 +656,10 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | `home/announcement/watercontroller1` | ← | `connected` — при подключении, перед подпиской на топики; `disconnected` — last will от брокера |
 | `home/keepalive/watercontroller1` | ← | `connected` раз в минуту |
 | `home/alive/get` → `home/alive` | → / ← | базовая информация (JSON) |
-| `home/watercontroller1/info/get` → `.../info` | → / ← | расширенная информация + история соединений |
-| `home/watercontroller1/connection/info` | ← | после восстановления MQTT |
-| `home/watercontroller1/valve/open` | → | открыть кран (payload игнорируется) |
-| `home/watercontroller1/valve/close` | → | закрыть кран (payload игнорируется) |
+| `home/watercontroller1/info/get` → `.../info` | → / ← | расширенная информация + история соединений, `lock`, `valveEnable` |
+| `home/watercontroller1/connection/info` | ← | после восстановления MQTT (те же поля, что `info`) |
+| `home/watercontroller1/valve/open` | → | открыть кран (payload игнорируется); только при IO13 = 0 и `valve_enable` = 1, иначе `valve/rejected` |
+| `home/watercontroller1/valve/close` | → | закрыть кран (payload игнорируется); работает при любой блокировке |
 | `home/watercontroller1/valve/state/get` → `.../valve/state` | → / ← | состояние крана, retained: `unknown`, `opening`, `open`, `closing`, `closed`; публикуется при каждом изменении и при подключении к MQTT |
 | `home/watercontroller1/valve/manual` | ← | ручное действие: `open`, `close` (нажатие SW1/SW2), `released` (отпускание) |
 | `home/watercontroller1/pressure` | ← | давление, бар (строка `%.2f`) |
@@ -668,18 +668,18 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | `home/watercontroller1/flowrate` | ← | расход, л/мин (каждые 60 с) |
 | `home/watercontroller1/flowrate/get` | → | запрос расхода: последнее рассчитанное значение, 0 до конца первых 60 с |
 | `home/watercontroller1/flowtotal` | ← | литры с момента загрузки (строка `%.3f`, каждые 60 с), после перезагрузки считает с 0 |
-| `home/watercontroller1/valve_enable/get` | → | подписка есть, **обработчика нет** — план в 6.4 |
-| `home/watercontroller1/valve_enable` | ← | **план (6.4):** программное разрешение открытия, retained: `1` / `0` |
-| `home/watercontroller1/valve_enable/set` | → | **план (6.4):** `1` — разрешить, `0` — запретить открытие (RETAIN=false) |
-| `home/watercontroller1/valve/lock` | ← | **план (6.4):** аппаратная блокировка J7, retained: `locked` / `unlocked` |
-| `home/watercontroller1/valve/lock/get` | → | **план (6.4):** запрос `valve/lock` |
-| `home/watercontroller1/valve/rejected` | ← | **план (6.4):** отказ в открытии: `locked` / `disabled` (RETAIN=false) |
+| `home/watercontroller1/valve_enable/get` | → | запрос `valve_enable` |
+| `home/watercontroller1/valve_enable` | ← | программное разрешение открытия, retained: `1` / `0`; при изменении, в ответ на `valve_enable/set` и `valve_enable/get`, при подключении к MQTT |
+| `home/watercontroller1/valve_enable/set` | → | `1` — разрешить, `0` — запретить открытие командами МК (RETAIN=false); кнопку SW1 не блокирует; хранится в NVS, по умолчанию `1`; другой payload, в т.ч. пустой, игнорируется |
+| `home/watercontroller1/valve/lock` | ← | аппаратная блокировка J7 (IO13), retained: `locked` / `unlocked`; при изменении, при подключении к MQTT и в ответ на `valve/lock/get` |
+| `home/watercontroller1/valve/lock/get` | → | запрос `valve/lock` |
+| `home/watercontroller1/valve/rejected` | ← | отказ в открытии (RETAIN=false): `locked` — `valve/open` или кнопка SW1 при блокировке J7; `disabled` — `valve/open` при `valve_enable` = 0 |
 
 ---
 
 ### 6.4 Задание на реализацию: Lock Switch и `valve_enable`
 
-Задание для отдельной сессии разработки прошивки. Схема готова (4.4.3); в прошивке ничего из этого пока нет. Делать в стиле существующего кода (неблокирующий super-loop, `millis()`, модули в `src/`, топики-макросы в `main.h`, см. `WaterController_pio/CLAUDE.md`).
+✅ **Реализовано** в прошивке 1.00 build 20261108 (`valve.cpp`, `alarms.cpp`, `main.cpp`, `debug.cpp`), подробности — 7.2 п. 17; команда консоли — `valve_enable_0` / `valve_enable_1` (консоль не принимает аргументы). Проверка на железе (п. 10) не проведена. Исходное задание (схема — 4.4.3): Делать в стиле существующего кода (неблокирующий super-loop, `millis()`, модули в `src/`, топики-макросы в `main.h`, см. `WaterController_pio/CLAUDE.md`).
 
 **Два независимых механизма запрета открытия**
 
@@ -789,7 +789,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 12. **При пропадании питания кран остаётся в последнем положении** (вода не перекрывается). Для защиты от протечек при отключении сети — UPS/аккумулятор на 12 В и вход «AC power detect» (уже есть в требованиях).
 13. ✅ **Чтение нажатий SW1/SW2 — выполнено в схеме:** узлы IN1/IN2 заведены на входы IO34/IO35 через R7/R8 10 кОм; R6 увеличен до 15 кОм для запаса по уровню (см. 4.4.1). Поддержка в прошивке есть (7.2, п. 14).
 14. ✅ **Разъёмы SW1/SW2 — выполнено:** JST XH 2P вертикальные. Порядок контактов (pin 1 — IN, pin 2 — питание кнопок) подписать на шелкографии.
-15. ✅ **Переключатель блокировки открытия — выполнено в схеме:** J7 разрывает IN1 у DRV8871 (блокирует и МК, и SW1), состояние читается на IO13; R17/C13 на стороне DRV8871, R18/R19/C14 на линии LOCK (см. 4.4.3). Прошивка — задание в 6.4.
+15. ✅ **Переключатель блокировки открытия — выполнено в схеме:** J7 разрывает IN1 у DRV8871 (блокирует и МК, и SW1), состояние читается на IO13; R17/C13 на стороне DRV8871, R18/R19/C14 на линии LOCK (см. 4.4.3). ✅ Прошивка — реализовано (6.4, 7.2 п. 17).
 16. **J4/J5 (Dupont) — риск надеть зонд на J2 (12 В).** При разводке разнести J4/J5 и J2/J3 и подписать разъёмы на шелкографии (см. 4.7).
 
 ### 7.2 Прошивка
@@ -797,7 +797,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 1. ✅ `VALVE_LED` исправлен на 33 — совпадает со схемой (D6). `VALVE_LED` используется в `valve.cpp`, `TEST_WIFI_LED` — в `connectionMonitor`, `ERROR_LED` — в `alarms.cpp`; `FLOW_LED` объявлен, но в коде пока не используется.
 2. ✅ Подключение LED согласовано: на схеме анод через резистор к +3V3, катод на GPIO (активный LOW) — как `LED_PULLUP` в прошивке. Устарел только `INFO.txt` («pull-down»). При инициализации LED: сначала `HIGH`, потом `OUTPUT`.
 3. `AC_POWER_DETECT_GPIO ?` — заглушка, при первом использовании сломает сборку.
-4. Подписка на `valve_enable/get` есть, а в `mqtt_callback()` его нет — задание в 6.4. ✅ `flowrate/get` обрабатывается через `water_flow_get()`.
+4. ✅ `valve_enable/get` обрабатывается в `mqtt_callback()` (ответ в `valve_enable`), добавлены `valve_enable/set` и `valve/lock/get` (см. 6.4). ✅ `flowrate/get` обрабатывается через `water_flow_get()`.
 5. Команды `valve/open` / `valve/close` по договорённости публикуются без retain (`RETAIN=false` в `INFO.txt`) — так и должно быть: retained-команда выполнялась бы при каждом переподключении и после каждой перезагрузки, в том числе снова открывала бы кран после аварийного закрытия. Но прошивка случайное retained-сообщение не распознает: PubSubClient не передаёт флаг retain, а payload игнорируется. Защита: (1) выполнять команду только при непустом ожидаемом payload; (2) при подключении, **до** подписки на топики, публиковать в `valve/open` и `valve/close` пустое retained-сообщение — брокер удалит сохранённую команду (после подписки без п. 1 это открыло бы кран); (3) в Home Assistant явно указывать `retain: false`.
 6. ✅ Состояние крана публикуется в `valve/state` (вычисляется по командам и удержанию кнопок, датчика положения нет). После загрузки и после неполного хода — `unknown` до завершения полного хода.
 7. **Основная функция — обнаружение протечки и автоматическое закрытие — пока не реализована.** Возможные правила: непрерывный расход дольше N минут, расход выше порога, падение давления при закрытом кране, сигнал датчика протечки.
@@ -810,7 +810,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 14. ✅ Чтение кнопок через IO34/IO35 реализовано в `valve.cpp`: `INPUT` без подтяжек, нажатие распознаётся при своём выходе = 0, маскирование 20 мс после выключения выхода, антидребезг 30 мс, публикация в `valve/state` и `valve/manual`. Кнопка приоритетнее прошивки: нажатие отменяет ход по команде, а команды при нажатой кнопке игнорируются. Удержание короче 7 с даёт `unknown`, если кран не был уже в этом положении.
 15. ✅ Комментарий в `Application.h` исправлен на `// ESP32: ESP-32U-38PINs:`; для ESP8266 добавлен `#error ESP8266 Not supported`. `WATER_FLOW_GPIO` = 23 — совпадает со схемой.
 16. ✅ DS18B20 реализованы в `temperature.cpp`: макросы `TEMP_PIPE_GPIO 5`, `TEMP_AIR_GPIO 15` в `Application.h`, библиотеки `paulstoffregen/OneWire`, `milesburton/DallasTemperature` в `platformio.ini`. ✅ `ADC_SDA_GPIO` / `ADC_SCL_GPIO` переименованы в `I2C_SDA_GPIO` / `I2C_SCL_GPIO`. ✅ SHT41 (и SHTC3 для испытаний) реализованы в `box_sensor.cpp` напрямую через `Wire`, библиотеки Adafruit не нужны. Требования — в 4.7.
-17. Lock Switch (IO13) и программный запрет открытия `valve_enable` не реализованы — задание в 6.4.
+17. ✅ Lock Switch (IO13) и программный запрет открытия `valve_enable` реализованы в `valve.cpp` по заданию 6.4: `VALVE_LOCK_GPIO 13` (`INPUT`, антидребезг 50 мс, читается уже в `valve_init()`), `valve/lock` (retained); `valve_enable` в NVS (namespace `valve`, key `enable`, запись только при изменении, по умолчанию 1), `valve_enable/set`, `valve_enable/get`; `valve/open` при запрете не включает IO19 и публикует `valve/rejected` (`locked` / `disabled`), `valve/close` работает всегда. Блокировка J7 во время открытия снимает IO19, `valve/state` = `unknown`. Кнопка SW1 при блокировке: `valve/manual` = `open` + `valve/rejected` = `locked`, состояние не меняется, команда закрытия при этом не блокируется; снятие блокировки при удержанной SW1 считается началом ручного открытия. Запрет `valve_enable` = 0 не прерывает уже идущее открытие. LED4: двойная вспышка раз в 2 с при запрете, 3 быстрые вспышки при отказе (поверх остальной индикации, 0.9 с). Поля `lock` / `valveEnable` в `info` и `connection/info` (JSON-буфер увеличен до 1536 байт). Проверка на железе (6.4 п. 10) не проведена.
 
 ### 7.3 Расхождения в документации
 
@@ -821,7 +821,6 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | `INFO.txt` | Power Consumption: нет итога; «Система полива» — `?? mA / ?V`; нет строки датчиков температуры (< ~3 мА / 3.3 В) | — |
 | `INFO.txt` | открытый вопрос «AC Power — What is it??» | вход наличия сети при работе от UPS, см. 7.1 п. 12 |
 | `INFO.txt` | `GPIO ??`: датчик протечки, KEY1, AC Power; нет GPIO для кнопки AP | предложения — в разделе 9 |
-| `INFO.txt` | нет строки GPIO13 (Lock Switch J7) и топиков `valve/lock`, `valve_enable/set`, `valve/rejected` | добавить при реализации (6.4, п. 9) |
 | `INFO.txt` | LED7 Power: «not yet implemented» | на схеме нет |
 | `INFO.txt` | названия датчиков: GPIO15 — «Ambient temperature», в Requirements — «Board Temperature/Humidity» | на схеме — «Air Temperature» и «Box Temperature/Humidity»; лучше везде Pipe / Air / Box (эти же названия пойдут в топики MQTT) |
 | `INFO.txt` | опечатки: `DB18B20` (2×) → `DS18B20`; `Preasure` → `Pressure` (строка GPIO21) | — |
@@ -836,8 +835,8 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 |---|---|---|
 | Открытие/закрытие крана по MQTT | ✅ | ✅ проверено на железе (`[Tested]` в `INFO.txt`) |
 | Физические кнопки открытия/закрытия (в т.ч. без МК) | ✅ SW1/SW2, работают без МК; состояние на IO34/IO35 | ✅ чтение IO34/IO35, `valve/manual`, `valve/state` |
-| Переключатель блокировки открытия | ✅ J7 (DPST / перемычки), IO13 | ❌ задание в 6.4 |
-| Программный запрет открытия (`valve_enable`) | — | ❌ задание в 6.4 |
+| Переключатель блокировки открытия | ✅ J7 (DPST / перемычки), IO13 | ✅ `valve/lock`, `valve/rejected` (6.4); на железе не проверено |
+| Программный запрет открытия (`valve_enable`) | — | ✅ NVS, `valve_enable/set`, `valve_enable/get` (6.4); на железе не проверено |
 | Периодическое чтение расхода | ✅ J3 → IO23 | ✅ (раз в 60 с) |
 | Периодическое чтение давления | ✅ | ✅ (10 с) |
 | Чтение давления по запросу | ✅ | ✅ (`pressure/get`) |
@@ -846,7 +845,7 @@ pio device monitor -e RELEASE_COM_esp32dv      # монитор, 115200
 | Внутренняя температура ESP32 | — | ❌ (только справочно, см. 4.7) |
 | Датчик протечки | ❌ | ❌ |
 | Логика обнаружения протечки и автозакрытия | — | ❌ |
-| LED1–LED4 | ✅ D5–D8 | частично: LED1, LED2; LED3/LED4 не используются |
+| LED1–LED4 | ✅ D5–D8 | частично: LED1, LED2, LED4 (предупреждения, неисправность датчиков, запрет/отказ открытия); LED3 не используется |
 | LED5/LED6 Open/Close | ✅ D9/D10 на выходе DRV8871 | — (GPIO не нужен) |
 | LED7 Power | ❌ | — (GPIO не нужен) |
 | Кнопка AP/конфигурации | ❌ | ❌ |
