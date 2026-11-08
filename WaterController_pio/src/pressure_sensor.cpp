@@ -34,6 +34,15 @@ void pressure_debug_info() {
     Serial.printf("Last read attempt: %lu ms ago\n", millis() - read_pressure_lastActivity);
 }
 
+// The last reading, if there is a valid one
+bool pressure_value(float *bar) {
+    if (strcmp(pressure_status, "ok") != 0 && strcmp(pressure_status, "over_range") != 0) {
+        return false;
+    }
+    *bar = pressure_last;
+    return true;
+}
+
 void pressure_sensor_init(unsigned long interval) {
     read_pressure_interval = interval;
     read_pressure_lastActivity = millis(); // The first interval starts here, not at boot

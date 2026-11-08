@@ -63,6 +63,12 @@ void valve_state_publish()
     mqttClient.publish(TOPIC_VALVE_STATE, valve_state_name(), true);
 }
 
+// Fully open as far as the firmware knows: there is no position feedback
+bool valve_is_open()
+{
+    return valveState == VALVE_OPEN;
+}
+
 void valve_debug_info()
 {
     Serial.println("\nvalve.cpp:\n==========");

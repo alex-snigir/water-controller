@@ -51,6 +51,7 @@ time_t boottime_get(time_t now);
 #define TOPIC_ALARM_FREEZE         _AREA_ "/" _HOST_NAME_ "/alarm/freeze"
 #define TOPIC_ALARM_OVERHEAT       _AREA_ "/" _HOST_NAME_ "/alarm/overheat"
 #define TOPIC_ALARM_CONDENSATION   _AREA_ "/" _HOST_NAME_ "/alarm/condensation"
+#define TOPIC_ALARM_LOW_PRESSURE   _AREA_ "/" _HOST_NAME_ "/alarm/low_pressure"
 
 #define KEEP_ALIVE_MESSAGE_INTERVAL 60000L // 1 minute
 
@@ -70,6 +71,7 @@ void valve_state_publish();
 void valve_ota_start();
 void valve_restart_prepare();
 void valve_debug_info();
+bool valve_is_open();
 
 #define ADS_CHANNEL_PRESSURE_SENSOR 0
 
@@ -84,6 +86,7 @@ void pressure_sensor_handle();
 void pressure_get();
 void pressure_status_publish();
 void pressure_debug_info();
+bool pressure_value(float *bar);
 
 void water_flow_sensor_init(unsigned long interval);
 void water_flow_handle();
