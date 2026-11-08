@@ -21,11 +21,12 @@ struct Alarm
     const char *name;
     const char *topic;
     AlarmState state;
+    bool active;        // Last known on/off: kept while unknown, so the hysteresis survives a sensor fault
 };
 
-static Alarm freezeAlarm       = {"freeze",       TOPIC_ALARM_FREEZE,       ALARM_UNKNOWN};
-static Alarm overheatAlarm     = {"overheat",     TOPIC_ALARM_OVERHEAT,     ALARM_UNKNOWN};
-static Alarm condensationAlarm = {"condensation", TOPIC_ALARM_CONDENSATION, ALARM_UNKNOWN};
+static Alarm freezeAlarm       = {"freeze",       TOPIC_ALARM_FREEZE,       ALARM_UNKNOWN, false};
+static Alarm overheatAlarm     = {"overheat",     TOPIC_ALARM_OVERHEAT,     ALARM_UNKNOWN, false};
+static Alarm condensationAlarm = {"condensation", TOPIC_ALARM_CONDENSATION, ALARM_UNKNOWN, false};
 static Alarm *alarms[] = {&freezeAlarm, &overheatAlarm, &condensationAlarm};
 
 static const char *alarm_state_name(AlarmState state)
@@ -38,10 +39,15 @@ static const char *alarm_state_name(AlarmState state)
 }
 
 // Retained: "unknown" while a sensor it needs has no valid reading, so a missing sensor does not read as "off"
+static void alarm_publish(const Alarm &a)
+{
+    mqttClient.publish(a.topic, alarm_state_name(a.state), true);
+}
+
 void alarms_publish()
 {
     for (Alarm *a : alarms) {
-        mqttClient.publish(a->topic, alarm_state_name(a->state), true);
+        alarm_publish(*a);
     }
 }
 
@@ -52,21 +58,19 @@ static void alarm_set(Alarm &a, AlarmState state)
     }
     a.state = state;
     Serial.printf("Alarm %s: %s\n", a.name, alarm_state_name(state));
-    mqttClient.publish(a.topic, alarm_state_name(state), true);
+    alarm_publish(a);
 }
 
-// An active alarm clears only past its off threshold; from off or unknown it starts at the on threshold
+// An active alarm clears only past its off threshold, an inactive one starts at the on threshold.
+// After "unknown" the alarm goes on from its last known state.
 static void alarm_eval(Alarm &a, bool valid, bool onCondition, bool offCondition)
 {
     if (!valid) {
         alarm_set(a, ALARM_UNKNOWN);
+        return;
     }
-    else if (a.state == ALARM_ON) {
-        alarm_set(a, offCondition ? ALARM_OFF : ALARM_ON);
-    }
-    else {
-        alarm_set(a, onCondition ? ALARM_ON : ALARM_OFF);
-    }
+    a.active = a.active ? !offCondition : onCondition;
+    alarm_set(a, a.active ? ALARM_ON : ALARM_OFF);
 }
 
 void alarms_init()
@@ -78,15 +82,12 @@ void alarms_init()
 // LED4: on while any alarm is active, slow blink on a sensor fault, off otherwise
 static void error_led_handle(unsigned long now)
 {
-    bool on;
-    if (freezeAlarm.state == ALARM_ON || overheatAlarm.state == ALARM_ON || condensationAlarm.state == ALARM_ON) {
-        on = true;
+    bool on = false;
+    for (Alarm *a : alarms) {
+        on = on || a->state == ALARM_ON;
     }
-    else if (temperature_faulty() || box_faulty()) {
+    if (!on && (temperature_faulty() || box_faulty())) {
         on = (now / ERROR_LED_FAULT_MS) & 1;
-    }
-    else {
-        on = false;
     }
     digitalWrite(ERROR_LED, on ? ERROR_LED_ON : ERROR_LED_OFF);
 }
