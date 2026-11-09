@@ -19,6 +19,8 @@
 // v0.20 20260922 WiFiClient timeout 1 s on ESP8266 and ESP32 (ESP32 2.x takes seconds - 1000 meant 1000 s),
 //                PubSubClient socket timeout 3 s, reconnect interval counted from the end of the attempt,
 //                WiFi down no longer consumes the reconnect interval (reconnect right after WiFi is back)
+// v0.21 20261109 setClearRetainedTopics(): on connect, before subscribing, an empty retained message
+//                deletes a command retained on the broker by mistake (PubSubClient does not pass the retain flag)
 //
 // TODO:
 //   > Replace Serial.print() with LOG()
@@ -109,6 +111,12 @@ void MqttClient::setLastWillTopic(const char *topic, bool retain, const char *me
 void MqttClient::setTopics(const char **topics, int count) {
     m_topics = topics;
     m_topics_cnt = count;
+}
+
+
+void MqttClient::setClearRetainedTopics(const char **topics, int count) {
+    m_clearRetainedTopics = topics;
+    m_clearRetainedTopics_cnt = count;
 }
 
 
@@ -262,6 +270,8 @@ bool MqttClient::reconnect()
         this->m_wifiClient.setNoDelay(true);
         publish_announcement();
         yield();
+        clear_retained();   // Must precede resubscribe(): a retained command would be delivered on subscribe (see clear_retained())
+        yield();
         resubscribe();
         yield();
         fire_connect_event(true);
@@ -337,7 +347,37 @@ void MqttClient::publish_announcement()
 }
 
 
-void MqttClient::resubscribe() 
+// Deletes retained messages in the command topics set by setClearRetainedTopics().
+//
+// Why: commands must be sent with RETAIN=false. A command retained by mistake is stored by the broker
+// and delivered again on every subscribe, i.e. after each reconnect and reboot (e.g. "valve/open" would
+// reopen the valve after an emergency close). PubSubClient does not pass the retain flag to the callback,
+// so the application cannot tell a stale retained message from a fresh command.
+//
+// How (MQTT 3.1.1, 3.3.1.3; the same in MQTT 5):
+//   - The broker keeps one retained message per topic. A PUBLISH with RETAIN=1 replaces it,
+//     a PUBLISH with RETAIN=0 leaves it alone. There is no topic to delete: only this stored message.
+//   - A PUBLISH with RETAIN=1 and a zero-length payload removes the stored message, and the broker
+//     does not store the empty one. A later subscriber gets nothing.
+//
+// Order matters: call this before resubscribe().
+//   - The empty message is also delivered, as a normal zero-length message, to clients already
+//     subscribed to the topic. If this client were subscribed, it would receive it as a command
+//     (the payload of "valve/open" is ignored, so the valve would open).
+//   - The broker handles the packets of one connection in order, so the stored message is gone
+//     before the SUBSCRIBE that follows is processed.
+//
+// Side effect: other clients subscribed to these topics (MQTT Explorer, a Home Assistant automation)
+// receive the empty message too on each connect of this device.
+void MqttClient::clear_retained()
+{
+    for (int i = 0; i < m_clearRetainedTopics_cnt; i++) {
+        publish(m_clearRetainedTopics[i], "", true); // RETAIN=1 + empty payload: the broker deletes the stored message
+    }
+}
+
+
+void MqttClient::resubscribe()
 {
     if (m_topics_cnt > 0) {
         Serial.println("MQTT subscribing");

@@ -138,18 +138,19 @@ Requirements:
 MQTT Interface:
 =============== 
   Announcement: "home/announcement/watercontroller1"   // Payload: "connected"    - Sent by device when connected to broker, just before topics subscription
+  Clear retained: "valve/open", "valve/close", "valve_enable/set" // Payload: ""  - Sent RETAIN=true by device on connect, after the announcement and before subscribing: deletes a command retained by mistake, so it is not run again on every reconnect/reboot
   LastWill:     "home/announcement/watercontroller1"   // Payload: "disconnected" - Sent by broker when client disconnected from MQTT broker
   
   Subscribed:
   ===========
     "home/alive/get"                        // RETAIN=false  Payload: N/A    - Get device info: request the "home/alive" response
     "home/watercontroller1/info/get"        // RETAIN=false  Payload: N/A    - Get device info: request the "home/watercontroller1/info" response 
-    "home/watercontroller1/valve/open"      // RETAIN=false  Payload: N/A    - Open water valve
-    "home/watercontroller1/valve/close"     // RETAIN=false  Payload: N/A    - Close water valve
+    "home/watercontroller1/valve/open"      // RETAIN=false  Payload: N/A    - Open water valve. Must not be retained: a retained one is deleted by the device on connect
+    "home/watercontroller1/valve/close"     // RETAIN=false  Payload: N/A    - Close water valve. Must not be retained: a retained one is deleted by the device on connect
     "home/watercontroller1/valve/state/get" // RETAIN=false  Payload: N/A    - Get valve state: request the "home/watercontroller1/valve/state" response
     "home/watercontroller1/valve/lock/get"  // RETAIN=false  Payload: N/A    - Get lock switch state: request the "home/watercontroller1/valve/lock" response
     "home/watercontroller1/valve_enable/get" // RETAIN=false Payload: N/A    - Get software open permission: request the "home/watercontroller1/valve_enable" response
-    "home/watercontroller1/valve_enable/set" // RETAIN=false Payload: STRING - "1": allow opening, "0": forbid opening by MQTT commands (SW1 button still opens, closing always works). Kept in NVS, written only on change, default "1". Any other payload, empty included, is ignored (logged)
+    "home/watercontroller1/valve_enable/set" // RETAIN=false Payload: STRING - "1": allow opening, "0": forbid opening by MQTT commands (SW1 button still opens, closing always works). Kept in NVS, written only on change, default "1". Any other payload, empty included, is ignored (logged). Must not be retained: a retained one is deleted by the device on connect
     "home/watercontroller1/pressure/get"    // RETAIN=false  Payload: N/A    - Get pressure: request the "home/watercontroller1/pressure" response with the last reading
     "home/watercontroller1/flowrate/get"    // RETAIN=false  Payload: N/A    - Get flow rate: request the "home/watercontroller1/flowrate" response with the last calculated value
     "home/watercontroller1/temperature/get" // RETAIN=false  Payload: N/A    - Get temperatures: request "home/watercontroller1/temperature/pipe" and ".../temperature/air" with the last readings, or their status if there is no valid reading

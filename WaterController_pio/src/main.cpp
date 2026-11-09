@@ -68,6 +68,15 @@ const char *topics[] = {
   TOPIC_ALARM_GET
 };
 
+// Commands are sent with RETAIN=false. One retained by mistake would run again on every reconnect and after
+// each reboot (e.g. reopen the valve after an emergency close): deleted on connect, before subscribing.
+#define CLEAR_RETAINED_TOPIC_COUNT 3
+const char *clearRetainedTopics[] = {
+  TOPIC_VALVE_OPEN,
+  TOPIC_VALVE_CLOSE,
+  TOPIC_VALVE_ENABLED_SET
+};
+
 // JSON and temp buffers
 DynamicJsonDocument doc(1536); // JSON: connection/info is close to 1 KB
 #define BUFFER_SIZE  (1536)
@@ -132,6 +141,7 @@ void setup() {
     mqttClient.begin(mqtt_server, clientId, true);
     mqttClient.setAnnouncementTopic(announcementTopic);
     mqttClient.setLastWillTopic(lastWillTopic);
+    mqttClient.setClearRetainedTopics(clearRetainedTopics, CLEAR_RETAINED_TOPIC_COUNT);
     mqttClient.setTopics(topics, TOPIC_COUNT);
     mqttClient.setCallback(mqtt_callback);
 

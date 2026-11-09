@@ -20,6 +20,7 @@ class MqttClient {
         void setLastWillTopic(const char *, bool);
         void setLastWillTopic(const char *, bool, const char *);
         void setTopics(const char **, int);
+        void setClearRetainedTopics(const char **, int); // Command topics: retained messages deleted on connect, before subscribing
         void setCallback(void (*custom_callback)(char*, uint8_t*, unsigned int));
         void setConnectEvent(void (*connect_event)(bool connected));
 
@@ -53,6 +54,8 @@ class MqttClient {
 
         const char** m_topics = nullptr;
         int m_topics_cnt = 0;
+        const char** m_clearRetainedTopics = nullptr;
+        int m_clearRetainedTopics_cnt = 0;
 
         bool m_enabled = false;
         const char* m_clientId = nullptr;
@@ -70,6 +73,7 @@ class MqttClient {
         void begin_impl(const char *mqtt_server, const char* clientId, const char *user, const char *passwd);
         bool reconnect();
         void publish_announcement();
+        void clear_retained();
         void resubscribe();
         void callback(char* topic, byte* payload, unsigned int length);
         void (*custom_callback)(char*, uint8_t*, unsigned int) = 0;
