@@ -4092,7 +4092,7 @@
 	)
 	(text "Valve"
 		(exclude_from_sim no)
-		(at 278.384 118.11 0)
+		(at 276.86 118.618 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4113,6 +4113,18 @@
 			)
 		)
 		(uuid "0cb7ded0-f780-47ed-bd6e-1d69f65b59a1")
+	)
+	(text "Manual"
+		(exclude_from_sim no)
+		(at 174.244 100.584 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "1916958c-68bc-4374-b544-ac500fd5aa9a")
 	)
 	(text "SHT41"
 		(exclude_from_sim no)
@@ -4220,9 +4232,9 @@
 		)
 		(uuid "5d37afbe-e4c0-4a6d-bb0a-54437f6cc719")
 	)
-	(text "Lock Switch"
+	(text "Open Lock Switch"
 		(exclude_from_sim no)
-		(at 219.964 94.996 0)
+		(at 222.758 94.996 0)
 		(effects
 			(font
 				(size 1.27 1.27)

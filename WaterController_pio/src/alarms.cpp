@@ -24,8 +24,11 @@
 #define ERROR_LED_BLOCKED_PERIOD 2000 // Opening banned (J7 or valve_enable): a double flash every 2 s
 #define ERROR_LED_BLOCKED_FLASH  100
 #define ERROR_LED_BLOCKED_GAP    150
-#define ERROR_LED_REJECT_MS      150  // Half period of the fast blink after a rejected open
-#define ERROR_LED_REJECT_BLINKS  3
+// A rejected open. Long blinks for "disabled", so they do not read as the double flash of a ban.
+#define ERROR_LED_LOCKED_MS      150  // "locked" (J7): 3 fast blinks, half period
+#define ERROR_LED_LOCKED_BLINKS  3
+#define ERROR_LED_DISABLED_MS    400  // "disabled" (valve_enable = 0): 2 long blinks, half period
+#define ERROR_LED_DISABLED_BLINKS 2
 
 enum AlarmState { ALARM_UNKNOWN, ALARM_OFF, ALARM_ON };
 
@@ -50,6 +53,8 @@ static unsigned long pressureLowSince = 0L;
 
 static bool rejectBlink = false;
 static unsigned long rejectBlinkSince = 0L;
+static unsigned long rejectBlinkMs = ERROR_LED_LOCKED_MS;  // Half period of the current pattern
+static unsigned long rejectBlinks = ERROR_LED_LOCKED_BLINKS;
 
 static const char *alarm_state_name(AlarmState state)
 {
@@ -128,14 +133,18 @@ void alarms_init()
     pinMode(ERROR_LED, OUTPUT);
 }
 
-// A rejected open (command or SW1 under the lock): LED4 blinks fast 3 times, over any other pattern
-void alarms_led_rejected()
+// A rejected open, over any other pattern: "locked" (command or SW1 under J7) - 3 fast blinks,
+// "disabled" (command with valve_enable = 0) - 2 long blinks
+void alarms_led_rejected(OpenReject reason)
 {
+    bool locked = (reason == OPEN_REJECT_LOCKED);
+    rejectBlinkMs = locked ? ERROR_LED_LOCKED_MS : ERROR_LED_DISABLED_MS;
+    rejectBlinks = locked ? ERROR_LED_LOCKED_BLINKS : ERROR_LED_DISABLED_BLINKS;
     rejectBlink = true;
     rejectBlinkSince = millis();
 }
 
-// LED4, highest priority first: fast blink 3 times after a rejected open; on while any alarm is active;
+// LED4, highest priority first: blinks after a rejected open (3 fast: locked, 2 long: disabled); on while any alarm is active;
 // slow blink on a sensor fault; double flash every 2 s while opening is banned; off otherwise
 static void error_led_handle(unsigned long now)
 {
@@ -157,8 +166,8 @@ static void error_led_handle(unsigned long now)
 
     if (rejectBlink) {
         unsigned long elapsed = now - rejectBlinkSince;
-        if (elapsed < 2UL * ERROR_LED_REJECT_MS * ERROR_LED_REJECT_BLINKS) {
-            on = ((elapsed / ERROR_LED_REJECT_MS) & 1) == 0;
+        if (elapsed < 2UL * rejectBlinkMs * rejectBlinks) {
+            on = ((elapsed / rejectBlinkMs) & 1) == 0;
         } else {
             rejectBlink = false;
         }

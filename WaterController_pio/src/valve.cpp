@@ -113,10 +113,10 @@ bool valve_open_blocked()
 }
 
 // Not retained: an event, not a state
-static void valve_rejected_publish(const char *reason)
+static void valve_rejected_publish(OpenReject reason)
 {
-    alarms_led_rejected();
-    mqttClient.publish(TOPIC_VALVE_REJECTED, reason);
+    alarms_led_rejected(reason);
+    mqttClient.publish(TOPIC_VALVE_REJECTED, reason == OPEN_REJECT_LOCKED ? "locked" : "disabled");
 }
 
 // Written to NVS only on a change, to spare the flash. Republished either way, as a reply to the sender.
@@ -265,7 +265,7 @@ static void button_pressed(ValveButton &button, ValveButton &other, unsigned lon
     {
         Serial.println("Valve button rejected: lock switch");
         mqttClient.publish(TOPIC_VALVE_MANUAL, button.name);
-        valve_rejected_publish("locked");
+        valve_rejected_publish(OPEN_REJECT_LOCKED);
         return;
     }
 
@@ -471,10 +471,10 @@ static bool command_blocked(ValveState moving)
 // Opening needs IO13 = 0 and valve_enable = 1. The state is left as it is: the reply is valve/rejected.
 static bool open_rejected()
 {
-    const char *reason = valveLocked ? "locked" : (!valveEnabled ? "disabled" : nullptr);
-    if (reason == nullptr)
+    if (!valveLocked && valveEnabled)
         return false;
-    Serial.printf("Valve open rejected: %s\n", reason);
+    OpenReject reason = valveLocked ? OPEN_REJECT_LOCKED : OPEN_REJECT_DISABLED;
+    Serial.printf("Valve open rejected: %s\n", valveLocked ? "locked" : "disabled");
     valve_rejected_publish(reason);
     return true;
 }

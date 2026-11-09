@@ -29,7 +29,7 @@
 #include "main.h"
 
 const char APP_NAME[] PROGMEM = "Water Controller";
-const char APP_VER[]  PROGMEM = "1.00 build 20261108";
+const char APP_VER[]  PROGMEM = "1.00 build 20261109";
 
 volatile time_t boottime = 0L;
 volatile int timeset_cnt = 0;

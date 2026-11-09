@@ -125,6 +125,7 @@ void alarms_init();
 void alarms_handle();
 void alarms_publish();
 void alarms_debug_info();
-void alarms_led_rejected();
+enum OpenReject { OPEN_REJECT_LOCKED, OPEN_REJECT_DISABLED }; // valve/rejected: "locked", "disabled"
+void alarms_led_rejected(OpenReject reason);
 
 #endif

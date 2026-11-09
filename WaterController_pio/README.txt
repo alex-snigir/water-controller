@@ -6,6 +6,7 @@ Project: WaterController
   Versions:
     v1.00 build 20261031 - Initial version
     v1.00 build 20261108 - Lock Switch J7 (GPIO13, valve/lock) and software open ban valve_enable (NVS, valve_enable/set), valve/rejected
+    v1.00 build 20261109 - LED4 tells rejected opens apart: 3 fast blinks "locked", 2 long blinks "disabled"
 
 
   TODO:

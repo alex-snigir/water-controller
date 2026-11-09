@@ -120,7 +120,7 @@ Requirements:
   > LED: WiFi/MQTT Status   LED1 (Blue)    - WiFi/MQTT status OFF: WiFi is not connected, Blinking: WiFi connected but MQTT is not connected, ON: WiFi+MQTT connected 
   > LED: Water Valve Status LED2 (Green)   - ON:valve open, OFF: valve closed, Blinking: valve opening/closing, Short flash every 2 s: valve state unknown
   > LED: Water Flow Rate    LED3 (Yellow)  - blinking according to flow rate
-  > LED: Error              LED4 (Red)     - ON: an alarm is active (freeze, overheat, condensation, low_pressure), Slow blink (1 s): a temperature/box sensor is "error" or "no_sensor", Double short flash every 2 s: opening is blocked (lock switch or valve_enable = 0), 3 fast blinks: an open was rejected, OFF: none of these
+  > LED: Error              LED4 (Red)     - ON: an alarm is active (freeze, overheat, condensation, low_pressure), Slow blink (1 s): a temperature/box sensor is "error" or "no_sensor", Double short flash every 2 s: opening is blocked (lock switch or valve_enable = 0), 3 fast blinks: an open was rejected by the lock switch ("locked"), 2 long blinks: an open was rejected by valve_enable = 0 ("disabled"), OFF: none of these
   > LED: Valve Opening      LED5 (Green)   - Valve Opening Status
   > LED: Valve Closing      LED6 (Red)     - Valve Closing Status
   > LED: Power              LED7 (Green)   - Power is ON. GPIO not used. LED not yet implemented. Reserved
@@ -192,7 +192,7 @@ MQTT Payload Examples:
 ---------------------------------------
 {
 	"app": "Water Controller",
-	"ver": "1.00 build 20261108",
+	"ver": "1.00 build 20261109",
 	"host": "watercontroller1",
 	"ts": 3,
 	"now": "Jan  1 02:00:03 1970",
