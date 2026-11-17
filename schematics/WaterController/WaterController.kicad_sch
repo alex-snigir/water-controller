@@ -4695,12 +4695,6 @@
 		(uuid "2009bc35-4afe-4990-b981-48666a138101")
 	)
 	(junction
-		(at 207.01 130.81)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "2301351f-f52f-45b6-95f8-34b2fcec7404")
-	)
-	(junction
 		(at 219.71 137.16)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4761,6 +4755,12 @@
 		(uuid "4c017b82-1bd9-448d-8393-1e86ce538c8b")
 	)
 	(junction
+		(at 207.01 130.81)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4dfa25e5-dd9e-4175-baa0-532704033204")
+	)
+	(junction
 		(at 219.71 113.03)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4771,18 +4771,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "54ebec53-32ef-4fc6-9461-55aea15b0917")
-	)
-	(junction
-		(at 227.33 143.51)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "552cca48-fe7a-4890-ab60-8067ad7f0959")
-	)
-	(junction
-		(at 254 143.51)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "63003609-a1de-4911-8839-416ae89cd3f9")
 	)
 	(junction
 		(at 185.42 144.78)
@@ -4861,6 +4849,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "86ee0153-80ee-44ad-8fe1-2af1e498efe9")
+	)
+	(junction
+		(at 227.33 143.51)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "884a4411-97a5-4d70-9b62-e533c3170881")
 	)
 	(junction
 		(at 96.52 86.36)
@@ -4983,6 +4977,12 @@
 		(uuid "f2fc7f2d-d2ce-42c8-b159-4a2c6f8195e6")
 	)
 	(junction
+		(at 254 143.51)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f3ba3b1b-a3e6-4d10-9678-0bddebafdfd4")
+	)
+	(junction
 		(at 247.65 73.66)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5023,10 +5023,6 @@
 	(no_connect
 		(at 102.87 116.84)
 		(uuid "14419564-160a-4d25-8d82-6eeeb3ba311f")
-	)
-	(no_connect
-		(at 133.35 116.84)
-		(uuid "2bf8b604-6323-4467-8cc1-5757b50957c0")
 	)
 	(no_connect
 		(at 102.87 127)
@@ -5093,6 +5089,10 @@
 		(uuid "b8b66ec9-a34a-4a7f-aa5f-5197ccf8b7f9")
 	)
 	(no_connect
+		(at 133.35 109.22)
+		(uuid "bdd563a7-dfc6-4c3b-b36b-b2f857a314b1")
+	)
+	(no_connect
 		(at 133.35 129.54)
 		(uuid "c18c9500-da83-40d4-a23b-4b25689a92a7")
 	)
@@ -5113,6 +5113,16 @@
 			(type default)
 		)
 		(uuid "00c20fee-6a22-493c-a7d3-7a4e0cf1631a")
+	)
+	(wire
+		(pts
+			(xy 227.33 143.51) (xy 227.33 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "02b0d7ce-6e81-4f4d-9c99-b695b37411e3")
 	)
 	(wire
 		(pts
@@ -5186,7 +5196,7 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 97.79) (xy 63.5 104.14)
+			(xy 63.5 96.52) (xy 63.5 104.14)
 		)
 		(stroke
 			(width 0)
@@ -5223,6 +5233,16 @@
 			(type default)
 		)
 		(uuid "0d725a22-c4b1-4c36-a261-7e3bc0075edc")
+	)
+	(wire
+		(pts
+			(xy 27.94 88.9) (xy 27.94 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0e52e0ae-5c8c-4a4b-8532-787ff4ab05b7")
 	)
 	(wire
 		(pts
@@ -5306,7 +5326,7 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 91.44) (xy 45.72 92.71)
+			(xy 45.72 96.52) (xy 45.72 106.68)
 		)
 		(stroke
 			(width 0)
@@ -5456,6 +5476,16 @@
 	)
 	(wire
 		(pts
+			(xy 219.71 127) (xy 219.71 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "285633a0-23ea-45c7-abb8-6a08be8e2978")
+	)
+	(wire
+		(pts
 			(xy 185.42 144.78) (xy 185.42 143.51)
 		)
 		(stroke
@@ -5556,13 +5586,13 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 91.44) (xy 27.94 92.71)
+			(xy 133.35 116.84) (xy 142.24 116.84)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3621a6e6-81ad-4a4a-a988-8f8c2baf06fc")
+		(uuid "364f37ae-5e1b-4f81-9ea6-510defbdcd44")
 	)
 	(wire
 		(pts
@@ -5573,16 +5603,6 @@
 			(type default)
 		)
 		(uuid "396819e9-63eb-4e0b-a689-d25eb27c61ec")
-	)
-	(wire
-		(pts
-			(xy 207.01 127) (xy 207.01 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3afc3fc2-64a9-4e27-9747-9dd2d913e85b")
 	)
 	(wire
 		(pts
@@ -5626,6 +5646,16 @@
 	)
 	(wire
 		(pts
+			(xy 80.01 88.9) (xy 80.01 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3f611092-c1dc-40fb-b169-75556b47dba9")
+	)
+	(wire
+		(pts
 			(xy 48.26 167.64) (xy 48.26 168.91)
 		)
 		(stroke
@@ -5656,6 +5686,16 @@
 	)
 	(wire
 		(pts
+			(xy 207.01 127) (xy 207.01 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "413d7607-044b-4a31-821b-590d566c03f9")
+	)
+	(wire
+		(pts
 			(xy 44.45 39.37) (xy 48.26 39.37)
 		)
 		(stroke
@@ -5673,16 +5713,6 @@
 			(type default)
 		)
 		(uuid "41c71c90-8cc1-478c-818a-1d892c9e24be")
-	)
-	(wire
-		(pts
-			(xy 45.72 86.36) (xy 45.72 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "42df2c8b-78ab-49fc-8156-6b5cbc6e2d61")
 	)
 	(wire
 		(pts
@@ -5776,6 +5806,16 @@
 	)
 	(wire
 		(pts
+			(xy 254 143.51) (xy 259.08 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4b03d622-3eec-4118-8696-b69be31b6b7e")
+	)
+	(wire
+		(pts
 			(xy 195.58 130.81) (xy 207.01 130.81)
 		)
 		(stroke
@@ -5816,16 +5856,6 @@
 	)
 	(wire
 		(pts
-			(xy 243.84 143.51) (xy 259.08 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5222ccea-21a1-4033-8700-d5aea2f98869")
-	)
-	(wire
-		(pts
 			(xy 252.73 130.81) (xy 271.78 130.81)
 		)
 		(stroke
@@ -5843,16 +5873,6 @@
 			(type default)
 		)
 		(uuid "55a45c5e-30a2-4a64-8696-b2623a5447ad")
-	)
-	(wire
-		(pts
-			(xy 80.01 97.79) (xy 80.01 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "55cf199d-95a2-44cc-8772-2bb46eb559c5")
 	)
 	(wire
 		(pts
@@ -5986,13 +6006,13 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 97.79) (xy 45.72 106.68)
+			(xy 254 143.51) (xy 254 148.59)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "64e872ac-ac5b-452e-9ef4-da524f8c1c9c")
+		(uuid "64dddfe0-5033-479c-aa76-12775eb6202e")
 	)
 	(wire
 		(pts
@@ -6076,7 +6096,7 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 97.79) (xy 27.94 109.22)
+			(xy 27.94 96.52) (xy 27.94 109.22)
 		)
 		(stroke
 			(width 0)
@@ -6093,6 +6113,26 @@
 			(type default)
 		)
 		(uuid "6b04123a-6b4a-4714-b6fa-9c7774c70cf2")
+	)
+	(wire
+		(pts
+			(xy 45.72 81.28) (xy 45.72 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6b499159-2405-48c6-9ae9-fffabd43e95e")
+	)
+	(wire
+		(pts
+			(xy 80.01 81.28) (xy 80.01 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6be32db4-e6c3-4e07-8b5a-a6b55b3fa35f")
 	)
 	(wire
 		(pts
@@ -6276,6 +6316,16 @@
 	)
 	(wire
 		(pts
+			(xy 227.33 143.51) (xy 236.22 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "898c07a2-63d0-4c35-a0ec-6df932cd151e")
+	)
+	(wire
+		(pts
 			(xy 68.58 121.92) (xy 68.58 119.38)
 		)
 		(stroke
@@ -6286,7 +6336,7 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 148.59) (xy 227.33 143.51)
+			(xy 227.33 135.89) (xy 227.33 143.51)
 		)
 		(stroke
 			(width 0)
@@ -6366,6 +6416,16 @@
 	)
 	(wire
 		(pts
+			(xy 243.84 143.51) (xy 254 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "92e57536-c17f-4c77-9696-8db923a3786b")
+	)
+	(wire
+		(pts
 			(xy 90.17 128.27) (xy 90.17 132.08)
 		)
 		(stroke
@@ -6376,16 +6436,6 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 86.36) (xy 63.5 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "94570088-743c-4125-abae-a1814e9670e0")
-	)
-	(wire
-		(pts
 			(xy 198.12 137.16) (xy 195.58 137.16)
 		)
 		(stroke
@@ -6393,16 +6443,6 @@
 			(type default)
 		)
 		(uuid "9459b271-7b0e-40a9-b425-761c52346af5")
-	)
-	(wire
-		(pts
-			(xy 80.01 86.36) (xy 80.01 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "94fc468f-1f54-4a40-a4ae-44ad1a471cb2")
 	)
 	(wire
 		(pts
@@ -6456,16 +6496,6 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 135.89) (xy 227.33 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9c4d0775-2c37-479d-86ee-df461bd70060")
-	)
-	(wire
-		(pts
 			(xy 184.15 83.82) (xy 204.47 83.82)
 		)
 		(stroke
@@ -6476,6 +6506,16 @@
 	)
 	(wire
 		(pts
+			(xy 63.5 81.28) (xy 63.5 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9ee5b092-f06e-47a3-8ba1-bd270c8002b3")
+	)
+	(wire
+		(pts
 			(xy 243.84 73.66) (xy 247.65 73.66)
 		)
 		(stroke
@@ -6483,6 +6523,16 @@
 			(type default)
 		)
 		(uuid "a0a408fb-3b20-4bff-b075-6b4063bf3652")
+	)
+	(wire
+		(pts
+			(xy 63.5 88.9) (xy 63.5 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a398111b-03c8-45e6-b0c0-16b887ca4b29")
 	)
 	(wire
 		(pts
@@ -6656,7 +6706,7 @@
 	)
 	(wire
 		(pts
-			(xy 254 143.51) (xy 254 148.59)
+			(xy 254 135.89) (xy 254 143.51)
 		)
 		(stroke
 			(width 0)
@@ -6683,6 +6733,16 @@
 			(type default)
 		)
 		(uuid "bd335504-b6ce-486d-9309-a02cfc3087c9")
+	)
+	(wire
+		(pts
+			(xy 45.72 88.9) (xy 45.72 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd7501e5-8567-48c9-b291-4bae5e090bb2")
 	)
 	(wire
 		(pts
@@ -6733,16 +6793,6 @@
 			(type default)
 		)
 		(uuid "c53bee2a-9c69-4ad8-b080-490c34cd667b")
-	)
-	(wire
-		(pts
-			(xy 254 135.89) (xy 254 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c88b4631-30d2-40c8-9c2e-970fdae9b7fd")
 	)
 	(wire
 		(pts
@@ -6846,16 +6896,6 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 91.44) (xy 63.5 92.71)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d0f58681-2249-466c-ad72-b50f93fe1440")
-	)
-	(wire
-		(pts
 			(xy 260.35 107.95) (xy 261.62 107.95)
 		)
 		(stroke
@@ -6946,16 +6986,6 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 143.51) (xy 236.22 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d9576510-c837-43b7-958c-af5e4d60f514")
-	)
-	(wire
-		(pts
 			(xy 74.93 182.88) (xy 82.55 182.88)
 		)
 		(stroke
@@ -6966,7 +6996,7 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 91.44) (xy 80.01 92.71)
+			(xy 80.01 96.52) (xy 80.01 101.6)
 		)
 		(stroke
 			(width 0)
@@ -7116,16 +7146,6 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 109.22) (xy 142.24 109.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e5b4dd00-6319-4207-bbbe-2a527a73839f")
-	)
-	(wire
-		(pts
 			(xy 233.68 68.58) (xy 236.22 68.58)
 		)
 		(stroke
@@ -7133,16 +7153,6 @@
 			(type default)
 		)
 		(uuid "e6a6d27a-abee-478e-bbc0-5ae3bc4cb9dc")
-	)
-	(wire
-		(pts
-			(xy 219.71 127) (xy 219.71 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e6daa85c-afd3-4bdb-b88c-b4d52ed60bfd")
 	)
 	(wire
 		(pts
@@ -7213,6 +7223,16 @@
 			(type default)
 		)
 		(uuid "ec9e5274-d2ab-4200-b316-6660f87fc92d")
+	)
+	(wire
+		(pts
+			(xy 27.94 81.28) (xy 27.94 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ef6afa44-0c48-4186-90a2-04fed49caef4")
 	)
 	(wire
 		(pts
@@ -7383,16 +7403,6 @@
 			(type default)
 		)
 		(uuid "fde56c39-5471-4d66-a482-49d4685afb8f")
-	)
-	(wire
-		(pts
-			(xy 27.94 86.36) (xy 27.94 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fee26ee5-dd54-4d6e-9623-2d35ffe252a5")
 	)
 	(wire
 		(pts
@@ -7586,7 +7596,7 @@
 		)
 		(uuid "7277106f-d7b6-4db4-a158-a841da22aee1")
 	)
-	(label "IO5"
+	(label "IO4"
 		(at 53.34 182.88 180)
 		(effects
 			(font
@@ -7666,8 +7676,8 @@
 		)
 		(uuid "dbdb1aed-a06e-409b-9e70-4a2c63d8d4f1")
 	)
-	(label "IO5"
-		(at 142.24 109.22 180)
+	(label "IO4"
+		(at 142.24 116.84 180)
 		(effects
 			(font
 				(size 1.016 1.016)
@@ -8182,6 +8192,142 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "#PWR013")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:LED_Small")
+		(at 63.5 86.36 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "0aef7e16-9c8f-4c47-9959-a366687bc8aa")
+		(property "Reference" "D6"
+			(at 59.436 85.852 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LED2 (Valve)"
+			(at 60.96 83.058 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "LED_THT:LED_D5.0mm"
+			(at 63.5 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 63.5 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Light emitting diode, small symbol"
+			(at 63.5 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 63.5 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 63.5 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Library" ""
+			(at 63.5 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Name" ""
+			(at 63.5 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Params" ""
+			(at 63.5 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d9cc6517-644f-4766-b13e-a23b313a661a")
+		)
+		(pin "2"
+			(uuid "b1021de9-f8fc-4b55-8cd3-31001e651539")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "D6")
 					(unit 1)
 				)
 			)
@@ -8749,7 +8895,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm"
+		(property "Footprint" "LED_THT:LED_D5.0mm"
 			(at 264.16 115.57 90)
 			(hide yes)
 			(show_name no)
@@ -9517,6 +9663,142 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:LED_Small")
+		(at 45.72 86.36 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "3350079b-7799-46d5-a535-119039ec5f65")
+		(property "Reference" "D7"
+			(at 41.656 85.852 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LED3 (Flow)"
+			(at 43.18 82.804 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "LED_THT:LED_D5.0mm"
+			(at 45.72 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 45.72 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Light emitting diode, small symbol"
+			(at 45.72 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 45.72 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 45.72 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Library" ""
+			(at 45.72 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Name" ""
+			(at 45.72 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Params" ""
+			(at 45.72 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "0c233894-1472-4870-87ff-0ed48bfb0ee2")
+		)
+		(pin "2"
+			(uuid "f9305c6d-21a6-4820-9280-661c7b41334d")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "D7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:Fuse_Small")
 		(at 41.91 39.37 0)
 		(unit 1)
@@ -9721,7 +10003,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 45.72 88.9 180)
+		(at 45.72 93.98 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9731,7 +10013,7 @@
 		(dnp no)
 		(uuid "3e93b0af-c5d4-418f-8dab-814ad14e7ebb")
 		(property "Reference" "R11"
-			(at 38.862 85.852 0)
+			(at 38.862 90.932 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9742,7 +10024,7 @@
 			)
 		)
 		(property "Value" "510R"
-			(at 38.862 88.392 0)
+			(at 38.862 93.472 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9752,8 +10034,8 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal"
-			(at 45.72 88.9 0)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 45.72 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9764,7 +10046,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 45.72 88.9 0)
+			(at 45.72 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9775,7 +10057,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 45.72 88.9 0)
+			(at 45.72 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9786,7 +10068,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 45.72 88.9 0)
+			(at 45.72 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9797,7 +10079,7 @@
 			)
 		)
 		(property "Sim.Library" ""
-			(at 45.72 88.9 0)
+			(at 45.72 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9808,7 +10090,7 @@
 			)
 		)
 		(property "Sim.Name" ""
-			(at 45.72 88.9 0)
+			(at 45.72 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9819,7 +10101,7 @@
 			)
 		)
 		(property "Sim.Params" ""
-			(at 45.72 88.9 0)
+			(at 45.72 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10089,142 +10371,6 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "J8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:LED_Small")
-		(at 27.94 95.25 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "4564682b-412c-40a0-8d90-3630d9fd7931")
-		(property "Reference" "D8"
-			(at 23.876 94.742 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "LED4 (Error)"
-			(at 25.4 91.694 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm"
-			(at 27.94 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 27.94 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode, small symbol"
-			(at 27.94 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 27.94 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 27.94 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Library" ""
-			(at 27.94 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Name" ""
-			(at 27.94 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Params" ""
-			(at 27.94 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0a628e26-59f4-4e9a-98c4-0dbbe42b145f")
-		)
-		(pin "2"
-			(uuid "cad2455b-e5ff-4a6b-8ea9-2346d6e8f205")
-		)
-		(instances
-			(project "WaterController"
-				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
-					(reference "D8")
 					(unit 1)
 				)
 			)
@@ -10592,7 +10738,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P5.08mm_Vertical"
 			(at 48.26 175.26 0)
 			(hide yes)
 			(show_name no)
@@ -11270,142 +11416,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:LED_Small")
-		(at 63.5 95.25 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "5a13e7d2-8852-49f2-81e6-7b9ae55319a7")
-		(property "Reference" "D6"
-			(at 59.436 94.742 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "LED2 (Valve)"
-			(at 60.96 91.948 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm"
-			(at 63.5 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 63.5 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode, small symbol"
-			(at 63.5 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 63.5 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 63.5 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Library" ""
-			(at 63.5 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Name" ""
-			(at 63.5 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Params" ""
-			(at 63.5 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "65434890-bf92-4f14-827f-7c2db9a86d86")
-		)
-		(pin "2"
-			(uuid "7e956d6a-bd32-4e3b-9201-040456dd3e5e")
-		)
-		(instances
-			(project "WaterController"
-				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
-					(reference "D6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+3V3")
 		(at 48.26 167.64 0)
 		(unit 1)
@@ -11485,7 +11495,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 63.5 85.09 0)
+		(at 63.5 81.28 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -11496,7 +11506,7 @@
 		(fields_autoplaced yes)
 		(uuid "5b5a3acf-a883-41a6-8a6b-6519ee83d095")
 		(property "Reference" "#PWR022"
-			(at 63.5 88.9 0)
+			(at 63.5 85.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11507,7 +11517,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 63.5 80.01 0)
+			(at 63.5 76.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11517,7 +11527,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 63.5 85.09 0)
+			(at 63.5 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11528,7 +11538,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 63.5 85.09 0)
+			(at 63.5 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11539,7 +11549,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 63.5 85.09 0)
+			(at 63.5 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12291,144 +12301,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:LED_Small")
-		(at 80.01 95.25 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "64e7a45a-6730-44ad-85b2-b908c576c167")
-		(property "Reference" "D5"
-			(at 75.946 94.742 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "LED1 (WIFI)"
-			(at 77.47 91.694 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm"
-			(at 80.01 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 80.01 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode, small symbol"
-			(at 80.01 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 80.01 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 80.01 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Library" ""
-			(at 80.01 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Name" ""
-			(at 80.01 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Params" ""
-			(at 80.01 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a49dea5e-ec1f-483c-b5dd-96d4c75d810c")
-		)
-		(pin "2"
-			(uuid "6d317f60-d1fe-4807-98a6-67c68beee7b8")
-		)
-		(instances
-			(project "WaterController"
-				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
-					(reference "D5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+3V3")
-		(at 80.01 85.09 0)
+		(at 80.01 81.28 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12439,7 +12313,7 @@
 		(fields_autoplaced yes)
 		(uuid "66e11a04-91b0-47b4-8827-8cb8989f0980")
 		(property "Reference" "#PWR019"
-			(at 80.01 88.9 0)
+			(at 80.01 85.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12450,7 +12324,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 80.01 80.01 0)
+			(at 80.01 76.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12460,7 +12334,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 80.01 85.09 0)
+			(at 80.01 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12471,7 +12345,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 80.01 85.09 0)
+			(at 80.01 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12482,7 +12356,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 80.01 85.09 0)
+			(at 80.01 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12692,7 +12566,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm"
+		(property "Footprint" "LED_THT:LED_D5.0mm"
 			(at 264.16 107.95 90)
 			(hide yes)
 			(show_name no)
@@ -12904,7 +12778,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D8.0mm_P2.50mm"
+		(property "Footprint" "_my_Capacitors:CP_Radial_H(D)6.3mm_L12.5_P2.50mm_Horizontal"
 			(at 120.65 73.9648 0)
 			(hide yes)
 			(show_name no)
@@ -13434,7 +13308,7 @@
 				)
 			)
 		)
-		(property "Footprint" "_my_MC_Dev_Boards:ESP-DEVKIT-32-38PINS"
+		(property "Footprint" "_my_MC_Dev_Boards:ESP-DEVKIT-32U-38PINS"
 			(at 118.11 81.28 0)
 			(hide yes)
 			(show_name no)
@@ -13629,6 +13503,278 @@
 			(project "WaterController"
 				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
 					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:LED_Small")
+		(at 27.94 86.36 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "7e91d6f5-8842-4389-9efc-7b7a372c38f9")
+		(property "Reference" "D8"
+			(at 23.876 85.852 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LED4 (Error)"
+			(at 25.4 82.804 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "LED_THT:LED_D5.0mm"
+			(at 27.94 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 27.94 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Light emitting diode, small symbol"
+			(at 27.94 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 27.94 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 27.94 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Library" ""
+			(at 27.94 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Name" ""
+			(at 27.94 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Params" ""
+			(at 27.94 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "667e3478-4c2c-44d9-af18-5e38e3aaa856")
+		)
+		(pin "2"
+			(uuid "0f18062d-3102-425b-9efc-34bfef492d22")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "D8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:LED_Small")
+		(at 80.01 86.36 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "7edfa0b3-2ba1-4eca-accd-985fd08478f2")
+		(property "Reference" "D5"
+			(at 75.946 85.852 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LED1 (WIFI)"
+			(at 77.47 82.804 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "LED_THT:LED_D5.0mm"
+			(at 80.01 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 80.01 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Light emitting diode, small symbol"
+			(at 80.01 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 80.01 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 80.01 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Library" ""
+			(at 80.01 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Name" ""
+			(at 80.01 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Params" ""
+			(at 80.01 86.36 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b0a20256-7f68-4d54-b46d-07bc0ebe0dad")
+		)
+		(pin "2"
+			(uuid "ef973a28-3bcc-41ff-87fa-3de354aa92f1")
+		)
+		(instances
+			(project "WaterController"
+				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
+					(reference "D5")
 					(unit 1)
 				)
 			)
@@ -14710,7 +14856,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 80.01 88.9 180)
+		(at 80.01 93.98 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14720,7 +14866,7 @@
 		(dnp no)
 		(uuid "b0a80184-aaac-4def-b671-a616525bf87e")
 		(property "Reference" "R9"
-			(at 72.39 86.106 0)
+			(at 72.39 91.186 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14731,7 +14877,7 @@
 			)
 		)
 		(property "Value" "200R"
-			(at 72.39 88.646 0)
+			(at 72.39 93.726 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14741,8 +14887,8 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal"
-			(at 80.01 88.9 0)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 80.01 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14753,7 +14899,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 80.01 88.9 0)
+			(at 80.01 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14764,7 +14910,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 80.01 88.9 0)
+			(at 80.01 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14775,7 +14921,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 80.01 88.9 0)
+			(at 80.01 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14786,7 +14932,7 @@
 			)
 		)
 		(property "Sim.Library" ""
-			(at 80.01 88.9 0)
+			(at 80.01 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14797,7 +14943,7 @@
 			)
 		)
 		(property "Sim.Name" ""
-			(at 80.01 88.9 0)
+			(at 80.01 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14808,7 +14954,7 @@
 			)
 		)
 		(property "Sim.Params" ""
-			(at 80.01 88.9 0)
+			(at 80.01 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14913,7 +15059,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 27.94 85.09 0)
+		(at 27.94 81.28 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14924,7 +15070,7 @@
 		(fields_autoplaced yes)
 		(uuid "b1da0a38-4ac1-4b95-9562-af9c10f27c9d")
 		(property "Reference" "#PWR024"
-			(at 27.94 88.9 0)
+			(at 27.94 85.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14935,7 +15081,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 27.94 80.01 0)
+			(at 27.94 76.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14945,7 +15091,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 27.94 85.09 0)
+			(at 27.94 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14956,7 +15102,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 27.94 85.09 0)
+			(at 27.94 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14967,7 +15113,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 27.94 85.09 0)
+			(at 27.94 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15192,7 +15338,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 45.72 85.09 0)
+		(at 45.72 81.28 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -15203,7 +15349,7 @@
 		(fields_autoplaced yes)
 		(uuid "ba4d9807-80a7-4878-8b0b-bb69c74de2b1")
 		(property "Reference" "#PWR023"
-			(at 45.72 88.9 0)
+			(at 45.72 85.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15214,7 +15360,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 45.72 80.01 0)
+			(at 45.72 76.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15224,7 +15370,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 45.72 85.09 0)
+			(at 45.72 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15235,7 +15381,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 45.72 85.09 0)
+			(at 45.72 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15246,7 +15392,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 45.72 85.09 0)
+			(at 45.72 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15399,8 +15545,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_02x02_Odd_Even")
-		(at 212.09 127 0)
-		(mirror x)
+		(at 212.09 124.46 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -15410,7 +15555,7 @@
 		(dnp no)
 		(uuid "c4c64d3f-e532-4ad2-9b7e-373dd0c02c36")
 		(property "Reference" "J7"
-			(at 204.47 125.984 0)
+			(at 204.47 125.476 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15420,7 +15565,7 @@
 			)
 		)
 		(property "Value" "Conn_02x02_Odd_Even"
-			(at 213.36 130.81 0)
+			(at 213.36 120.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15431,7 +15576,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x02_P2.54mm_Vertical"
-			(at 212.09 127 0)
+			(at 212.09 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15442,7 +15587,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 212.09 127 0)
+			(at 212.09 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15453,7 +15598,7 @@
 			)
 		)
 		(property "Description" "Generic connector, double row, 02x02, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 212.09 127 0)
+			(at 212.09 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15464,7 +15609,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 212.09 127 0)
+			(at 212.09 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15475,7 +15620,7 @@
 			)
 		)
 		(property "Sim.Library" ""
-			(at 212.09 127 0)
+			(at 212.09 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15486,7 +15631,7 @@
 			)
 		)
 		(property "Sim.Name" ""
-			(at 212.09 127 0)
+			(at 212.09 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15497,7 +15642,7 @@
 			)
 		)
 		(property "Sim.Params" ""
-			(at 212.09 127 0)
+			(at 212.09 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15657,7 +15802,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 63.5 88.9 180)
+		(at 63.5 93.98 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -15667,7 +15812,7 @@
 		(dnp no)
 		(uuid "c8bf4ae7-669e-4d9f-9c1a-2d14063d38ef")
 		(property "Reference" "R10"
-			(at 56.642 85.852 0)
+			(at 56.642 90.932 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15678,7 +15823,7 @@
 			)
 		)
 		(property "Value" "240R"
-			(at 56.642 88.392 0)
+			(at 56.642 93.472 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15688,8 +15833,8 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal"
-			(at 63.5 88.9 0)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 63.5 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15700,7 +15845,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 63.5 88.9 0)
+			(at 63.5 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15711,7 +15856,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 63.5 88.9 0)
+			(at 63.5 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15722,7 +15867,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 63.5 88.9 0)
+			(at 63.5 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15733,7 +15878,7 @@
 			)
 		)
 		(property "Sim.Library" ""
-			(at 63.5 88.9 0)
+			(at 63.5 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15744,7 +15889,7 @@
 			)
 		)
 		(property "Sim.Name" ""
-			(at 63.5 88.9 0)
+			(at 63.5 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15755,7 +15900,7 @@
 			)
 		)
 		(property "Sim.Params" ""
-			(at 63.5 88.9 0)
+			(at 63.5 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15949,7 +16094,7 @@
 		(dnp no)
 		(uuid "d24685de-6add-4654-ba50-3003542f542a")
 		(property "Reference" "C6"
-			(at 235.966 146.812 90)
+			(at 234.696 146.558 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16263,142 +16408,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:LED_Small")
-		(at 45.72 95.25 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "d3ce739a-8bf2-4e97-bc21-d94ba950f011")
-		(property "Reference" "D7"
-			(at 41.656 94.742 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "LED3 (Flow)"
-			(at 43.18 91.694 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm"
-			(at 45.72 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 45.72 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode, small symbol"
-			(at 45.72 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 45.72 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 45.72 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Library" ""
-			(at 45.72 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Name" ""
-			(at 45.72 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Params" ""
-			(at 45.72 95.25 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "afcc24ab-4ba2-4ac1-9ceb-94ef78dce5fc")
-		)
-		(pin "2"
-			(uuid "4043c742-cfea-4ec8-8f1c-46462bcd281c")
-		)
-		(instances
-			(project "WaterController"
-				(path "/bc03b2b6-5bf6-47ea-a09d-728247e6a7c9"
-					(reference "D7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R_Small")
 		(at 207.01 116.84 180)
 		(unit 1)
@@ -16523,7 +16532,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 27.94 88.9 180)
+		(at 27.94 93.98 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16533,7 +16542,7 @@
 		(dnp no)
 		(uuid "d8f45dc0-9942-4000-a810-82ddb0261192")
 		(property "Reference" "R12"
-			(at 21.082 85.852 0)
+			(at 21.082 90.932 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16544,7 +16553,7 @@
 			)
 		)
 		(property "Value" "510R"
-			(at 21.082 88.392 0)
+			(at 21.082 93.472 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16554,8 +16563,8 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal"
-			(at 27.94 88.9 0)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 27.94 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16566,7 +16575,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 27.94 88.9 0)
+			(at 27.94 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16577,7 +16586,7 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
-			(at 27.94 88.9 0)
+			(at 27.94 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16588,7 +16597,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 27.94 88.9 0)
+			(at 27.94 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16599,7 +16608,7 @@
 			)
 		)
 		(property "Sim.Library" ""
-			(at 27.94 88.9 0)
+			(at 27.94 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16610,7 +16619,7 @@
 			)
 		)
 		(property "Sim.Name" ""
-			(at 27.94 88.9 0)
+			(at 27.94 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16621,7 +16630,7 @@
 			)
 		)
 		(property "Sim.Params" ""
-			(at 27.94 88.9 0)
+			(at 27.94 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16648,7 +16657,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Polarized")
-		(at 240.03 143.51 90)
+		(at 240.03 143.51 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16658,7 +16667,7 @@
 		(dnp no)
 		(uuid "d956fd94-073c-48fc-9083-b3abc5192037")
 		(property "Reference" "C5"
-			(at 235.458 140.97 90)
+			(at 234.696 141.732 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16668,7 +16677,7 @@
 			)
 		)
 		(property "Value" "100uF, 35V"
-			(at 247.904 141.732 90)
+			(at 248.158 141.478 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16677,8 +16686,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D8.0mm_P2.50mm"
-			(at 243.84 142.5448 0)
+		(property "Footprint" "_my_Capacitors:CP_Radial_H(D)8.0mm_L12.5_P2.50mm_Horizontal"
+			(at 236.22 144.4752 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17328,7 +17337,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 82.55 175.26 0)
 			(hide yes)
 			(show_name no)
@@ -18080,7 +18089,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 256.54 111.76 0)
 			(hide yes)
 			(show_name no)

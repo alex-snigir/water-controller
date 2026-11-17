@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "C:\\Data\\Design\\Electronics\\SmartHome Dev Projects\\WaterController\\schematics\\WaterController\\WaterController.kicad_sch")
-		(date "2026-11-13T23:04:10")
+		(date "2026-11-17T01:54:08")
 		(tool "Eeschema 10.0.3")
 		(sheet
 			(number "1")
@@ -12,7 +12,7 @@
 				(title "Water Controller")
 				(company "Alex Snigir")
 				(rev)
-				(date "2026-11-12")
+				(date "2026-11-13")
 				(source "WaterController.kicad_sch")
 				(comment
 					(number "1")
@@ -221,7 +221,7 @@
 		(comp
 			(ref "C3")
 			(value "470uF")
-			(footprint "Capacitor_THT:CP_Radial_D8.0mm_P2.50mm")
+			(footprint "_my_Capacitors:CP_Radial_H(D)6.3mm_L12.5_P2.50mm_Horizontal")
 			(description "Polarized capacitor")
 			(fields
 				(field
@@ -237,7 +237,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "Capacitor_THT:CP_Radial_D8.0mm_P2.50mm")
+					(name "Footprint") "_my_Capacitors:CP_Radial_H(D)6.3mm_L12.5_P2.50mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -385,7 +385,7 @@
 		(comp
 			(ref "C5")
 			(value "100uF, 35V")
-			(footprint "Capacitor_THT:CP_Radial_D8.0mm_P2.50mm")
+			(footprint "_my_Capacitors:CP_Radial_H(D)8.0mm_L12.5_P2.50mm_Horizontal")
 			(description "Polarized capacitor")
 			(fields
 				(field
@@ -401,7 +401,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "Capacitor_THT:CP_Radial_D8.0mm_P2.50mm")
+					(name "Footprint") "_my_Capacitors:CP_Radial_H(D)8.0mm_L12.5_P2.50mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -1505,7 +1505,7 @@
 		(comp
 			(ref "D5")
 			(value "LED1 (WIFI)")
-			(footprint "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+			(footprint "LED_THT:LED_D5.0mm")
 			(description "Light emitting diode, small symbol")
 			(fields
 				(field
@@ -1523,7 +1523,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+					(name "Footprint") "LED_THT:LED_D5.0mm")
 				(field
 					(name "Datasheet")
 				)
@@ -1575,7 +1575,7 @@
 				(names "/")
 				(tstamps "/")
 			)
-			(tstamps "64e7a45a-6730-44ad-85b2-b908c576c167")
+			(tstamps "7edfa0b3-2ba1-4eca-accd-985fd08478f2")
 			(units
 				(unit
 					(name "A")
@@ -1593,7 +1593,7 @@
 		(comp
 			(ref "D6")
 			(value "LED2 (Valve)")
-			(footprint "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+			(footprint "LED_THT:LED_D5.0mm")
 			(description "Light emitting diode, small symbol")
 			(fields
 				(field
@@ -1611,7 +1611,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+					(name "Footprint") "LED_THT:LED_D5.0mm")
 				(field
 					(name "Datasheet")
 				)
@@ -1663,7 +1663,7 @@
 				(names "/")
 				(tstamps "/")
 			)
-			(tstamps "5a13e7d2-8852-49f2-81e6-7b9ae55319a7")
+			(tstamps "0aef7e16-9c8f-4c47-9959-a366687bc8aa")
 			(units
 				(unit
 					(name "A")
@@ -1681,7 +1681,7 @@
 		(comp
 			(ref "D7")
 			(value "LED3 (Flow)")
-			(footprint "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+			(footprint "LED_THT:LED_D5.0mm")
 			(description "Light emitting diode, small symbol")
 			(fields
 				(field
@@ -1699,7 +1699,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+					(name "Footprint") "LED_THT:LED_D5.0mm")
 				(field
 					(name "Datasheet")
 				)
@@ -1751,7 +1751,7 @@
 				(names "/")
 				(tstamps "/")
 			)
-			(tstamps "d3ce739a-8bf2-4e97-bc21-d94ba950f011")
+			(tstamps "3350079b-7799-46d5-a535-119039ec5f65")
 			(units
 				(unit
 					(name "A")
@@ -1769,7 +1769,7 @@
 		(comp
 			(ref "D8")
 			(value "LED4 (Error)")
-			(footprint "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+			(footprint "LED_THT:LED_D5.0mm")
 			(description "Light emitting diode, small symbol")
 			(fields
 				(field
@@ -1787,7 +1787,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+					(name "Footprint") "LED_THT:LED_D5.0mm")
 				(field
 					(name "Datasheet")
 				)
@@ -1839,7 +1839,7 @@
 				(names "/")
 				(tstamps "/")
 			)
-			(tstamps "4564682b-412c-40a0-8d90-3630d9fd7931")
+			(tstamps "7e91d6f5-8842-4389-9efc-7b7a372c38f9")
 			(units
 				(unit
 					(name "A")
@@ -1857,7 +1857,7 @@
 		(comp
 			(ref "D9")
 			(value "LED5 (Open)")
-			(footprint "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+			(footprint "LED_THT:LED_D5.0mm")
 			(description "Light emitting diode, small symbol")
 			(fields
 				(field
@@ -1875,7 +1875,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+					(name "Footprint") "LED_THT:LED_D5.0mm")
 				(field
 					(name "Datasheet")
 				)
@@ -1945,7 +1945,7 @@
 		(comp
 			(ref "D10")
 			(value "LED6 (Close)")
-			(footprint "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+			(footprint "LED_THT:LED_D5.0mm")
 			(description "Light emitting diode, small symbol")
 			(fields
 				(field
@@ -1963,7 +1963,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "LED_THT:LED_D5.0mm_Horizontal_O6.35mm_Z3.0mm")
+					(name "Footprint") "LED_THT:LED_D5.0mm")
 				(field
 					(name "Datasheet")
 				)
@@ -3503,7 +3503,7 @@
 		(comp
 			(ref "R9")
 			(value "200R")
-			(footprint "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 			(description "Resistor, small symbol")
 			(fields
 				(field
@@ -3519,7 +3519,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -3585,7 +3585,7 @@
 		(comp
 			(ref "R10")
 			(value "240R")
-			(footprint "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 			(description "Resistor, small symbol")
 			(fields
 				(field
@@ -3601,7 +3601,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -3667,7 +3667,7 @@
 		(comp
 			(ref "R11")
 			(value "510R")
-			(footprint "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 			(description "Resistor, small symbol")
 			(fields
 				(field
@@ -3683,7 +3683,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -3749,7 +3749,7 @@
 		(comp
 			(ref "R12")
 			(value "510R")
-			(footprint "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 			(description "Resistor, small symbol")
 			(fields
 				(field
@@ -3765,7 +3765,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -3913,7 +3913,7 @@
 		(comp
 			(ref "R14")
 			(value "2.2K")
-			(footprint "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 			(description "Resistor, small symbol")
 			(fields
 				(field
@@ -3929,7 +3929,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -3995,7 +3995,7 @@
 		(comp
 			(ref "R15")
 			(value "4.7K")
-			(footprint "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P5.08mm_Vertical")
 			(description "Resistor, small symbol")
 			(fields
 				(field
@@ -4011,7 +4011,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P5.08mm_Vertical")
 				(field
 					(name "Datasheet")
 				)
@@ -4077,7 +4077,7 @@
 		(comp
 			(ref "R16")
 			(value "4.7K")
-			(footprint "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 			(description "Resistor, small symbol")
 			(fields
 				(field
@@ -4093,7 +4093,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "_my_Resistors:R_Axial_DIN0207_L6.3mm_D2.2mm_P10.16mm_Horizontal")
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
 				(field
 					(name "Datasheet")
 				)
@@ -4561,7 +4561,7 @@
 		(comp
 			(ref "U1")
 			(value "ESP-DEVKIT-32U-38PINS")
-			(footprint "_my_MC_Dev_Boards:ESP-DEVKIT-32-38PINS")
+			(footprint "_my_MC_Dev_Boards:ESP-DEVKIT-32U-38PINS")
 			(fields
 				(field
 					(name "Sim.Device")
@@ -4576,7 +4576,7 @@
 					(name "Sim.Params")
 				)
 				(field
-					(name "Footprint") "_my_MC_Dev_Boards:ESP-DEVKIT-32-38PINS")
+					(name "Footprint") "_my_MC_Dev_Boards:ESP-DEVKIT-32U-38PINS")
 				(field
 					(name "Datasheet")
 				)
@@ -5995,6 +5995,30 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "D5")
+				(pin "2")
+				(pinfunction "A_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "D6")
+				(pin "2")
+				(pinfunction "A_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "D7")
+				(pin "2")
+				(pinfunction "A_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "D8")
+				(pin "2")
+				(pinfunction "A_2")
+				(pintype "passive")
+			)
+			(node
 				(ref "J4")
 				(pin "3")
 				(pinfunction "Pin_3_3")
@@ -6013,21 +6037,6 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "R10")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R11")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R12")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
 				(ref "R15")
 				(pin "2")
 				(pintype "passive")
@@ -6039,11 +6048,6 @@
 			)
 			(node
 				(ref "R18")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R9")
 				(pin "2")
 				(pintype "passive")
 			)
@@ -6121,7 +6125,7 @@
 			(class "Default")
 			(node
 				(ref "C5")
-				(pin "2")
+				(pin "1")
 				(pintype "passive")
 			)
 			(node
@@ -6177,7 +6181,7 @@
 		)
 		(net
 			(code "5")
-			(name "/IO5")
+			(name "/IO4")
 			(class "Default")
 			(node
 				(ref "J4")
@@ -6192,8 +6196,8 @@
 			)
 			(node
 				(ref "U1")
-				(pin "29")
-				(pinfunction "(*)IO5_29")
+				(pin "26")
+				(pinfunction "IO4_26")
 				(pintype "bidirectional")
 			)
 		)
@@ -6480,7 +6484,7 @@
 			)
 			(node
 				(ref "C5")
-				(pin "1")
+				(pin "2")
 				(pintype "passive")
 			)
 			(node
@@ -6541,8 +6545,8 @@
 			)
 			(node
 				(ref "J7")
-				(pin "4")
-				(pinfunction "Pin_4_4")
+				(pin "2")
+				(pinfunction "Pin_2_2")
 				(pintype "passive")
 			)
 			(node
@@ -6691,8 +6695,8 @@
 			)
 			(node
 				(ref "J7")
-				(pin "1")
-				(pinfunction "Pin_1_1")
+				(pin "3")
+				(pinfunction "Pin_3_3")
 				(pintype "passive")
 			)
 			(node
@@ -6752,22 +6756,6 @@
 		)
 		(net
 			(code "22")
-			(name "Net-(D5-A)")
-			(class "Default")
-			(node
-				(ref "D5")
-				(pin "2")
-				(pinfunction "A_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R9")
-				(pin "1")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "23")
 			(name "Net-(D5-K)")
 			(class "Default")
 			(node
@@ -6777,30 +6765,13 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "U1")
-				(pin "7")
-				(pinfunction "IO32_7")
-				(pintype "bidirectional")
-			)
-		)
-		(net
-			(code "24")
-			(name "Net-(D6-A)")
-			(class "Default")
-			(node
-				(ref "D6")
+				(ref "R9")
 				(pin "2")
-				(pinfunction "A_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R10")
-				(pin "1")
 				(pintype "passive")
 			)
 		)
 		(net
-			(code "25")
+			(code "23")
 			(name "Net-(D6-K)")
 			(class "Default")
 			(node
@@ -6810,30 +6781,13 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "U1")
-				(pin "8")
-				(pinfunction "IO33_8")
-				(pintype "bidirectional")
-			)
-		)
-		(net
-			(code "26")
-			(name "Net-(D7-A)")
-			(class "Default")
-			(node
-				(ref "D7")
+				(ref "R10")
 				(pin "2")
-				(pinfunction "A_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R11")
-				(pin "1")
 				(pintype "passive")
 			)
 		)
 		(net
-			(code "27")
+			(code "24")
 			(name "Net-(D7-K)")
 			(class "Default")
 			(node
@@ -6843,30 +6797,13 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "U1")
-				(pin "9")
-				(pinfunction "IO25_9")
-				(pintype "bidirectional")
-			)
-		)
-		(net
-			(code "28")
-			(name "Net-(D8-A)")
-			(class "Default")
-			(node
-				(ref "D8")
+				(ref "R11")
 				(pin "2")
-				(pinfunction "A_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R12")
-				(pin "1")
 				(pintype "passive")
 			)
 		)
 		(net
-			(code "29")
+			(code "25")
 			(name "Net-(D8-K)")
 			(class "Default")
 			(node
@@ -6876,14 +6813,13 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "U1")
-				(pin "10")
-				(pinfunction "IO26_10")
-				(pintype "bidirectional")
+				(ref "R12")
+				(pin "2")
+				(pintype "passive")
 			)
 		)
 		(net
-			(code "30")
+			(code "26")
 			(name "Net-(D10-K)")
 			(class "Default")
 			(node
@@ -6905,7 +6841,7 @@
 			)
 		)
 		(net
-			(code "31")
+			(code "27")
 			(name "Net-(J2-Pin_3)")
 			(class "Default")
 			(node
@@ -6926,7 +6862,7 @@
 			)
 		)
 		(net
-			(code "32")
+			(code "28")
 			(name "Net-(J3-Pin_3)")
 			(class "Default")
 			(node
@@ -6942,8 +6878,24 @@
 			)
 		)
 		(net
-			(code "33")
-			(name "Net-(J7-Pin_2)")
+			(code "29")
+			(name "Net-(J7-Pin_1)")
+			(class "Default")
+			(node
+				(ref "J7")
+				(pin "1")
+				(pinfunction "Pin_1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R19")
+				(pin "1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "30")
+			(name "Net-(J7-Pin_4)")
 			(class "Default")
 			(node
 				(ref "C13")
@@ -6952,8 +6904,8 @@
 			)
 			(node
 				(ref "J7")
-				(pin "2")
-				(pinfunction "Pin_2_2")
+				(pin "4")
+				(pinfunction "Pin_4_4")
 				(pintype "passive")
 			)
 			(node
@@ -6969,23 +6921,7 @@
 			)
 		)
 		(net
-			(code "34")
-			(name "Net-(J7-Pin_3)")
-			(class "Default")
-			(node
-				(ref "J7")
-				(pin "3")
-				(pinfunction "Pin_3_3")
-				(pintype "passive")
-			)
-			(node
-				(ref "R19")
-				(pin "1")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "35")
+			(code "31")
 			(name "Net-(U1-IO23)")
 			(class "Default")
 			(node
@@ -6998,6 +6934,70 @@
 				(ref "U2")
 				(pin "1")
 				(pinfunction "LV1_1")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "32")
+			(name "Net-(U1-IO25)")
+			(class "Default")
+			(node
+				(ref "R11")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "9")
+				(pinfunction "IO25_9")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "33")
+			(name "Net-(U1-IO26)")
+			(class "Default")
+			(node
+				(ref "R12")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "10")
+				(pinfunction "IO26_10")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "34")
+			(name "Net-(U1-IO32)")
+			(class "Default")
+			(node
+				(ref "R9")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "7")
+				(pinfunction "IO32_7")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "35")
+			(name "Net-(U1-IO33)")
+			(class "Default")
+			(node
+				(ref "R10")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "8")
+				(pinfunction "IO33_8")
 				(pintype "bidirectional")
 			)
 		)
@@ -7080,6 +7080,17 @@
 		)
 		(net
 			(code "41")
+			(name "unconnected-(U1-(*)IO5-Pad29)")
+			(class "Default")
+			(node
+				(ref "U1")
+				(pin "29")
+				(pinfunction "(*)IO5_29")
+				(pintype "bidirectional+no_connect")
+			)
+		)
+		(net
+			(code "42")
 			(name "unconnected-(U1-CLK-Pad20)")
 			(class "Default")
 			(node
@@ -7090,7 +7101,7 @@
 			)
 		)
 		(net
-			(code "42")
+			(code "43")
 			(name "unconnected-(U1-CMD-Pad18)")
 			(class "Default")
 			(node
@@ -7101,7 +7112,7 @@
 			)
 		)
 		(net
-			(code "43")
+			(code "44")
 			(name "unconnected-(U1-EN-Pad2)")
 			(class "Default")
 			(node
@@ -7112,7 +7123,7 @@
 			)
 		)
 		(net
-			(code "44")
+			(code "45")
 			(name "unconnected-(U1-IO1{slash}TXD0-Pad35)")
 			(class "Default")
 			(node
@@ -7123,24 +7134,13 @@
 			)
 		)
 		(net
-			(code "45")
+			(code "46")
 			(name "unconnected-(U1-IO3{slash}RXD0-Pad34)")
 			(class "Default")
 			(node
 				(ref "U1")
 				(pin "34")
 				(pinfunction "IO3/RXD0_34")
-				(pintype "bidirectional+no_connect")
-			)
-		)
-		(net
-			(code "46")
-			(name "unconnected-(U1-IO4-Pad26)")
-			(class "Default")
-			(node
-				(ref "U1")
-				(pin "26")
-				(pinfunction "IO4_26")
 				(pintype "bidirectional+no_connect")
 			)
 		)
